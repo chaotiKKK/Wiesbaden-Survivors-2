@@ -1,0 +1,10 @@
+{
+  "name": "ring",
+  "grid": [
+    8,
+    8
+  ],
+  "tile": 64,
+  "frames": 64,
+  "durationFps24": 2.67
+}

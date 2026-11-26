@@ -1,0 +1,29 @@
+{
+  "asset": "SM_Leonidas",
+  "heightMeters": 1.35,
+  "tris": 3072,
+  "verts": 3094,
+  "export": "Art/Export/Heroes/Slice/SM_Leonidas.fbx",
+  "vat": "Art/Textures/VAT/SM_Leonidas_VAT.png",
+  "clips": {
+    "idle": {
+      "start": 0,
+      "count": 16
+    },
+    "run": {
+      "start": 16,
+      "count": 16
+    },
+    "attack": {
+      "start": 32,
+      "count": 12
+    }
+  },
+  "frames": 44,
+  "extent": [
+    0.3142753839492798,
+    0.6099759340286255,
+    0.6919279098510742
+  ],
+  "sheet": "Art/Renders/hero_leonidas_slice_sheet.png"
+}

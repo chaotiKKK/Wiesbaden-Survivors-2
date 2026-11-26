@@ -1,0 +1,472 @@
+{
+  "pieces": [
+    {
+      "kit": "Innenstadt",
+      "piece": "Facade",
+      "asset": "SM_Innenstadt_Facade",
+      "tris": 54,
+      "size": [
+        2.7,
+        1.95,
+        4.7
+      ],
+      "fbx": "Art/Export/Arena/Innenstadt/SM_Innenstadt_Facade.fbx",
+      "sheet": "Art/Renders/kit_innenstadt_facade_sheet.png"
+    },
+    {
+      "kit": "Innenstadt",
+      "piece": "Arcade",
+      "asset": "SM_Innenstadt_Arcade",
+      "tris": 66,
+      "size": [
+        2.9,
+        1.2,
+        2.95
+      ],
+      "fbx": "Art/Export/Arena/Innenstadt/SM_Innenstadt_Arcade.fbx",
+      "sheet": "Art/Renders/kit_innenstadt_arcade_sheet.png"
+    },
+    {
+      "kit": "Innenstadt",
+      "piece": "Column",
+      "asset": "SM_Innenstadt_Column",
+      "tris": 38,
+      "size": [
+        0.87,
+        0.92,
+        3.12
+      ],
+      "fbx": "Art/Export/Arena/Innenstadt/SM_Innenstadt_Column.fbx",
+      "sheet": "Art/Renders/kit_innenstadt_column_sheet.png"
+    },
+    {
+      "kit": "Innenstadt",
+      "piece": "Gate",
+      "asset": "SM_Innenstadt_Gate",
+      "tris": 24,
+      "size": [
+        2.5,
+        0.84,
+        2.88
+      ],
+      "fbx": "Art/Export/Arena/Innenstadt/SM_Innenstadt_Gate.fbx",
+      "sheet": "Art/Renders/kit_innenstadt_gate_sheet.png"
+    },
+    {
+      "kit": "Innenstadt",
+      "piece": "Planter",
+      "asset": "SM_Innenstadt_Planter",
+      "tris": 86,
+      "size": [
+        1.33,
+        1.39,
+        1.85
+      ],
+      "fbx": "Art/Export/Arena/Innenstadt/SM_Innenstadt_Planter.fbx",
+      "sheet": "Art/Renders/kit_innenstadt_planter_sheet.png"
+    },
+    {
+      "kit": "Innenstadt",
+      "piece": "Lamp",
+      "asset": "SM_Innenstadt_Lamp",
+      "tris": 22,
+      "size": [
+        0.45,
+        0.45,
+        3.34
+      ],
+      "fbx": "Art/Export/Arena/Innenstadt/SM_Innenstadt_Lamp.fbx",
+      "sheet": "Art/Renders/kit_innenstadt_lamp_sheet.png"
+    },
+    {
+      "kit": "Rheinufer",
+      "piece": "Railing",
+      "asset": "SM_Rheinufer_Railing",
+      "tris": 100,
+      "size": [
+        3.4,
+        0.28,
+        1.38
+      ],
+      "fbx": "Art/Export/Arena/Rheinufer/SM_Rheinufer_Railing.fbx",
+      "sheet": "Art/Renders/kit_rheinufer_railing_sheet.png"
+    },
+    {
+      "kit": "Rheinufer",
+      "piece": "Kiosk",
+      "asset": "SM_Rheinufer_Kiosk",
+      "tris": 24,
+      "size": [
+        2.1,
+        1.75,
+        2.01
+      ],
+      "fbx": "Art/Export/Arena/Rheinufer/SM_Rheinufer_Kiosk.fbx",
+      "sheet": "Art/Renders/kit_rheinufer_kiosk_sheet.png"
+    },
+    {
+      "kit": "Rheinufer",
+      "piece": "Ponton",
+      "asset": "SM_Rheinufer_Ponton",
+      "tris": 238,
+      "size": [
+        2.6,
+        2.0,
+        0.9
+      ],
+      "fbx": "Art/Export/Arena/Rheinufer/SM_Rheinufer_Ponton.fbx",
+      "sheet": "Art/Renders/kit_rheinufer_ponton_sheet.png"
+    },
+    {
+      "kit": "Rheinufer",
+      "piece": "Crane",
+      "asset": "SM_Rheinufer_Crane",
+      "tris": 26,
+      "size": [
+        2.4,
+        0.4,
+        4.03
+      ],
+      "fbx": "Art/Export/Arena/Rheinufer/SM_Rheinufer_Crane.fbx",
+      "sheet": "Art/Renders/kit_rheinufer_crane_sheet.png"
+    },
+    {
+      "kit": "Rheinufer",
+      "piece": "Bollard",
+      "asset": "SM_Rheinufer_Bollard",
+      "tris": 588,
+      "size": [
+        0.64,
+        0.44,
+        1.14
+      ],
+      "fbx": "Art/Export/Arena/Rheinufer/SM_Rheinufer_Bollard.fbx",
+      "sheet": "Art/Renders/kit_rheinufer_bollard_sheet.png"
+    },
+    {
+      "kit": "Rheinufer",
+      "piece": "Lamp",
+      "asset": "SM_Rheinufer_Lamp",
+      "tris": 22,
+      "size": [
+        0.45,
+        0.45,
+        3.34
+      ],
+      "fbx": "Art/Export/Arena/Rheinufer/SM_Rheinufer_Lamp.fbx",
+      "sheet": "Art/Renders/kit_rheinufer_lamp_sheet.png"
+    },
+    {
+      "kit": "Labor",
+      "piece": "LabWall",
+      "asset": "SM_Labor_LabWall",
+      "tris": 30,
+      "size": [
+        2.6,
+        0.58,
+        3.6
+      ],
+      "fbx": "Art/Export/Arena/Labor/SM_Labor_LabWall.fbx",
+      "sheet": "Art/Renders/kit_labor_labwall_sheet.png"
+    },
+    {
+      "kit": "Labor",
+      "piece": "Tank",
+      "asset": "SM_Labor_Tank",
+      "tris": 186,
+      "size": [
+        2.28,
+        1.9,
+        3.1
+      ],
+      "fbx": "Art/Export/Arena/Labor/SM_Labor_Tank.fbx",
+      "sheet": "Art/Renders/kit_labor_tank_sheet.png"
+    },
+    {
+      "kit": "Labor",
+      "piece": "Console",
+      "asset": "SM_Labor_Console",
+      "tris": 24,
+      "size": [
+        1.8,
+        0.92,
+        1.5
+      ],
+      "fbx": "Art/Export/Arena/Labor/SM_Labor_Console.fbx",
+      "sheet": "Art/Renders/kit_labor_console_sheet.png"
+    },
+    {
+      "kit": "Labor",
+      "piece": "Pipe",
+      "asset": "SM_Labor_Pipe",
+      "tris": 38,
+      "size": [
+        3.09,
+        0.6,
+        0.85
+      ],
+      "fbx": "Art/Export/Arena/Labor/SM_Labor_Pipe.fbx",
+      "sheet": "Art/Renders/kit_labor_pipe_sheet.png"
+    },
+    {
+      "kit": "Labor",
+      "piece": "Crate",
+      "asset": "SM_Labor_Crate",
+      "tris": 18,
+      "size": [
+        1.4,
+        1.86,
+        1.3
+      ],
+      "fbx": "Art/Export/Arena/Labor/SM_Labor_Crate.fbx",
+      "sheet": "Art/Renders/kit_labor_crate_sheet.png"
+    },
+    {
+      "kit": "Labor",
+      "piece": "Lamp",
+      "asset": "SM_Labor_Lamp",
+      "tris": 22,
+      "size": [
+        0.45,
+        0.45,
+        3.34
+      ],
+      "fbx": "Art/Export/Arena/Labor/SM_Labor_Lamp.fbx",
+      "sheet": "Art/Renders/kit_labor_lamp_sheet.png"
+    },
+    {
+      "kit": "Neroberg",
+      "piece": "Pine",
+      "asset": "SM_Neroberg_Pine",
+      "tris": 37,
+      "size": [
+        2.39,
+        2.39,
+        4.22
+      ],
+      "fbx": "Art/Export/Arena/Neroberg/SM_Neroberg_Pine.fbx",
+      "sheet": "Art/Renders/kit_neroberg_pine_sheet.png"
+    },
+    {
+      "kit": "Neroberg",
+      "piece": "Monopteros",
+      "asset": "SM_Neroberg_Monopteros",
+      "tris": 221,
+      "size": [
+        5.79,
+        5.79,
+        4.62
+      ],
+      "fbx": "Art/Export/Arena/Neroberg/SM_Neroberg_Monopteros.fbx",
+      "sheet": "Art/Renders/kit_neroberg_monopteros_sheet.png"
+    },
+    {
+      "kit": "Neroberg",
+      "piece": "Rail",
+      "asset": "SM_Neroberg_Rail",
+      "tris": 52,
+      "size": [
+        3.2,
+        0.18,
+        1.17
+      ],
+      "fbx": "Art/Export/Arena/Neroberg/SM_Neroberg_Rail.fbx",
+      "sheet": "Art/Renders/kit_neroberg_rail_sheet.png"
+    },
+    {
+      "kit": "Neroberg",
+      "piece": "Funicular",
+      "asset": "SM_Neroberg_Funicular",
+      "tris": 48,
+      "size": [
+        2.4,
+        1.3,
+        1.99
+      ],
+      "fbx": "Art/Export/Arena/Neroberg/SM_Neroberg_Funicular.fbx",
+      "sheet": "Art/Renders/kit_neroberg_funicular_sheet.png"
+    },
+    {
+      "kit": "Neroberg",
+      "piece": "Vista",
+      "asset": "SM_Neroberg_Vista",
+      "tris": 42,
+      "size": [
+        2.8,
+        1.4,
+        1.31
+      ],
+      "fbx": "Art/Export/Arena/Neroberg/SM_Neroberg_Vista.fbx",
+      "sheet": "Art/Renders/kit_neroberg_vista_sheet.png"
+    },
+    {
+      "kit": "Neroberg",
+      "piece": "Lamp",
+      "asset": "SM_Neroberg_Lamp",
+      "tris": 22,
+      "size": [
+        0.45,
+        0.45,
+        3.34
+      ],
+      "fbx": "Art/Export/Arena/Neroberg/SM_Neroberg_Lamp.fbx",
+      "sheet": "Art/Renders/kit_neroberg_lamp_sheet.png"
+    },
+    {
+      "kit": "Warmerdamm",
+      "piece": "Hedge",
+      "asset": "SM_Warmerdamm_Hedge",
+      "tris": 12,
+      "size": [
+        2.4,
+        1.0,
+        1.3
+      ],
+      "fbx": "Art/Export/Arena/Warmerdamm/SM_Warmerdamm_Hedge.fbx",
+      "sheet": "Art/Renders/kit_warmerdamm_hedge_sheet.png"
+    },
+    {
+      "kit": "Warmerdamm",
+      "piece": "Bandstand",
+      "asset": "SM_Warmerdamm_Bandstand",
+      "tris": 679,
+      "size": [
+        4.55,
+        4.79,
+        4.03
+      ],
+      "fbx": "Art/Export/Arena/Warmerdamm/SM_Warmerdamm_Bandstand.fbx",
+      "sheet": "Art/Renders/kit_warmerdamm_bandstand_sheet.png"
+    },
+    {
+      "kit": "Warmerdamm",
+      "piece": "Palm",
+      "asset": "SM_Warmerdamm_Palm",
+      "tris": 46,
+      "size": [
+        3.26,
+        2.98,
+        3.67
+      ],
+      "fbx": "Art/Export/Arena/Warmerdamm/SM_Warmerdamm_Palm.fbx",
+      "sheet": "Art/Renders/kit_warmerdamm_palm_sheet.png"
+    },
+    {
+      "kit": "Warmerdamm",
+      "piece": "Pond",
+      "asset": "SM_Warmerdamm_Pond",
+      "tris": 32,
+      "size": [
+        2.92,
+        3.0,
+        0.23
+      ],
+      "fbx": "Art/Export/Arena/Warmerdamm/SM_Warmerdamm_Pond.fbx",
+      "sheet": "Art/Renders/kit_warmerdamm_pond_sheet.png"
+    },
+    {
+      "kit": "Warmerdamm",
+      "piece": "Bench",
+      "asset": "SM_Warmerdamm_Bench",
+      "tris": 24,
+      "size": [
+        1.9,
+        0.56,
+        1.01
+      ],
+      "fbx": "Art/Export/Arena/Warmerdamm/SM_Warmerdamm_Bench.fbx",
+      "sheet": "Art/Renders/kit_warmerdamm_bench_sheet.png"
+    },
+    {
+      "kit": "Warmerdamm",
+      "piece": "Lamp",
+      "asset": "SM_Warmerdamm_Lamp",
+      "tris": 22,
+      "size": [
+        0.45,
+        0.45,
+        3.34
+      ],
+      "fbx": "Art/Export/Arena/Warmerdamm/SM_Warmerdamm_Lamp.fbx",
+      "sheet": "Art/Renders/kit_warmerdamm_lamp_sheet.png"
+    },
+    {
+      "kit": "Schlachthof",
+      "piece": "Hall",
+      "asset": "SM_Schlachthof_Hall",
+      "tris": 36,
+      "size": [
+        3.2,
+        2.56,
+        3.5
+      ],
+      "fbx": "Art/Export/Arena/Schlachthof/SM_Schlachthof_Hall.fbx",
+      "sheet": "Art/Renders/kit_schlachthof_hall_sheet.png"
+    },
+    {
+      "kit": "Schlachthof",
+      "piece": "Boiler",
+      "asset": "SM_Schlachthof_Boiler",
+      "tris": 170,
+      "size": [
+        2.52,
+        2.1,
+        3.2
+      ],
+      "fbx": "Art/Export/Arena/Schlachthof/SM_Schlachthof_Boiler.fbx",
+      "sheet": "Art/Renders/kit_schlachthof_boiler_sheet.png"
+    },
+    {
+      "kit": "Schlachthof",
+      "piece": "Hook",
+      "asset": "SM_Schlachthof_Hook",
+      "tris": 590,
+      "size": [
+        1.4,
+        0.3,
+        2.28
+      ],
+      "fbx": "Art/Export/Arena/Schlachthof/SM_Schlachthof_Hook.fbx",
+      "sheet": "Art/Renders/kit_schlachthof_hook_sheet.png"
+    },
+    {
+      "kit": "Schlachthof",
+      "piece": "Chain",
+      "asset": "SM_Schlachthof_Chain",
+      "tris": 2880,
+      "size": [
+        0.6,
+        0.6,
+        2.28
+      ],
+      "fbx": "Art/Export/Arena/Schlachthof/SM_Schlachthof_Chain.fbx",
+      "sheet": "Art/Renders/kit_schlachthof_chain_sheet.png"
+    },
+    {
+      "kit": "Schlachthof",
+      "piece": "Trough",
+      "asset": "SM_Schlachthof_Trough",
+      "tris": 12,
+      "size": [
+        2.2,
+        1.0,
+        0.9
+      ],
+      "fbx": "Art/Export/Arena/Schlachthof/SM_Schlachthof_Trough.fbx",
+      "sheet": "Art/Renders/kit_schlachthof_trough_sheet.png"
+    },
+    {
+      "kit": "Schlachthof",
+      "piece": "Lamp",
+      "asset": "SM_Schlachthof_Lamp",
+      "tris": 22,
+      "size": [
+        0.45,
+        0.45,
+        3.34
+      ],
+      "fbx": "Art/Export/Arena/Schlachthof/SM_Schlachthof_Lamp.fbx",
+      "sheet": "Art/Renders/kit_schlachthof_lamp_sheet.png"
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "asset": "SM_Leonidas",
+  "frames": 44,
+  "fps": 24,
+  "atlasWidth": 3094,
+  "vertexCounts": [
+    3094
+  ],
+  "clips": {
+    "idle": {
+      "start": 0,
+      "count": 16
+    },
+    "run": {
+      "start": 16,
+      "count": 16
+    },
+    "attack": {
+      "start": 32,
+      "count": 12
+    }
+  },
+  "extent": [
+    0.3142753839492798,
+    0.6099759340286255,
+    0.6919279098510742
+  ],
+  "boundsMin": [
+    -0.23523886501789093,
+    -0.45654118061065674,
+    -0.3071928024291992
+  ],
+  "boundsMax": [
+    0.3142753839492798,
+    0.6099759340286255,
+    0.6919279098510742
+  ],
+  "rowOrder": "bottom-up (frame 1 at the bottom row)"
+}

@@ -1,0 +1,510 @@
+[
+  {
+    "id": "kaffee",
+    "name": "Kurhaus-Kaffee",
+    "r": 1,
+    "price": 20,
+    "stats": {
+      "speed": 6,
+      "atkSpd": 4
+    },
+    "fl": "Wiesbadener Frühstücksdoping."
+  },
+  {
+    "id": "turnschuh",
+    "name": "Laufschuhe",
+    "r": 1,
+    "price": 18,
+    "stats": {
+      "speed": 10
+    },
+    "fl": "Rennen ist auch eine Taktik."
+  },
+  {
+    "id": "helm",
+    "name": "Feuerwehrhelm",
+    "r": 1,
+    "price": 22,
+    "stats": {
+      "armor": 2,
+      "maxHp": 8
+    },
+    "fl": "Leonidas trägt ihn selbst beim Schlafen."
+  },
+  {
+    "id": "verband",
+    "name": "Erste-Hilfe-Set",
+    "r": 1,
+    "price": 20,
+    "stats": {
+      "hpRegen": 1,
+      "maxHp": 10
+    },
+    "fl": "Sylvias Grundausstattung."
+  },
+  {
+    "id": "zielfernrohr",
+    "name": "Zielfernrohr",
+    "r": 1,
+    "price": 24,
+    "stats": {
+      "range": 12,
+      "crit": 3
+    },
+    "fl": "Sehen heißt treffen."
+  },
+  {
+    "id": "multitool",
+    "name": "Multitool",
+    "r": 1,
+    "price": 22,
+    "stats": {
+      "eng": 6
+    },
+    "fl": "Sebbo hat sieben davon."
+  },
+  {
+    "id": "kleeblatt4",
+    "name": "Vierblättriges Kleeblatt",
+    "r": 1,
+    "price": 20,
+    "stats": {
+      "luck": 15
+    },
+    "fl": "Aus dem Kurpark. Angeblich."
+  },
+  {
+    "id": "handschuh",
+    "name": "Arbeitshandschuhe",
+    "r": 1,
+    "price": 19,
+    "stats": {
+      "melee": 6,
+      "armor": 1
+    },
+    "fl": "Griffig."
+  },
+  {
+    "id": "magazin",
+    "name": "Schnellmagazin",
+    "r": 1,
+    "price": 21,
+    "stats": {
+      "atkSpd": 8
+    },
+    "fl": "Klick-klack."
+  },
+  {
+    "id": "pfeffer",
+    "name": "Pfefferspray",
+    "r": 1,
+    "price": 18,
+    "stats": {
+      "ranged": 5,
+      "dmgP": 3
+    },
+    "fl": "Polizeiausrüstung, geliehen."
+  },
+  {
+    "id": "plektrum",
+    "name": "Goldenes Plektrum",
+    "r": 2,
+    "price": 38,
+    "stats": {
+      "atkSpd": 10,
+      "dmgP": 6
+    },
+    "fl": "Jeder Riff ein Treffer."
+  },
+  {
+    "id": "rheinstein",
+    "name": "Rheinkiesel",
+    "r": 2,
+    "price": 34,
+    "stats": {
+      "armor": 3,
+      "knock": 15
+    },
+    "fl": "Vom Ufer, glatt geschliffen."
+  },
+  {
+    "id": "sprungfeder",
+    "name": "Sprungfeder",
+    "r": 2,
+    "price": 36,
+    "stats": {
+      "speed": 12,
+      "dodge": 5
+    },
+    "fl": "Boing."
+  },
+  {
+    "id": "lupe",
+    "name": "Uhrmacherlupe",
+    "r": 2,
+    "price": 40,
+    "stats": {
+      "crit": 7,
+      "critDmg": 20
+    },
+    "fl": "Schwachstellen sind überall."
+  },
+  {
+    "id": "drohne",
+    "name": "Wartungsdrohne",
+    "r": 2,
+    "price": 45,
+    "stats": {
+      "eng": 12
+    },
+    "fl": "Summt beruhigend.",
+    "turret": true
+  },
+  {
+    "id": "thermo",
+    "name": "Thermoschutz",
+    "r": 2,
+    "price": 36,
+    "stats": {
+      "elem": 10,
+      "armor": 1
+    },
+    "fl": "Hitze? Welche Hitze."
+  },
+  {
+    "id": "sanikoffer",
+    "name": "Sanitätskoffer",
+    "r": 2,
+    "price": 42,
+    "stats": {
+      "maxHp": 25,
+      "hpRegen": 2
+    },
+    "fl": "Therapie für den Körper."
+  },
+  {
+    "id": "kompressor",
+    "name": "Kompressor",
+    "r": 2,
+    "price": 40,
+    "stats": {
+      "expSize": 25,
+      "dmgP": 5
+    },
+    "fl": "Größer ist besser."
+  },
+  {
+    "id": "stachel",
+    "name": "Stachelpanzer",
+    "r": 2,
+    "price": 38,
+    "stats": {
+      "armor": 4,
+      "melee": 8
+    },
+    "fl": "Wer dich trifft, blutet mit.",
+    "thorns": 6
+  },
+  {
+    "id": "parfum",
+    "name": "Nerobergluft",
+    "r": 2,
+    "price": 35,
+    "stats": {
+      "harvest": 4,
+      "luck": 12
+    },
+    "fl": "Materialmagnet."
+  },
+  {
+    "id": "bounce",
+    "name": "Gummibeschichtung",
+    "r": 2,
+    "price": 44,
+    "stats": {
+      "bounce": 1,
+      "dmgP": 4
+    },
+    "fl": "Projektile prallen einmal ab."
+  },
+  {
+    "id": "pierce",
+    "name": "Wolframkern",
+    "r": 2,
+    "price": 46,
+    "stats": {
+      "pierce": 1,
+      "ranged": 6
+    },
+    "fl": "Durch und durch."
+  },
+  {
+    "id": "reaktor",
+    "name": "Mini-Reaktor",
+    "r": 3,
+    "price": 72,
+    "stats": {
+      "eng": 20,
+      "elem": 12
+    },
+    "fl": "Technomagie in Reinform.",
+    "turret": true
+  },
+  {
+    "id": "adrenalin",
+    "name": "Adrenalinpumpe",
+    "r": 3,
+    "price": 68,
+    "stats": {
+      "atkSpd": 18,
+      "speed": 8,
+      "maxHp": -10
+    },
+    "fl": "Der Körper zahlt später."
+  },
+  {
+    "id": "brille",
+    "name": "Analysebrille",
+    "r": 3,
+    "price": 70,
+    "stats": {
+      "crit": 10,
+      "critDmg": 35
+    },
+    "fl": "Sebbo hat sie kalibriert."
+  },
+  {
+    "id": "exo",
+    "name": "Exo-Skelett",
+    "r": 3,
+    "price": 78,
+    "stats": {
+      "armor": 6,
+      "maxHp": 30,
+      "speed": -6
+    },
+    "fl": "Schwer, aber sicher."
+  },
+  {
+    "id": "vampir",
+    "name": "Blutkonserve",
+    "r": 3,
+    "price": 74,
+    "stats": {
+      "lifesteal": 18,
+      "maxHp": 15
+    },
+    "fl": "Frisch aus der Klinik."
+  },
+  {
+    "id": "quantum",
+    "name": "Quantenkondensator",
+    "r": 3,
+    "price": 80,
+    "stats": {
+      "dmgP": 18,
+      "elem": 15
+    },
+    "fl": "Blitzt bläulich."
+  },
+  {
+    "id": "phasenweste",
+    "name": "Phasenweste",
+    "r": 3,
+    "price": 72,
+    "stats": {
+      "dodge": 14,
+      "speed": 6
+    },
+    "fl": "Manchmal einfach nicht da."
+  },
+  {
+    "id": "goldkurhaus",
+    "name": "Kurhaus-Goldbarren",
+    "r": 3,
+    "price": 76,
+    "stats": {
+      "harvest": 8,
+      "luck": 30,
+      "xpGain": 10
+    },
+    "fl": "Reich ist, wer überlebt."
+  },
+  {
+    "id": "sturmgewicht",
+    "name": "Sturmgewicht",
+    "r": 3,
+    "price": 70,
+    "stats": {
+      "melee": 20,
+      "knock": 40
+    },
+    "fl": "Nahkampf-Fundament."
+  },
+  {
+    "id": "serverfarm",
+    "name": "Serverfarm",
+    "r": 3,
+    "price": 84,
+    "stats": {
+      "eng": 25,
+      "atkSpd": 8
+    },
+    "fl": "Sebbos Keller, komprimiert.",
+    "turret": true
+  },
+  {
+    "id": "halbgott",
+    "name": "Halbgott-Fragment",
+    "r": 4,
+    "price": 130,
+    "stats": {
+      "dmgP": 25,
+      "crit": 10,
+      "speed": 8,
+      "maxHp": 20
+    },
+    "fl": "Ein Splitter von Sebbos wahrer Natur."
+  },
+  {
+    "id": "herzensglut",
+    "name": "Herzensglut",
+    "r": 4,
+    "price": 125,
+    "stats": {
+      "lifesteal": 25,
+      "hpRegen": 4,
+      "elem": 20
+    },
+    "fl": "Sylvias Wärme, materialisiert."
+  },
+  {
+    "id": "sirene",
+    "name": "Ewige Sirene",
+    "r": 4,
+    "price": 128,
+    "stats": {
+      "ranged": 30,
+      "atkSpd": 15,
+      "range": 15
+    },
+    "fl": "Man hört sie bis Mainz."
+  },
+  {
+    "id": "bollwerkplatte",
+    "name": "Bollwerkplatte",
+    "r": 4,
+    "price": 122,
+    "stats": {
+      "armor": 10,
+      "maxHp": 45,
+      "speed": -8
+    },
+    "fl": "Unbeweglich, unsterblich."
+  },
+  {
+    "id": "supernova",
+    "name": "Supernova-Kern",
+    "r": 4,
+    "price": 140,
+    "stats": {
+      "dmgP": 35,
+      "expSize": 40,
+      "maxHp": -25
+    },
+    "fl": "Alles brennt. Auch du."
+  },
+  {
+    "id": "zeitschleife",
+    "name": "Zeitschleife",
+    "r": 4,
+    "price": 135,
+    "stats": {
+      "atkSpd": 25,
+      "dodge": 10,
+      "xpGain": 20
+    },
+    "fl": "Zwei Sekunden Vorsprung, immer."
+  },
+  {
+    "id": "c_gier",
+    "name": "Fluch der Gier",
+    "r": 3,
+    "price": 55,
+    "stats": {
+      "harvest": 15,
+      "luck": 40,
+      "maxHp": -30
+    },
+    "fl": "Materialien glänzen. Dein Blut auch.",
+    "cursed": true
+  },
+  {
+    "id": "c_raserei",
+    "name": "Fluch der Raserei",
+    "r": 3,
+    "price": 58,
+    "stats": {
+      "atkSpd": 35,
+      "speed": 15,
+      "armor": -6
+    },
+    "fl": "Schneller. Immer schneller.",
+    "cursed": true
+  },
+  {
+    "id": "c_zorn",
+    "name": "Fluch des Zorns",
+    "r": 4,
+    "price": 90,
+    "stats": {
+      "dmgP": 60,
+      "crit": 20,
+      "maxHp": -45,
+      "dodge": -10
+    },
+    "fl": "Der Zorn nimmt, was er gibt.",
+    "cursed": true
+  },
+  {
+    "id": "c_stille",
+    "name": "Fluch der Stille",
+    "r": 3,
+    "price": 60,
+    "stats": {
+      "range": 40,
+      "ranged": 25,
+      "hpRegen": -3
+    },
+    "fl": "Weit sehen, langsam sterben.",
+    "cursed": true
+  },
+  {
+    "id": "c_eisen",
+    "name": "Fluch des Eisens",
+    "r": 3,
+    "price": 62,
+    "stats": {
+      "armor": 12,
+      "maxHp": 40,
+      "speed": -25,
+      "atkSpd": -12
+    },
+    "fl": "Ein Denkmal deiner selbst.",
+    "cursed": true
+  },
+  {
+    "id": "c_echo",
+    "name": "Fluch des Echos",
+    "r": 4,
+    "price": 95,
+    "stats": {
+      "elem": 40,
+      "expSize": 50,
+      "lifesteal": -15,
+      "armor": -4
+    },
+    "fl": "Jede Explosion trifft auch dich.",
+    "cursed": true
+  }
+]

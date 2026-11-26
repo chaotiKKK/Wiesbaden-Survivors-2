@@ -1,0 +1,76 @@
+{
+  "bosses": [
+    {
+      "id": "kurhaus",
+      "name": "KURHAUS-KOLOSS",
+      "asset": "SM_Boss_Kurhaus",
+      "shape": "brick",
+      "tris": 648,
+      "fbx": "Art/Export/Bosses/SM_Boss_Kurhaus.fbx",
+      "sheet": "Art/Renders/boss_kurhaus_sheet.png"
+    },
+    {
+      "id": "nerobahn",
+      "name": "NEROBERG-WURM",
+      "asset": "SM_Boss_Nerobahn",
+      "shape": "worm",
+      "tris": 992,
+      "fbx": "Art/Export/Bosses/SM_Boss_Nerobahn.fbx",
+      "sheet": "Art/Renders/boss_nerobahn_sheet.png"
+    },
+    {
+      "id": "kochbrunnen",
+      "name": "KOCHBRUNNEN-GOLEM",
+      "asset": "SM_Boss_Kochbrunnen",
+      "shape": "hex",
+      "tris": 640,
+      "fbx": "Art/Export/Bosses/SM_Boss_Kochbrunnen.fbx",
+      "sheet": "Art/Renders/boss_kochbrunnen_sheet.png"
+    },
+    {
+      "id": "rogueki",
+      "name": "SEBBOS ROGUE-KI",
+      "asset": "SM_Boss_Rogueki",
+      "shape": "prism",
+      "tris": 634,
+      "fbx": "Art/Export/Bosses/SM_Boss_Rogueki.fbx",
+      "sheet": "Art/Renders/boss_rogueki_sheet.png"
+    },
+    {
+      "id": "bergbahn",
+      "name": "BERGBAHN-KOLOSS",
+      "asset": "SM_Boss_Bergbahn",
+      "shape": "gear",
+      "tris": 684,
+      "fbx": "Art/Export/Bosses/SM_Boss_Bergbahn.fbx",
+      "sheet": "Art/Renders/boss_bergbahn_sheet.png"
+    },
+    {
+      "id": "sirenkollektiv",
+      "name": "SIRENEN-KOLLEKTIV",
+      "asset": "SM_Boss_Sirenkollektiv",
+      "shape": "wave",
+      "tris": 1248,
+      "fbx": "Art/Export/Bosses/SM_Boss_Sirenkollektiv.fbx",
+      "sheet": "Art/Renders/boss_sirenkollektiv_sheet.png"
+    },
+    {
+      "id": "thermalquelle",
+      "name": "THERMALQUELLE",
+      "asset": "SM_Boss_Thermalquelle",
+      "shape": "star",
+      "tris": 676,
+      "fbx": "Art/Export/Bosses/SM_Boss_Thermalquelle.fbx",
+      "sheet": "Art/Renders/boss_thermalquelle_sheet.png"
+    },
+    {
+      "id": "marktturm",
+      "name": "MARKTKIRCHEN-TURM",
+      "asset": "SM_Boss_Marktturm",
+      "shape": "cross",
+      "tris": 684,
+      "fbx": "Art/Export/Bosses/SM_Boss_Marktturm.fbx",
+      "sheet": "Art/Renders/boss_marktturm_sheet.png"
+    }
+  ]
+}

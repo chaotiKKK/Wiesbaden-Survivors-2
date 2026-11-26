@@ -1,0 +1,122 @@
+[
+  {
+    "id": "maxHp",
+    "name": "Max. Leben",
+    "unit": ""
+  },
+  {
+    "id": "hpRegen",
+    "name": "HP-Regeneration",
+    "unit": ""
+  },
+  {
+    "id": "lifesteal",
+    "name": "Lebensraub",
+    "unit": "%"
+  },
+  {
+    "id": "dmgP",
+    "name": "Schaden",
+    "unit": "%"
+  },
+  {
+    "id": "melee",
+    "name": "Nahkampfschaden",
+    "unit": ""
+  },
+  {
+    "id": "ranged",
+    "name": "Fernkampfschaden",
+    "unit": ""
+  },
+  {
+    "id": "elem",
+    "name": "Elementarschaden",
+    "unit": ""
+  },
+  {
+    "id": "atkSpd",
+    "name": "Angriffstempo",
+    "unit": "%"
+  },
+  {
+    "id": "crit",
+    "name": "Krit. Chance",
+    "unit": "%"
+  },
+  {
+    "id": "critDmg",
+    "name": "Krit. Schaden",
+    "unit": "%"
+  },
+  {
+    "id": "eng",
+    "name": "Technik",
+    "unit": ""
+  },
+  {
+    "id": "range",
+    "name": "Reichweite",
+    "unit": "%"
+  },
+  {
+    "id": "armor",
+    "name": "Rüstung",
+    "unit": ""
+  },
+  {
+    "id": "dodge",
+    "name": "Ausweichen",
+    "unit": "%"
+  },
+  {
+    "id": "speed",
+    "name": "Tempo",
+    "unit": "%"
+  },
+  {
+    "id": "luck",
+    "name": "Glück",
+    "unit": ""
+  },
+  {
+    "id": "harvest",
+    "name": "Ernte",
+    "unit": ""
+  },
+  {
+    "id": "xpGain",
+    "name": "EP-Gewinn",
+    "unit": "%"
+  },
+  {
+    "id": "expSize",
+    "name": "Explosionsgröße",
+    "unit": "%"
+  },
+  {
+    "id": "pierce",
+    "name": "Durchschlag",
+    "unit": ""
+  },
+  {
+    "id": "bounce",
+    "name": "Abpraller",
+    "unit": ""
+  },
+  {
+    "id": "knock",
+    "name": "Rückstoß",
+    "unit": "%"
+  },
+  {
+    "id": "abilityRank",
+    "name": "Fähigkeitsstufe",
+    "unit": ""
+  },
+  {
+    "id": "abilityCdMod",
+    "name": "Fähigkeits-CD",
+    "unit": "%"
+  }
+]

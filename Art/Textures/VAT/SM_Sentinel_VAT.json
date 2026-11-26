@@ -1,0 +1,28 @@
+{
+  "asset": "SM_Sentinel",
+  "frames": 16,
+  "fps": 24,
+  "atlasWidth": 218,
+  "vertexCounts": [
+    218,
+    121,
+    63,
+    29
+  ],
+  "extent": [
+    0.04485625773668289,
+    9.999999747378752e-06,
+    0.07772877812385559
+  ],
+  "boundsMin": [
+    -0.04485625773668289,
+    0.0,
+    0.0
+  ],
+  "boundsMax": [
+    0.04471667855978012,
+    0.0,
+    0.07772877812385559
+  ],
+  "rowOrder": "bottom-up (frame 1 at the bottom row)"
+}

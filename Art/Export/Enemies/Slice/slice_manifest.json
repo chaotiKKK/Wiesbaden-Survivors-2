@@ -1,0 +1,126 @@
+{
+  "enemies": [
+    {
+      "id": "runner",
+      "asset": "SM_Runner",
+      "shape": "tri",
+      "color": "#ff5d6e",
+      "radiusData": 11,
+      "tris": [
+        64,
+        56,
+        28,
+        12
+      ],
+      "verts": [
+        56,
+        32,
+        18,
+        10
+      ],
+      "exports": [
+        "Art/Export/Enemies/Slice/SM_Runner.fbx"
+      ],
+      "vat": "Art/Textures/VAT/SM_Runner_VAT.png",
+      "frames": 16,
+      "extent": [
+        0.06869123876094818,
+        9.999999747378752e-06,
+        0.09974417090415955
+      ],
+      "sheet": "Art/Renders/enemy_runner_sheet.png"
+    },
+    {
+      "id": "walker",
+      "asset": "SM_Walker",
+      "shape": "box",
+      "color": "#c96be0",
+      "radiusData": 14,
+      "tris": [
+        108,
+        118,
+        60,
+        24
+      ],
+      "verts": [
+        112,
+        63,
+        34,
+        16
+      ],
+      "exports": [
+        "Art/Export/Enemies/Slice/SM_Walker.fbx"
+      ],
+      "vat": "Art/Textures/VAT/SM_Walker_VAT.png",
+      "frames": 16,
+      "extent": [
+        0.034638434648513794,
+        9.999999747378752e-06,
+        0.0716361403465271
+      ],
+      "sheet": "Art/Renders/enemy_walker_sheet.png"
+    },
+    {
+      "id": "swarm",
+      "asset": "SM_Swarm",
+      "shape": "dot",
+      "color": "#ff9a5c",
+      "radiusData": 8,
+      "tris": [
+        200,
+        192,
+        98,
+        42
+      ],
+      "verts": [
+        180,
+        100,
+        53,
+        25
+      ],
+      "exports": [
+        "Art/Export/Enemies/Slice/SM_Swarm.fbx"
+      ],
+      "vat": "Art/Textures/VAT/SM_Swarm_VAT.png",
+      "frames": 16,
+      "extent": [
+        0.08463999629020691,
+        9.999999747378752e-06,
+        0.11072830855846405
+      ],
+      "sheet": "Art/Renders/enemy_swarm_sheet.png"
+    },
+    {
+      "id": "tank",
+      "asset": "SM_Tank",
+      "shape": "box",
+      "color": "#9fb4d8",
+      "radiusData": 21,
+      "tris": [
+        108,
+        118,
+        60,
+        50
+      ],
+      "verts": [
+        112,
+        63,
+        34,
+        29
+      ],
+      "exports": [
+        "Art/Export/Enemies/Slice/SM_Tank.fbx"
+      ],
+      "vat": "Art/Textures/VAT/SM_Tank_VAT.png",
+      "frames": 16,
+      "extent": [
+        0.032012686133384705,
+        9.999999747378752e-06,
+        0.05943572521209717
+      ],
+      "sheet": "Art/Renders/enemy_tank_sheet.png"
+    }
+  ],
+  "frames": 16,
+  "fps": 24
+}

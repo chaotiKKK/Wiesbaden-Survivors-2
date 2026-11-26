@@ -1,0 +1,28 @@
+{
+  "asset": "SM_Juggernaut",
+  "frames": 16,
+  "fps": 24,
+  "atlasWidth": 224,
+  "vertexCounts": [
+    224,
+    126,
+    68,
+    33
+  ],
+  "extent": [
+    0.049305304884910583,
+    9.999999747378752e-06,
+    0.08977913856506348
+  ],
+  "boundsMin": [
+    -0.049305304884910583,
+    0.0,
+    0.0
+  ],
+  "boundsMax": [
+    0.049305304884910583,
+    0.0,
+    0.08977913856506348
+  ],
+  "rowOrder": "bottom-up (frame 1 at the bottom row)"
+}

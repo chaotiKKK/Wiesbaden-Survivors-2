@@ -1,0 +1,45 @@
+id,name,r,price,stats,fl
+kaffee,Kurhaus-Kaffee,1,20,"{""speed"":6,""atkSpd"":4}",Wiesbadener Frühstücksdoping.
+turnschuh,Laufschuhe,1,18,"{""speed"":10}",Rennen ist auch eine Taktik.
+helm,Feuerwehrhelm,1,22,"{""armor"":2,""maxHp"":8}",Leonidas trägt ihn selbst beim Schlafen.
+verband,Erste-Hilfe-Set,1,20,"{""hpRegen"":1,""maxHp"":10}",Sylvias Grundausstattung.
+zielfernrohr,Zielfernrohr,1,24,"{""range"":12,""crit"":3}",Sehen heißt treffen.
+multitool,Multitool,1,22,"{""eng"":6}",Sebbo hat sieben davon.
+kleeblatt4,Vierblättriges Kleeblatt,1,20,"{""luck"":15}",Aus dem Kurpark. Angeblich.
+handschuh,Arbeitshandschuhe,1,19,"{""melee"":6,""armor"":1}",Griffig.
+magazin,Schnellmagazin,1,21,"{""atkSpd"":8}",Klick-klack.
+pfeffer,Pfefferspray,1,18,"{""ranged"":5,""dmgP"":3}","Polizeiausrüstung, geliehen."
+plektrum,Goldenes Plektrum,2,38,"{""atkSpd"":10,""dmgP"":6}",Jeder Riff ein Treffer.
+rheinstein,Rheinkiesel,2,34,"{""armor"":3,""knock"":15}","Vom Ufer, glatt geschliffen."
+sprungfeder,Sprungfeder,2,36,"{""speed"":12,""dodge"":5}",Boing.
+lupe,Uhrmacherlupe,2,40,"{""crit"":7,""critDmg"":20}",Schwachstellen sind überall.
+drohne,Wartungsdrohne,2,45,"{""eng"":12}",Summt beruhigend.
+thermo,Thermoschutz,2,36,"{""elem"":10,""armor"":1}",Hitze? Welche Hitze.
+sanikoffer,Sanitätskoffer,2,42,"{""maxHp"":25,""hpRegen"":2}",Therapie für den Körper.
+kompressor,Kompressor,2,40,"{""expSize"":25,""dmgP"":5}",Größer ist besser.
+stachel,Stachelpanzer,2,38,"{""armor"":4,""melee"":8}","Wer dich trifft, blutet mit."
+parfum,Nerobergluft,2,35,"{""harvest"":4,""luck"":12}",Materialmagnet.
+bounce,Gummibeschichtung,2,44,"{""bounce"":1,""dmgP"":4}",Projektile prallen einmal ab.
+pierce,Wolframkern,2,46,"{""pierce"":1,""ranged"":6}",Durch und durch.
+reaktor,Mini-Reaktor,3,72,"{""eng"":20,""elem"":12}",Technomagie in Reinform.
+adrenalin,Adrenalinpumpe,3,68,"{""atkSpd"":18,""speed"":8,""maxHp"":-10}",Der Körper zahlt später.
+brille,Analysebrille,3,70,"{""crit"":10,""critDmg"":35}",Sebbo hat sie kalibriert.
+exo,Exo-Skelett,3,78,"{""armor"":6,""maxHp"":30,""speed"":-6}","Schwer, aber sicher."
+vampir,Blutkonserve,3,74,"{""lifesteal"":18,""maxHp"":15}",Frisch aus der Klinik.
+quantum,Quantenkondensator,3,80,"{""dmgP"":18,""elem"":15}",Blitzt bläulich.
+phasenweste,Phasenweste,3,72,"{""dodge"":14,""speed"":6}",Manchmal einfach nicht da.
+goldkurhaus,Kurhaus-Goldbarren,3,76,"{""harvest"":8,""luck"":30,""xpGain"":10}","Reich ist, wer überlebt."
+sturmgewicht,Sturmgewicht,3,70,"{""melee"":20,""knock"":40}",Nahkampf-Fundament.
+serverfarm,Serverfarm,3,84,"{""eng"":25,""atkSpd"":8}","Sebbos Keller, komprimiert."
+halbgott,Halbgott-Fragment,4,130,"{""dmgP"":25,""crit"":10,""speed"":8,""maxHp"":20}",Ein Splitter von Sebbos wahrer Natur.
+herzensglut,Herzensglut,4,125,"{""lifesteal"":25,""hpRegen"":4,""elem"":20}","Sylvias Wärme, materialisiert."
+sirene,Ewige Sirene,4,128,"{""ranged"":30,""atkSpd"":15,""range"":15}",Man hört sie bis Mainz.
+bollwerkplatte,Bollwerkplatte,4,122,"{""armor"":10,""maxHp"":45,""speed"":-8}","Unbeweglich, unsterblich."
+supernova,Supernova-Kern,4,140,"{""dmgP"":35,""expSize"":40,""maxHp"":-25}",Alles brennt. Auch du.
+zeitschleife,Zeitschleife,4,135,"{""atkSpd"":25,""dodge"":10,""xpGain"":20}","Zwei Sekunden Vorsprung, immer."
+c_gier,Fluch der Gier,3,55,"{""harvest"":15,""luck"":40,""maxHp"":-30}",Materialien glänzen. Dein Blut auch.
+c_raserei,Fluch der Raserei,3,58,"{""atkSpd"":35,""speed"":15,""armor"":-6}",Schneller. Immer schneller.
+c_zorn,Fluch des Zorns,4,90,"{""dmgP"":60,""crit"":20,""maxHp"":-45,""dodge"":-10}","Der Zorn nimmt, was er gibt."
+c_stille,Fluch der Stille,3,60,"{""range"":40,""ranged"":25,""hpRegen"":-3}","Weit sehen, langsam sterben."
+c_eisen,Fluch des Eisens,3,62,"{""armor"":12,""maxHp"":40,""speed"":-25,""atkSpd"":-12}",Ein Denkmal deiner selbst.
+c_echo,Fluch des Echos,4,95,"{""elem"":40,""expSize"":50,""lifesteal"":-15,""armor"":-4}",Jede Explosion trifft auch dich.

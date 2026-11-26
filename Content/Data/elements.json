@@ -1,0 +1,37 @@
+[
+  {
+    "id": "fire",
+    "name": "Feuer",
+    "color": "#ff6a3d",
+    "icon": "F",
+    "kind": "DoT"
+  },
+  {
+    "id": "ice",
+    "name": "Eis",
+    "color": "#39e6ff",
+    "icon": "I",
+    "kind": "Kontrolle"
+  },
+  {
+    "id": "shock",
+    "name": "Blitz",
+    "color": "#ffe27a",
+    "icon": "S",
+    "kind": "Kette"
+  },
+  {
+    "id": "poison",
+    "name": "Gift",
+    "color": "#5dff9b",
+    "icon": "P",
+    "kind": "DoT"
+  },
+  {
+    "id": "boom",
+    "name": "Schock",
+    "color": "#ff8a3d",
+    "icon": "B",
+    "kind": "AoE"
+  }
+]

@@ -1,0 +1,846 @@
+{
+  "enemies": [
+    {
+      "id": "runner",
+      "asset": "SM_Runner",
+      "shape": "tri",
+      "color": "#ff5d6e",
+      "radiusData": 11,
+      "tris": [
+        64,
+        56,
+        28,
+        12
+      ],
+      "verts": [
+        56,
+        32,
+        18,
+        10
+      ],
+      "exports": [
+        "Art/Export/Enemies/Slice/SM_Runner.fbx"
+      ],
+      "vat": "Art/Textures/VAT/SM_Runner_VAT.png",
+      "frames": 16,
+      "extent": [
+        0.06869123876094818,
+        9.999999747378752e-06,
+        0.09974417090415955
+      ],
+      "sheet": "Art/Renders/enemy_runner_sheet.png"
+    },
+    {
+      "id": "swarm",
+      "asset": "SM_Swarm",
+      "shape": "dot",
+      "color": "#ff9a5c",
+      "radiusData": 8,
+      "tris": [
+        200,
+        192,
+        98,
+        42
+      ],
+      "verts": [
+        180,
+        100,
+        53,
+        25
+      ],
+      "exports": [
+        "Art/Export/Enemies/Slice/SM_Swarm.fbx"
+      ],
+      "vat": "Art/Textures/VAT/SM_Swarm_VAT.png",
+      "frames": 16,
+      "extent": [
+        0.08463999629020691,
+        9.999999747378752e-06,
+        0.11072830855846405
+      ],
+      "sheet": "Art/Renders/enemy_swarm_sheet.png"
+    },
+    {
+      "id": "walker",
+      "asset": "SM_Walker",
+      "shape": "box",
+      "color": "#c96be0",
+      "radiusData": 14,
+      "tris": [
+        108,
+        118,
+        60,
+        24
+      ],
+      "verts": [
+        112,
+        63,
+        34,
+        16
+      ],
+      "exports": [
+        "Art/Export/Enemies/Slice/SM_Walker.fbx"
+      ],
+      "vat": "Art/Textures/VAT/SM_Walker_VAT.png",
+      "frames": 16,
+      "extent": [
+        0.034638434648513794,
+        9.999999747378752e-06,
+        0.0716361403465271
+      ],
+      "sheet": "Art/Renders/enemy_walker_sheet.png"
+    },
+    {
+      "id": "flyer",
+      "asset": "SM_Flyer",
+      "shape": "diamond",
+      "color": "#59e6ff",
+      "radiusData": 10,
+      "tris": [
+        58,
+        50,
+        24,
+        10
+      ],
+      "verts": [
+        52,
+        31,
+        18,
+        11
+      ],
+      "exports": [
+        "Art/Export/Enemies/Slice/SM_Flyer.fbx"
+      ],
+      "vat": "Art/Textures/VAT/SM_Flyer_VAT.png",
+      "frames": 16,
+      "extent": [
+        0.052647557109594345,
+        9.999999747378752e-06,
+        0.07765811681747437
+      ],
+      "sheet": "Art/Renders/enemy_flyer_sheet.png"
+    },
+    {
+      "id": "shooter",
+      "asset": "SM_Shooter",
+      "shape": "tri",
+      "color": "#7dffb0",
+      "radiusData": 12,
+      "tris": [
+        64,
+        56,
+        28,
+        12
+      ],
+      "verts": [
+        56,
+        32,
+        18,
+        10
+      ],
+      "exports": [
+        "Art/Export/Enemies/Slice/SM_Shooter.fbx"
+      ],
+      "vat": "Art/Textures/VAT/SM_Shooter_VAT.png",
+      "frames": 16,
+      "extent": [
+        0.04387296736240387,
+        9.999999747378752e-06,
+        0.0639975517988205
+      ],
+      "sheet": "Art/Renders/enemy_shooter_sheet.png"
+    },
+    {
+      "id": "spitter",
+      "asset": "SM_Spitter",
+      "shape": "box",
+      "color": "#b8d98a",
+      "radiusData": 13,
+      "tris": [
+        108,
+        118,
+        60,
+        24
+      ],
+      "verts": [
+        112,
+        63,
+        34,
+        16
+      ],
+      "exports": [
+        "Art/Export/Enemies/Slice/SM_Spitter.fbx"
+      ],
+      "vat": "Art/Textures/VAT/SM_Spitter_VAT.png",
+      "frames": 16,
+      "extent": [
+        0.034638434648513794,
+        9.999999747378752e-06,
+        0.0716361403465271
+      ],
+      "sheet": "Art/Renders/enemy_spitter_sheet.png"
+    },
+    {
+      "id": "exploder",
+      "asset": "SM_Exploder",
+      "shape": "dot",
+      "color": "#ff2e88",
+      "radiusData": 13,
+      "tris": [
+        200,
+        192,
+        98,
+        42
+      ],
+      "verts": [
+        180,
+        100,
+        53,
+        25
+      ],
+      "exports": [
+        "Art/Export/Enemies/Slice/SM_Exploder.fbx"
+      ],
+      "vat": "Art/Textures/VAT/SM_Exploder_VAT.png",
+      "frames": 16,
+      "extent": [
+        0.04237012937664986,
+        9.999999747378752e-06,
+        0.07670003175735474
+      ],
+      "sheet": "Art/Renders/enemy_exploder_sheet.png"
+    },
+    {
+      "id": "charger",
+      "asset": "SM_Charger",
+      "shape": "tri",
+      "color": "#ffb24a",
+      "radiusData": 16,
+      "tris": [
+        64,
+        56,
+        28,
+        12
+      ],
+      "verts": [
+        56,
+        32,
+        18,
+        10
+      ],
+      "exports": [
+        "Art/Export/Enemies/Slice/SM_Charger.fbx"
+      ],
+      "vat": "Art/Textures/VAT/SM_Charger_VAT.png",
+      "frames": 16,
+      "extent": [
+        0.04387296736240387,
+        9.999999747378752e-06,
+        0.0639975517988205
+      ],
+      "sheet": "Art/Renders/enemy_charger_sheet.png"
+    },
+    {
+      "id": "tank",
+      "asset": "SM_Tank",
+      "shape": "box",
+      "color": "#9fb4d8",
+      "radiusData": 21,
+      "tris": [
+        108,
+        118,
+        60,
+        50
+      ],
+      "verts": [
+        112,
+        63,
+        34,
+        29
+      ],
+      "exports": [
+        "Art/Export/Enemies/Slice/SM_Tank.fbx"
+      ],
+      "vat": "Art/Textures/VAT/SM_Tank_VAT.png",
+      "frames": 16,
+      "extent": [
+        0.032012686133384705,
+        9.999999747378752e-06,
+        0.05943572521209717
+      ],
+      "sheet": "Art/Renders/enemy_tank_sheet.png"
+    },
+    {
+      "id": "healer",
+      "asset": "SM_Healer",
+      "shape": "cross",
+      "color": "#8affb0",
+      "radiusData": 13,
+      "tris": [
+        300,
+        320,
+        162,
+        70
+      ],
+      "verts": [
+        298,
+        166,
+        87,
+        41
+      ],
+      "exports": [
+        "Art/Export/Enemies/Slice/SM_Healer.fbx"
+      ],
+      "vat": "Art/Textures/VAT/SM_Healer_VAT.png",
+      "frames": 16,
+      "extent": [
+        0.032817158848047256,
+        9.999999747378752e-06,
+        0.07117047905921936
+      ],
+      "sheet": "Art/Renders/enemy_healer_sheet.png"
+    },
+    {
+      "id": "shielder",
+      "asset": "SM_Shielder",
+      "shape": "hex",
+      "color": "#c7a6ff",
+      "radiusData": 17,
+      "tris": [
+        160,
+        180,
+        90,
+        38
+      ],
+      "verts": [
+        168,
+        94,
+        49,
+        23
+      ],
+      "exports": [
+        "Art/Export/Enemies/Slice/SM_Shielder.fbx"
+      ],
+      "vat": "Art/Textures/VAT/SM_Shielder_VAT.png",
+      "frames": 16,
+      "extent": [
+        0.038779083639383316,
+        9.999999747378752e-06,
+        0.07651162147521973
+      ],
+      "sheet": "Art/Renders/enemy_shielder_sheet.png"
+    },
+    {
+      "id": "summoner",
+      "asset": "SM_Summoner",
+      "shape": "hex",
+      "color": "#a06bff",
+      "radiusData": 16,
+      "tris": [
+        160,
+        180,
+        90,
+        38
+      ],
+      "verts": [
+        168,
+        94,
+        49,
+        23
+      ],
+      "exports": [
+        "Art/Export/Enemies/Slice/SM_Summoner.fbx"
+      ],
+      "vat": "Art/Textures/VAT/SM_Summoner_VAT.png",
+      "frames": 16,
+      "extent": [
+        0.038779083639383316,
+        9.999999747378752e-06,
+        0.07651162147521973
+      ],
+      "sheet": "Art/Renders/enemy_summoner_sheet.png"
+    },
+    {
+      "id": "elite",
+      "asset": "SM_Elite",
+      "shape": "star",
+      "color": "#ffe27a",
+      "radiusData": 19,
+      "tris": [
+        484,
+        536,
+        272,
+        116
+      ],
+      "verts": [
+        504,
+        284,
+        152,
+        74
+      ],
+      "exports": [
+        "Art/Export/Enemies/Slice/SM_Elite.fbx"
+      ],
+      "vat": "Art/Textures/VAT/SM_Elite_VAT.png",
+      "frames": 16,
+      "extent": [
+        0.040556401014328,
+        9.999999747378752e-06,
+        0.07925339043140411
+      ],
+      "sheet": "Art/Renders/enemy_elite_sheet.png"
+    },
+    {
+      "id": "ghost",
+      "asset": "SM_Ghost",
+      "shape": "diamond",
+      "color": "#dbe6ff",
+      "radiusData": 13,
+      "tris": [
+        58,
+        50,
+        24,
+        10
+      ],
+      "verts": [
+        52,
+        31,
+        18,
+        11
+      ],
+      "exports": [
+        "Art/Export/Enemies/Slice/SM_Ghost.fbx"
+      ],
+      "vat": "Art/Textures/VAT/SM_Ghost_VAT.png",
+      "frames": 16,
+      "extent": [
+        0.052647557109594345,
+        9.999999747378752e-06,
+        0.07765811681747437
+      ],
+      "sheet": "Art/Renders/enemy_ghost_sheet.png"
+    },
+    {
+      "id": "spliter",
+      "asset": "SM_Spliter",
+      "shape": "hex",
+      "color": "#7df2ff",
+      "radiusData": 13,
+      "tris": [
+        160,
+        180,
+        90,
+        38
+      ],
+      "verts": [
+        168,
+        94,
+        49,
+        23
+      ],
+      "exports": [
+        "Art/Export/Enemies/Slice/SM_Spliter.fbx"
+      ],
+      "vat": "Art/Textures/VAT/SM_Spliter_VAT.png",
+      "frames": 16,
+      "extent": [
+        0.038779083639383316,
+        9.999999747378752e-06,
+        0.07651162147521973
+      ],
+      "sheet": "Art/Renders/enemy_spliter_sheet.png"
+    },
+    {
+      "id": "shardling",
+      "asset": "SM_Shardling",
+      "shape": "dot",
+      "color": "#9fe4ff",
+      "radiusData": 9,
+      "tris": [
+        200,
+        192,
+        98,
+        42
+      ],
+      "verts": [
+        180,
+        100,
+        53,
+        25
+      ],
+      "exports": [
+        "Art/Export/Enemies/Slice/SM_Shardling.fbx"
+      ],
+      "vat": "Art/Textures/VAT/SM_Shardling_VAT.png",
+      "frames": 16,
+      "extent": [
+        0.04237012937664986,
+        9.999999747378752e-06,
+        0.07670003175735474
+      ],
+      "sheet": "Art/Renders/enemy_shardling_sheet.png"
+    },
+    {
+      "id": "shielded",
+      "asset": "SM_Shielded",
+      "shape": "hex",
+      "color": "#9fb4d8",
+      "radiusData": 17,
+      "tris": [
+        160,
+        180,
+        90,
+        38
+      ],
+      "verts": [
+        168,
+        94,
+        49,
+        23
+      ],
+      "exports": [
+        "Art/Export/Enemies/Slice/SM_Shielded.fbx"
+      ],
+      "vat": "Art/Textures/VAT/SM_Shielded_VAT.png",
+      "frames": 16,
+      "extent": [
+        0.038779083639383316,
+        9.999999747378752e-06,
+        0.07651162147521973
+      ],
+      "sheet": "Art/Renders/enemy_shielded_sheet.png"
+    },
+    {
+      "id": "blinker",
+      "asset": "SM_Blinker",
+      "shape": "diamond",
+      "color": "#c7a6ff",
+      "radiusData": 12,
+      "tris": [
+        58,
+        50,
+        24,
+        10
+      ],
+      "verts": [
+        52,
+        31,
+        18,
+        11
+      ],
+      "exports": [
+        "Art/Export/Enemies/Slice/SM_Blinker.fbx"
+      ],
+      "vat": "Art/Textures/VAT/SM_Blinker_VAT.png",
+      "frames": 16,
+      "extent": [
+        0.052647557109594345,
+        9.999999747378752e-06,
+        0.07765811681747437
+      ],
+      "sheet": "Art/Renders/enemy_blinker_sheet.png"
+    },
+    {
+      "id": "vampire",
+      "asset": "SM_Vampire",
+      "shape": "tri",
+      "color": "#ff2e88",
+      "radiusData": 14,
+      "tris": [
+        64,
+        56,
+        28,
+        12
+      ],
+      "verts": [
+        56,
+        32,
+        18,
+        10
+      ],
+      "exports": [
+        "Art/Export/Enemies/Slice/SM_Vampire.fbx"
+      ],
+      "vat": "Art/Textures/VAT/SM_Vampire_VAT.png",
+      "frames": 16,
+      "extent": [
+        0.04387296736240387,
+        9.999999747378752e-06,
+        0.0639975517988205
+      ],
+      "sheet": "Art/Renders/enemy_vampire_sheet.png"
+    },
+    {
+      "id": "spinner",
+      "asset": "SM_Spinner",
+      "shape": "gear",
+      "color": "#ffb0e0",
+      "radiusData": 13,
+      "tris": [
+        588,
+        660,
+        336,
+        144
+      ],
+      "verts": [
+        616,
+        346,
+        184,
+        88
+      ],
+      "exports": [
+        "Art/Export/Enemies/Slice/SM_Spinner.fbx"
+      ],
+      "vat": "Art/Textures/VAT/SM_Spinner_VAT.png",
+      "frames": 16,
+      "extent": [
+        0.038514286279678345,
+        9.999999747378752e-06,
+        0.07845667004585266
+      ],
+      "sheet": "Art/Renders/enemy_spinner_sheet.png"
+    },
+    {
+      "id": "mortar",
+      "asset": "SM_Mortar",
+      "shape": "turret",
+      "color": "#c0a06b",
+      "radiusData": 16,
+      "tris": [
+        264,
+        290,
+        146,
+        62
+      ],
+      "verts": [
+        270,
+        151,
+        79,
+        37
+      ],
+      "exports": [
+        "Art/Export/Enemies/Slice/SM_Mortar.fbx"
+      ],
+      "vat": "Art/Textures/VAT/SM_Mortar_VAT.png",
+      "frames": 16,
+      "extent": [
+        0.037694863975048065,
+        9.999999747378752e-06,
+        0.07269300520420074
+      ],
+      "sheet": "Art/Renders/enemy_mortar_sheet.png"
+    },
+    {
+      "id": "weaver",
+      "asset": "SM_Weaver",
+      "shape": "spider",
+      "color": "#dcd0ff",
+      "radiusData": 12,
+      "tris": [
+        192,
+        202,
+        102,
+        44
+      ],
+      "verts": [
+        200,
+        117,
+        67,
+        38
+      ],
+      "exports": [
+        "Art/Export/Enemies/Slice/SM_Weaver.fbx"
+      ],
+      "vat": "Art/Textures/VAT/SM_Weaver_VAT.png",
+      "frames": 16,
+      "extent": [
+        0.03484309837222099,
+        9.999999747378752e-06,
+        0.08423016965389252
+      ],
+      "sheet": "Art/Renders/enemy_weaver_sheet.png"
+    },
+    {
+      "id": "sentinel",
+      "asset": "SM_Sentinel",
+      "shape": "eye",
+      "color": "#ff7a5c",
+      "radiusData": 17,
+      "tris": [
+        240,
+        234,
+        118,
+        50
+      ],
+      "verts": [
+        218,
+        121,
+        63,
+        29
+      ],
+      "exports": [
+        "Art/Export/Enemies/Slice/SM_Sentinel.fbx"
+      ],
+      "vat": "Art/Textures/VAT/SM_Sentinel_VAT.png",
+      "frames": 16,
+      "extent": [
+        0.04485625773668289,
+        9.999999747378752e-06,
+        0.07772877812385559
+      ],
+      "sheet": "Art/Renders/enemy_sentinel_sheet.png"
+    },
+    {
+      "id": "leech",
+      "asset": "SM_Leech",
+      "shape": "worm",
+      "color": "#a8324e",
+      "radiusData": 11,
+      "tris": [
+        368,
+        352,
+        178,
+        76
+      ],
+      "verts": [
+        330,
+        186,
+        99,
+        48
+      ],
+      "exports": [
+        "Art/Export/Enemies/Slice/SM_Leech.fbx"
+      ],
+      "vat": "Art/Textures/VAT/SM_Leech_VAT.png",
+      "frames": 16,
+      "extent": [
+        0.0355425700545311,
+        9.999999747378752e-06,
+        0.06924259662628174
+      ],
+      "sheet": "Art/Renders/enemy_leech_sheet.png"
+    },
+    {
+      "id": "bomber",
+      "asset": "SM_Bomber",
+      "shape": "wing",
+      "color": "#ffd24a",
+      "radiusData": 12,
+      "tris": [
+        156,
+        148,
+        76,
+        32
+      ],
+      "verts": [
+        144,
+        82,
+        46,
+        24
+      ],
+      "exports": [
+        "Art/Export/Enemies/Slice/SM_Bomber.fbx"
+      ],
+      "vat": "Art/Textures/VAT/SM_Bomber_VAT.png",
+      "frames": 16,
+      "extent": [
+        0.03944701328873634,
+        9.999999747378752e-06,
+        0.08622759580612183
+      ],
+      "sheet": "Art/Renders/enemy_bomber_sheet.png"
+    },
+    {
+      "id": "mirror",
+      "asset": "SM_Mirror",
+      "shape": "prism",
+      "color": "#bfe8ff",
+      "radiusData": 14,
+      "tris": [
+        82,
+        88,
+        44,
+        18
+      ],
+      "verts": [
+        84,
+        48,
+        26,
+        13
+      ],
+      "exports": [
+        "Art/Export/Enemies/Slice/SM_Mirror.fbx"
+      ],
+      "vat": "Art/Textures/VAT/SM_Mirror_VAT.png",
+      "frames": 16,
+      "extent": [
+        0.038724515587091446,
+        9.999999747378752e-06,
+        0.07623639702796936
+      ],
+      "sheet": "Art/Renders/enemy_mirror_sheet.png"
+    },
+    {
+      "id": "juggernaut",
+      "asset": "SM_Juggernaut",
+      "shape": "brick",
+      "color": "#7f8ba3",
+      "radiusData": 23,
+      "tris": [
+        216,
+        236,
+        120,
+        50
+      ],
+      "verts": [
+        224,
+        126,
+        68,
+        33
+      ],
+      "exports": [
+        "Art/Export/Enemies/Slice/SM_Juggernaut.fbx"
+      ],
+      "vat": "Art/Textures/VAT/SM_Juggernaut_VAT.png",
+      "frames": 16,
+      "extent": [
+        0.049305304884910583,
+        9.999999747378752e-06,
+        0.08977913856506348
+      ],
+      "sheet": "Art/Renders/enemy_juggernaut_sheet.png"
+    },
+    {
+      "id": "siren",
+      "asset": "SM_Siren",
+      "shape": "wave",
+      "color": "#ff5ce0",
+      "radiusData": 15,
+      "tris": [
+        624,
+        676,
+        344,
+        146
+      ],
+      "verts": [
+        618,
+        340,
+        174,
+        75
+      ],
+      "exports": [
+        "Art/Export/Enemies/Slice/SM_Siren.fbx"
+      ],
+      "vat": "Art/Textures/VAT/SM_Siren_VAT.png",
+      "frames": 16,
+      "extent": [
+        0.0430106446146965,
+        9.999999747378752e-06,
+        0.07807648181915283
+      ],
+      "sheet": "Art/Renders/enemy_siren_sheet.png"
+    }
+  ],
+  "frames": 16,
+  "fps": 24
+}

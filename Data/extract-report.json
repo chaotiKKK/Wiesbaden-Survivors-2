@@ -1,0 +1,26 @@
+{
+  "source": "F:/wiesbaden-survivors-apk/www/index.html",
+  "expected": {
+    "weapons": 40,
+    "items": 44,
+    "enemies": 28,
+    "bosses": 8,
+    "arenas": 7,
+    "characters": 16,
+    "stats": 24,
+    "elements": 5
+  },
+  "actual": {
+    "weapons": 40,
+    "items": 44,
+    "enemies": 28,
+    "bosses": 8,
+    "arenas": 7,
+    "characters": 16,
+    "stats": 24,
+    "elements": 5,
+    "weaponTiers": 160
+  },
+  "mismatches": [],
+  "extractedAt": "2026-11-26T11:53:22.072Z"
+}

@@ -1,0 +1,6 @@
+id,name,color,icon,kind
+fire,Feuer,#ff6a3d,F,DoT
+ice,Eis,#39e6ff,I,Kontrolle
+shock,Blitz,#ffe27a,S,Kette
+poison,Gift,#5dff9b,P,DoT
+boom,Schock,#ff8a3d,B,AoE

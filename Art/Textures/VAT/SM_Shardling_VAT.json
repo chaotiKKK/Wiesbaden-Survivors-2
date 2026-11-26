@@ -1,0 +1,28 @@
+{
+  "asset": "SM_Shardling",
+  "frames": 16,
+  "fps": 24,
+  "atlasWidth": 180,
+  "vertexCounts": [
+    180,
+    100,
+    53,
+    25
+  ],
+  "extent": [
+    0.04237012937664986,
+    9.999999747378752e-06,
+    0.07670003175735474
+  ],
+  "boundsMin": [
+    -0.04183874651789665,
+    0.0,
+    0.0
+  ],
+  "boundsMax": [
+    0.04237012937664986,
+    0.0,
+    0.07670003175735474
+  ],
+  "rowOrder": "bottom-up (frame 1 at the bottom row)"
+}

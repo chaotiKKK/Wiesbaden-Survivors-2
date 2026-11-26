@@ -1,0 +1,3040 @@
+[
+  {
+    "id": "pistol",
+    "name": "Dienstpistole",
+    "classes": [
+      "gun",
+      "precise"
+    ],
+    "type": "projectile",
+    "color": "#ffe08a",
+    "scaling": {
+      "ranged": 0.6
+    },
+    "unlockDefault": true,
+    "unlock": null,
+    "special": "Zuverlässig, günstig, trifft immer den nächsten Feind.",
+    "tiers": [
+      {
+        "tier": 0,
+        "damage": 8,
+        "cooldown": 0.65,
+        "speed": 420,
+        "crit": 0.06,
+        "critDmg": 1.6,
+        "price": 10,
+        "element": "",
+        "extras": {}
+      },
+      {
+        "tier": 1,
+        "damage": 13,
+        "cooldown": 0.6,
+        "speed": 450,
+        "crit": 0.07,
+        "critDmg": 1.6,
+        "price": 22,
+        "element": "",
+        "extras": {}
+      },
+      {
+        "tier": 2,
+        "damage": 21,
+        "cooldown": 0.55,
+        "speed": 490,
+        "crit": 0.08,
+        "critDmg": 1.8,
+        "price": 46,
+        "element": "",
+        "extras": {}
+      },
+      {
+        "tier": 3,
+        "damage": 34,
+        "cooldown": 0.5,
+        "speed": 560,
+        "crit": 0.1,
+        "critDmg": 2,
+        "price": 92,
+        "element": "",
+        "extras": {}
+      }
+    ]
+  },
+  {
+    "id": "smg",
+    "name": "MP Rheingau",
+    "classes": [
+      "gun"
+    ],
+    "type": "projectile",
+    "color": "#9ad2ff",
+    "scaling": {
+      "ranged": 0.5
+    },
+    "unlockDefault": true,
+    "unlock": null,
+    "special": "Sehr hohe Feuerrate, geringe Einzelschadenswerte.",
+    "tiers": [
+      {
+        "tier": 0,
+        "damage": 4,
+        "cooldown": 0.18,
+        "speed": 340,
+        "crit": 0.05,
+        "critDmg": 1.5,
+        "price": 14,
+        "element": "",
+        "extras": {}
+      },
+      {
+        "tier": 1,
+        "damage": 7,
+        "cooldown": 0.17,
+        "speed": 360,
+        "crit": 0.06,
+        "critDmg": 1.5,
+        "price": 28,
+        "element": "",
+        "extras": {}
+      },
+      {
+        "tier": 2,
+        "damage": 11,
+        "cooldown": 0.16,
+        "speed": 390,
+        "crit": 0.07,
+        "critDmg": 1.7,
+        "price": 58,
+        "element": "",
+        "extras": {}
+      },
+      {
+        "tier": 3,
+        "damage": 18,
+        "cooldown": 0.15,
+        "speed": 450,
+        "crit": 0.08,
+        "critDmg": 2,
+        "price": 118,
+        "element": "",
+        "extras": {}
+      }
+    ]
+  },
+  {
+    "id": "shotgun",
+    "name": "Schrotflinte",
+    "classes": [
+      "gun",
+      "heavy"
+    ],
+    "type": "projectile",
+    "color": "#ffb27a",
+    "scaling": {
+      "ranged": 0.55
+    },
+    "unlockDefault": true,
+    "unlock": null,
+    "special": "Streuschuss: mehrere Projektile pro Schuss, tödlich auf kurze Distanz.",
+    "tiers": [
+      {
+        "tier": 0,
+        "damage": 5,
+        "cooldown": 1.05,
+        "speed": 260,
+        "crit": 0.05,
+        "critDmg": 1.5,
+        "price": 16,
+        "element": "",
+        "extras": {
+          "pellets": 4,
+          "spread": 0.45
+        }
+      },
+      {
+        "tier": 1,
+        "damage": 8,
+        "cooldown": 1,
+        "speed": 280,
+        "crit": 0.06,
+        "critDmg": 1.5,
+        "price": 32,
+        "element": "",
+        "extras": {
+          "pellets": 5,
+          "spread": 0.45
+        }
+      },
+      {
+        "tier": 2,
+        "damage": 13,
+        "cooldown": 0.95,
+        "speed": 310,
+        "crit": 0.07,
+        "critDmg": 1.75,
+        "price": 66,
+        "element": "",
+        "extras": {
+          "pellets": 6,
+          "spread": 0.42
+        }
+      },
+      {
+        "tier": 3,
+        "damage": 21,
+        "cooldown": 0.9,
+        "speed": 360,
+        "crit": 0.08,
+        "critDmg": 2,
+        "price": 134,
+        "element": "",
+        "extras": {
+          "pellets": 8,
+          "spread": 0.4
+        }
+      }
+    ]
+  },
+  {
+    "id": "chaingun",
+    "name": "Kettenkanone",
+    "classes": [
+      "gun",
+      "heavy"
+    ],
+    "type": "projectile",
+    "color": "#ff8a5c",
+    "scaling": {
+      "ranged": 0.55
+    },
+    "unlockDefault": false,
+    "unlock": {
+      "key": "kills",
+      "need": 400,
+      "text": "Töte insgesamt 400 Gegner"
+    },
+    "special": "Nerf-Protokoll 1984: Dauerfeuer mit reduziertem Krit-Multiplikator.",
+    "tiers": [
+      {
+        "tier": 0,
+        "damage": 2,
+        "cooldown": 0.11,
+        "speed": 320,
+        "crit": 0.04,
+        "critDmg": 1.5,
+        "price": 20,
+        "element": "",
+        "extras": {}
+      },
+      {
+        "tier": 1,
+        "damage": 4,
+        "cooldown": 0.1,
+        "speed": 340,
+        "crit": 0.05,
+        "critDmg": 1.5,
+        "price": 40,
+        "element": "",
+        "extras": {}
+      },
+      {
+        "tier": 2,
+        "damage": 7,
+        "cooldown": 0.09,
+        "speed": 370,
+        "crit": 0.06,
+        "critDmg": 1.5,
+        "price": 82,
+        "element": "",
+        "extras": {}
+      },
+      {
+        "tier": 3,
+        "damage": 12,
+        "cooldown": 0.08,
+        "speed": 420,
+        "crit": 0.07,
+        "critDmg": 1.5,
+        "price": 166,
+        "element": "",
+        "extras": {}
+      }
+    ]
+  },
+  {
+    "id": "sniper",
+    "name": "Scharfschützengewehr",
+    "classes": [
+      "gun",
+      "precise"
+    ],
+    "type": "projectile",
+    "color": "#7dffb0",
+    "scaling": {
+      "ranged": 0.85
+    },
+    "unlockDefault": false,
+    "unlock": {
+      "key": "longKill",
+      "need": 1,
+      "text": "Töte einen Gegner aus über 600 px Entfernung"
+    },
+    "special": "Durchschlägt mehrere Gegner, extreme Reichweite und Krit-Werte.",
+    "tiers": [
+      {
+        "tier": 0,
+        "damage": 22,
+        "cooldown": 1,
+        "speed": 700,
+        "crit": 0.18,
+        "critDmg": 2,
+        "price": 30,
+        "element": "",
+        "extras": {
+          "pierce": 2
+        }
+      },
+      {
+        "tier": 1,
+        "damage": 36,
+        "cooldown": 0.95,
+        "speed": 760,
+        "crit": 0.2,
+        "critDmg": 2.2,
+        "price": 60,
+        "element": "",
+        "extras": {
+          "pierce": 3
+        }
+      },
+      {
+        "tier": 2,
+        "damage": 58,
+        "cooldown": 0.9,
+        "speed": 820,
+        "crit": 0.22,
+        "critDmg": 2.4,
+        "price": 122,
+        "element": "",
+        "extras": {
+          "pierce": 4
+        }
+      },
+      {
+        "tier": 3,
+        "damage": 92,
+        "cooldown": 0.85,
+        "speed": 900,
+        "crit": 0.25,
+        "critDmg": 2.8,
+        "price": 246,
+        "element": "",
+        "extras": {
+          "pierce": 6
+        }
+      }
+    ]
+  },
+  {
+    "id": "medgun",
+    "name": "Medi-Blaster",
+    "classes": [
+      "gun",
+      "medical",
+      "support"
+    ],
+    "type": "projectile",
+    "color": "#8affb0",
+    "scaling": {
+      "ranged": 0.45,
+      "hpRegen": 0.8
+    },
+    "unlockDefault": true,
+    "unlock": null,
+    "special": "Buff-Protokoll: 65% Lebensraub — heilt auch den Koop-Partner in Reichweite.",
+    "tiers": [
+      {
+        "tier": 0,
+        "damage": 6,
+        "cooldown": 0.45,
+        "speed": 380,
+        "crit": 0.05,
+        "critDmg": 1.5,
+        "price": 18,
+        "element": "",
+        "extras": {
+          "lifesteal": 0.65
+        }
+      },
+      {
+        "tier": 1,
+        "damage": 10,
+        "cooldown": 0.42,
+        "speed": 410,
+        "crit": 0.06,
+        "critDmg": 1.5,
+        "price": 36,
+        "element": "",
+        "extras": {
+          "lifesteal": 0.65
+        }
+      },
+      {
+        "tier": 2,
+        "damage": 16,
+        "cooldown": 0.39,
+        "speed": 450,
+        "crit": 0.07,
+        "critDmg": 1.75,
+        "price": 74,
+        "element": "",
+        "extras": {
+          "lifesteal": 0.7
+        }
+      },
+      {
+        "tier": 3,
+        "damage": 26,
+        "cooldown": 0.36,
+        "speed": 520,
+        "crit": 0.08,
+        "critDmg": 2,
+        "price": 150,
+        "element": "",
+        "extras": {
+          "lifesteal": 0.75
+        }
+      }
+    ]
+  },
+  {
+    "id": "shredder",
+    "name": "Schredder",
+    "classes": [
+      "gun",
+      "explosive"
+    ],
+    "type": "projectile",
+    "color": "#ff9a9a",
+    "scaling": {
+      "ranged": 0.5
+    },
+    "unlockDefault": false,
+    "unlock": {
+      "key": "boomKills",
+      "need": 150,
+      "text": "Töte 150 Gegner mit Explosionen"
+    },
+    "special": "Abprallende Splittergranaten mit vergrößertem Explosionsradius.",
+    "tiers": [
+      {
+        "tier": 0,
+        "damage": 7,
+        "cooldown": 0.55,
+        "speed": 330,
+        "crit": 0.05,
+        "critDmg": 1.5,
+        "price": 24,
+        "element": "boom",
+        "extras": {
+          "boom": 44,
+          "bounce": 1
+        }
+      },
+      {
+        "tier": 1,
+        "damage": 12,
+        "cooldown": 0.52,
+        "speed": 355,
+        "crit": 0.06,
+        "critDmg": 1.5,
+        "price": 48,
+        "element": "boom",
+        "extras": {
+          "boom": 55,
+          "bounce": 1
+        }
+      },
+      {
+        "tier": 2,
+        "damage": 19,
+        "cooldown": 0.49,
+        "speed": 390,
+        "crit": 0.07,
+        "critDmg": 1.75,
+        "price": 98,
+        "element": "boom",
+        "extras": {
+          "boom": 66,
+          "bounce": 2
+        }
+      },
+      {
+        "tier": 3,
+        "damage": 31,
+        "cooldown": 0.46,
+        "speed": 450,
+        "crit": 0.08,
+        "critDmg": 2,
+        "price": 198,
+        "element": "boom",
+        "extras": {
+          "boom": 88,
+          "bounce": 3
+        }
+      }
+    ]
+  },
+  {
+    "id": "knife",
+    "name": "Taschenmesser",
+    "classes": [
+      "blade",
+      "precise"
+    ],
+    "type": "melee",
+    "color": "#e0f0ff",
+    "scaling": {
+      "melee": 0.8
+    },
+    "unlockDefault": true,
+    "unlock": null,
+    "special": "Schnelle Stiche mit hoher Kritchance. Trifft mehrere Gegner im Bogen.",
+    "tiers": [
+      {
+        "tier": 0,
+        "damage": 10,
+        "cooldown": 0.5,
+        "speed": 90,
+        "crit": 0.2,
+        "critDmg": 2,
+        "price": 12,
+        "element": "",
+        "extras": {
+          "arc": 1
+        }
+      },
+      {
+        "tier": 1,
+        "damage": 16,
+        "cooldown": 0.47,
+        "speed": 100,
+        "crit": 0.22,
+        "critDmg": 2.2,
+        "price": 24,
+        "element": "",
+        "extras": {
+          "arc": 1
+        }
+      },
+      {
+        "tier": 2,
+        "damage": 26,
+        "cooldown": 0.44,
+        "speed": 110,
+        "crit": 0.24,
+        "critDmg": 2.4,
+        "price": 50,
+        "element": "",
+        "extras": {
+          "arc": 1.1
+        }
+      },
+      {
+        "tier": 3,
+        "damage": 42,
+        "cooldown": 0.4,
+        "speed": 125,
+        "crit": 0.28,
+        "critDmg": 2.8,
+        "price": 100,
+        "element": "",
+        "extras": {
+          "arc": 1.2
+        }
+      }
+    ]
+  },
+  {
+    "id": "spear",
+    "name": "Speer",
+    "classes": [
+      "blade",
+      "primitive"
+    ],
+    "type": "melee",
+    "color": "#b8d98a",
+    "scaling": {
+      "melee": 0.9
+    },
+    "unlockDefault": true,
+    "unlock": null,
+    "special": "Langer Stoß, durchbohrt eine ganze Reihe Gegner.",
+    "tiers": [
+      {
+        "tier": 0,
+        "damage": 14,
+        "cooldown": 0.8,
+        "speed": 150,
+        "crit": 0.08,
+        "critDmg": 1.6,
+        "price": 16,
+        "element": "",
+        "extras": {
+          "arc": 0.45,
+          "pierce": 99
+        }
+      },
+      {
+        "tier": 1,
+        "damage": 23,
+        "cooldown": 0.76,
+        "speed": 165,
+        "crit": 0.09,
+        "critDmg": 1.6,
+        "price": 32,
+        "element": "",
+        "extras": {
+          "arc": 0.45,
+          "pierce": 99
+        }
+      },
+      {
+        "tier": 2,
+        "damage": 37,
+        "cooldown": 0.72,
+        "speed": 180,
+        "crit": 0.1,
+        "critDmg": 1.8,
+        "price": 66,
+        "element": "",
+        "extras": {
+          "arc": 0.5,
+          "pierce": 99
+        }
+      },
+      {
+        "tier": 3,
+        "damage": 60,
+        "cooldown": 0.68,
+        "speed": 210,
+        "crit": 0.12,
+        "critDmg": 2,
+        "price": 132,
+        "element": "",
+        "extras": {
+          "arc": 0.55,
+          "pierce": 99
+        }
+      }
+    ]
+  },
+  {
+    "id": "hammer",
+    "name": "Vorschlaghammer",
+    "classes": [
+      "blunt",
+      "medieval"
+    ],
+    "type": "melee",
+    "color": "#ffcf9a",
+    "scaling": {
+      "melee": 1
+    },
+    "unlockDefault": true,
+    "unlock": null,
+    "special": "Massiver Rundumschlag: hoher Schaden, Betäubung und Rückstoß.",
+    "tiers": [
+      {
+        "tier": 0,
+        "damage": 26,
+        "cooldown": 1.35,
+        "speed": 120,
+        "crit": 0.05,
+        "critDmg": 1.6,
+        "price": 22,
+        "element": "",
+        "extras": {
+          "arc": 1.6,
+          "stun": 0.8,
+          "knock": 260
+        }
+      },
+      {
+        "tier": 1,
+        "damage": 43,
+        "cooldown": 1.3,
+        "speed": 132,
+        "crit": 0.06,
+        "critDmg": 1.6,
+        "price": 44,
+        "element": "",
+        "extras": {
+          "arc": 1.7,
+          "stun": 0.9,
+          "knock": 300
+        }
+      },
+      {
+        "tier": 2,
+        "damage": 70,
+        "cooldown": 1.25,
+        "speed": 145,
+        "crit": 0.07,
+        "critDmg": 1.8,
+        "price": 90,
+        "element": "",
+        "extras": {
+          "arc": 1.8,
+          "stun": 1,
+          "knock": 340
+        }
+      },
+      {
+        "tier": 3,
+        "damage": 112,
+        "cooldown": 1.2,
+        "speed": 165,
+        "crit": 0.08,
+        "critDmg": 2,
+        "price": 182,
+        "element": "",
+        "extras": {
+          "arc": 2,
+          "stun": 1.2,
+          "knock": 420
+        }
+      }
+    ]
+  },
+  {
+    "id": "wrench",
+    "name": "Schraubenschlüssel",
+    "classes": [
+      "blunt",
+      "support"
+    ],
+    "type": "melee",
+    "color": "#ffb24a",
+    "scaling": {
+      "melee": 0.5,
+      "eng": 0.8
+    },
+    "unlockDefault": true,
+    "unlock": null,
+    "special": "Skaliert mit Technik und schleudert bei jedem Treffer Reparaturfunken auf Gegner.",
+    "tiers": [
+      {
+        "tier": 0,
+        "damage": 9,
+        "cooldown": 0.6,
+        "speed": 100,
+        "crit": 0.06,
+        "critDmg": 1.5,
+        "price": 14,
+        "element": "",
+        "extras": {
+          "arc": 1.2,
+          "engSpark": 1
+        }
+      },
+      {
+        "tier": 1,
+        "damage": 15,
+        "cooldown": 0.57,
+        "speed": 110,
+        "crit": 0.07,
+        "critDmg": 1.5,
+        "price": 28,
+        "element": "",
+        "extras": {
+          "arc": 1.25,
+          "engSpark": 2
+        }
+      },
+      {
+        "tier": 2,
+        "damage": 24,
+        "cooldown": 0.54,
+        "speed": 120,
+        "crit": 0.08,
+        "critDmg": 1.75,
+        "price": 58,
+        "element": "",
+        "extras": {
+          "arc": 1.3,
+          "engSpark": 3
+        }
+      },
+      {
+        "tier": 3,
+        "damage": 39,
+        "cooldown": 0.5,
+        "speed": 140,
+        "crit": 0.09,
+        "critDmg": 2,
+        "price": 116,
+        "element": "",
+        "extras": {
+          "arc": 1.4,
+          "engSpark": 4
+        }
+      }
+    ]
+  },
+  {
+    "id": "chopper",
+    "name": "Chopper",
+    "classes": [
+      "blade",
+      "heavy"
+    ],
+    "type": "melee",
+    "color": "#ffd7a1",
+    "scaling": {
+      "melee": 0.95
+    },
+    "unlockDefault": true,
+    "unlock": null,
+    "special": "Rotierender Rundumschlag mit korrigierter Reichweitenkurve.",
+    "tiers": [
+      {
+        "tier": 0,
+        "damage": 20,
+        "cooldown": 1,
+        "speed": 135,
+        "crit": 0.07,
+        "critDmg": 1.7,
+        "price": 20,
+        "element": "",
+        "extras": {
+          "arc": 2.2
+        }
+      },
+      {
+        "tier": 1,
+        "damage": 33,
+        "cooldown": 0.95,
+        "speed": 150,
+        "crit": 0.08,
+        "critDmg": 1.8,
+        "price": 40,
+        "element": "",
+        "extras": {
+          "arc": 2.3
+        }
+      },
+      {
+        "tier": 2,
+        "damage": 53,
+        "cooldown": 0.9,
+        "speed": 165,
+        "crit": 0.09,
+        "critDmg": 2,
+        "price": 82,
+        "element": "",
+        "extras": {
+          "arc": 2.5
+        }
+      },
+      {
+        "tier": 3,
+        "damage": 85,
+        "cooldown": 0.85,
+        "speed": 180,
+        "crit": 0.11,
+        "critDmg": 2.3,
+        "price": 166,
+        "element": "",
+        "extras": {
+          "arc": 2.8
+        }
+      }
+    ]
+  },
+  {
+    "id": "nunchaku",
+    "name": "Nunchaku",
+    "classes": [
+      "blunt",
+      "precise"
+    ],
+    "type": "melee",
+    "color": "#ffe08a",
+    "scaling": {
+      "melee": 0.75
+    },
+    "unlockDefault": true,
+    "unlock": null,
+    "special": "Zwei Nunchakus: schnelle Doppelhiebe mit weitem Bogen, Rückstoß und ordentlicher Krit-Chance.",
+    "tiers": [
+      {
+        "tier": 0,
+        "damage": 11,
+        "cooldown": 0.4,
+        "speed": 120,
+        "crit": 0.15,
+        "critDmg": 1.8,
+        "price": 14,
+        "element": "",
+        "extras": {
+          "arc": 1.8,
+          "knock": 70
+        }
+      },
+      {
+        "tier": 1,
+        "damage": 18,
+        "cooldown": 0.38,
+        "speed": 132,
+        "crit": 0.16,
+        "critDmg": 2,
+        "price": 28,
+        "element": "",
+        "extras": {
+          "arc": 1.9,
+          "knock": 80
+        }
+      },
+      {
+        "tier": 2,
+        "damage": 29,
+        "cooldown": 0.36,
+        "speed": 145,
+        "crit": 0.18,
+        "critDmg": 2.2,
+        "price": 58,
+        "element": "",
+        "extras": {
+          "arc": 2,
+          "knock": 90
+        }
+      },
+      {
+        "tier": 3,
+        "damage": 47,
+        "cooldown": 0.34,
+        "speed": 160,
+        "crit": 0.2,
+        "critDmg": 2.4,
+        "price": 116,
+        "element": "",
+        "extras": {
+          "arc": 2.2,
+          "knock": 100
+        }
+      }
+    ]
+  },
+  {
+    "id": "flamer",
+    "name": "Feuerwehrflammer",
+    "classes": [
+      "elemental",
+      "support"
+    ],
+    "type": "cone",
+    "color": "#ff7a3d",
+    "scaling": {
+      "elem": 0.55
+    },
+    "unlockDefault": false,
+    "unlock": {
+      "key": "burnKills",
+      "need": 100,
+      "text": "Töte 100 Gegner mit Brandschaden"
+    },
+    "special": "Dauerfeuer-Kegel, setzt Gegner in Brand (Schaden über Zeit).",
+    "tiers": [
+      {
+        "tier": 0,
+        "damage": 3,
+        "cooldown": 0.12,
+        "speed": 200,
+        "crit": 0.03,
+        "critDmg": 1.5,
+        "price": 26,
+        "element": "fire",
+        "extras": {
+          "cone": 0.55,
+          "burn": 4
+        }
+      },
+      {
+        "tier": 1,
+        "damage": 5,
+        "cooldown": 0.11,
+        "speed": 220,
+        "crit": 0.03,
+        "critDmg": 1.5,
+        "price": 52,
+        "element": "fire",
+        "extras": {
+          "cone": 0.6,
+          "burn": 7
+        }
+      },
+      {
+        "tier": 2,
+        "damage": 9,
+        "cooldown": 0.1,
+        "speed": 250,
+        "crit": 0.04,
+        "critDmg": 1.75,
+        "price": 106,
+        "element": "fire",
+        "extras": {
+          "cone": 0.65,
+          "burn": 11
+        }
+      },
+      {
+        "tier": 3,
+        "damage": 15,
+        "cooldown": 0.09,
+        "speed": 300,
+        "crit": 0.05,
+        "critDmg": 2,
+        "price": 214,
+        "element": "fire",
+        "extras": {
+          "cone": 0.75,
+          "burn": 18
+        }
+      }
+    ]
+  },
+  {
+    "id": "railgun",
+    "name": "Railgun",
+    "classes": [
+      "gun",
+      "heavy"
+    ],
+    "type": "hitscan",
+    "color": "#59e6ff",
+    "scaling": {
+      "ranged": 0.7
+    },
+    "unlockDefault": false,
+    "unlock": {
+      "key": "rangerWave15",
+      "need": 1,
+      "text": "Gewinne Welle 15 mit dem Fernkämpfer (Ranger)"
+    },
+    "special": "Durchdringt ALLE Gegner auf der Linie. Ab Stufe 2 wächst der Schaden pro getroffenem Gegner.",
+    "tiers": [
+      {
+        "tier": 0,
+        "damage": 25,
+        "cooldown": 1.5,
+        "speed": 800,
+        "crit": 0.05,
+        "critDmg": 1.5,
+        "price": 35,
+        "element": "",
+        "extras": {
+          "perHit": 0
+        }
+      },
+      {
+        "tier": 1,
+        "damage": 40,
+        "cooldown": 1.4,
+        "speed": 850,
+        "crit": 0.05,
+        "critDmg": 1.5,
+        "price": 68,
+        "element": "",
+        "extras": {
+          "perHit": 0.1
+        }
+      },
+      {
+        "tier": 2,
+        "damage": 60,
+        "cooldown": 1.3,
+        "speed": 900,
+        "crit": 0.05,
+        "critDmg": 1.75,
+        "price": 132,
+        "element": "",
+        "extras": {
+          "perHit": 0.15
+        }
+      },
+      {
+        "tier": 3,
+        "damage": 90,
+        "cooldown": 1.2,
+        "speed": 1000,
+        "crit": 0.05,
+        "critDmg": 2,
+        "price": 258,
+        "element": "",
+        "extras": {
+          "perHit": 0.2
+        }
+      }
+    ]
+  },
+  {
+    "id": "plasma",
+    "name": "Plasma Caster",
+    "classes": [
+      "elemental",
+      "explosive"
+    ],
+    "type": "projectile",
+    "color": "#7dffdc",
+    "scaling": {
+      "elem": 0.6
+    },
+    "unlockDefault": false,
+    "unlock": {
+      "key": "elemDmgRun",
+      "need": 500,
+      "text": "Füge 500 Elementarschaden in einem Run zu"
+    },
+    "special": "Plasma-Explosion beim Aufschlag (Radius 60/75/90/120).",
+    "tiers": [
+      {
+        "tier": 0,
+        "damage": 8,
+        "cooldown": 0.9,
+        "speed": 450,
+        "crit": 0.03,
+        "critDmg": 1.5,
+        "price": 28,
+        "element": "boom",
+        "extras": {
+          "boom": 60,
+          "elemental": 1
+        }
+      },
+      {
+        "tier": 1,
+        "damage": 14,
+        "cooldown": 0.85,
+        "speed": 480,
+        "crit": 0.03,
+        "critDmg": 1.5,
+        "price": 55,
+        "element": "boom",
+        "extras": {
+          "boom": 75,
+          "elemental": 1
+        }
+      },
+      {
+        "tier": 2,
+        "damage": 22,
+        "cooldown": 0.8,
+        "speed": 520,
+        "crit": 0.03,
+        "critDmg": 1.75,
+        "price": 108,
+        "element": "boom",
+        "extras": {
+          "boom": 90,
+          "elemental": 1
+        }
+      },
+      {
+        "tier": 3,
+        "damage": 35,
+        "cooldown": 0.75,
+        "speed": 600,
+        "crit": 0.03,
+        "critDmg": 2,
+        "price": 210,
+        "element": "boom",
+        "extras": {
+          "boom": 120,
+          "elemental": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": "sonic",
+    "name": "Sonic Blaster",
+    "classes": [
+      "gun",
+      "support"
+    ],
+    "type": "cone",
+    "color": "#c7a6ff",
+    "scaling": {
+      "ranged": 0.5
+    },
+    "unlockDefault": false,
+    "unlock": {
+      "key": "multiKillShot",
+      "need": 1,
+      "text": "Töte 100 Gegner mit einem einzigen Schuss (kumulativ 100 Mehrfachkills)"
+    },
+    "special": "Schallwellen treffen alle Gegner im Kegel (100°/120°/140°/180°).",
+    "tiers": [
+      {
+        "tier": 0,
+        "damage": 5,
+        "cooldown": 0.5,
+        "speed": 350,
+        "crit": 0.1,
+        "critDmg": 1.5,
+        "price": 18,
+        "element": "",
+        "extras": {
+          "cone": 1.75
+        }
+      },
+      {
+        "tier": 1,
+        "damage": 9,
+        "cooldown": 0.45,
+        "speed": 380,
+        "crit": 0.12,
+        "critDmg": 1.5,
+        "price": 36,
+        "element": "",
+        "extras": {
+          "cone": 2.09
+        }
+      },
+      {
+        "tier": 2,
+        "damage": 15,
+        "cooldown": 0.4,
+        "speed": 420,
+        "crit": 0.15,
+        "critDmg": 1.75,
+        "price": 72,
+        "element": "",
+        "extras": {
+          "cone": 2.44
+        }
+      },
+      {
+        "tier": 3,
+        "damage": 25,
+        "cooldown": 0.35,
+        "speed": 500,
+        "crit": 0.18,
+        "critDmg": 2,
+        "price": 144,
+        "element": "",
+        "extras": {
+          "cone": 3.14
+        }
+      }
+    ]
+  },
+  {
+    "id": "loeschwasser",
+    "name": "Löschwasserstrahl",
+    "classes": [
+      "elemental",
+      "support"
+    ],
+    "type": "cone",
+    "color": "#59e6ff",
+    "scaling": {
+      "ranged": 0.45,
+      "elem": 0.45
+    },
+    "unlockDefault": true,
+    "unlock": null,
+    "special": "Leonidas Hochdruckstrahl: langer, schmaler Wasserstrahl über die ganze Arena — löscht Brände, verlangsamt und drückt Gegner weg.",
+    "tiers": [
+      {
+        "tier": 0,
+        "damage": 6,
+        "cooldown": 0.3,
+        "speed": 700,
+        "crit": 0.07,
+        "critDmg": 1.5,
+        "price": 26,
+        "element": "",
+        "extras": {
+          "cone": 0.3
+        }
+      },
+      {
+        "tier": 1,
+        "damage": 10,
+        "cooldown": 0.28,
+        "speed": 780,
+        "crit": 0.08,
+        "critDmg": 1.5,
+        "price": 52,
+        "element": "",
+        "extras": {
+          "cone": 0.34
+        }
+      },
+      {
+        "tier": 2,
+        "damage": 16,
+        "cooldown": 0.26,
+        "speed": 880,
+        "crit": 0.09,
+        "critDmg": 1.75,
+        "price": 104,
+        "element": "",
+        "extras": {
+          "cone": 0.38
+        }
+      },
+      {
+        "tier": 3,
+        "damage": 26,
+        "cooldown": 0.24,
+        "speed": 1000,
+        "crit": 0.1,
+        "critDmg": 2,
+        "price": 208,
+        "element": "",
+        "extras": {
+          "cone": 0.44
+        }
+      }
+    ]
+  },
+  {
+    "id": "musiknoten",
+    "name": "Noten-Sturm",
+    "classes": [
+      "elemental",
+      "support"
+    ],
+    "type": "projectile",
+    "color": "#a06bff",
+    "scaling": {
+      "ranged": 0.45,
+      "elem": 0.45
+    },
+    "unlockDefault": true,
+    "unlock": null,
+    "special": "T.Boehmers Signature: eine große Musiknote startet mittig und fliegt weit im Zickzack — durchschlägt Gegner.",
+    "tiers": [
+      {
+        "tier": 0,
+        "damage": 16,
+        "cooldown": 0.6,
+        "speed": 900,
+        "crit": 0.1,
+        "critDmg": 1.8,
+        "price": 26,
+        "element": "",
+        "extras": {
+          "pierce": 1,
+          "elemental": 1
+        }
+      },
+      {
+        "tier": 1,
+        "damage": 26,
+        "cooldown": 0.55,
+        "speed": 980,
+        "crit": 0.12,
+        "critDmg": 1.8,
+        "price": 52,
+        "element": "",
+        "extras": {
+          "pierce": 1,
+          "elemental": 1
+        }
+      },
+      {
+        "tier": 2,
+        "damage": 40,
+        "cooldown": 0.5,
+        "speed": 1080,
+        "crit": 0.14,
+        "critDmg": 2,
+        "price": 104,
+        "element": "",
+        "extras": {
+          "pierce": 2,
+          "elemental": 1
+        }
+      },
+      {
+        "tier": 3,
+        "damage": 62,
+        "cooldown": 0.45,
+        "speed": 1200,
+        "crit": 0.16,
+        "critDmg": 2.2,
+        "price": 208,
+        "element": "",
+        "extras": {
+          "pierce": 3,
+          "elemental": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": "nagler",
+    "name": "Nagelpistole",
+    "classes": [
+      "gun",
+      "precise"
+    ],
+    "type": "projectile",
+    "color": "#cfd6e2",
+    "scaling": {
+      "ranged": 0.48,
+      "crit": 0.2
+    },
+    "unlockDefault": true,
+    "unlock": null,
+    "special": "Schneller Nagelhagel: dünne Stifte, die sich durch ganze Reihen fädeln. Hohe Krit-Chance, wenig Einzelschaden.",
+    "tiers": [
+      {
+        "tier": 0,
+        "damage": 7,
+        "cooldown": 0.22,
+        "speed": 480,
+        "crit": 0.1,
+        "critDmg": 1.9,
+        "price": 12,
+        "element": "",
+        "extras": {
+          "pierce": 1,
+          "spread": 0.04
+        }
+      },
+      {
+        "tier": 1,
+        "damage": 11,
+        "cooldown": 0.2,
+        "speed": 520,
+        "crit": 0.12,
+        "critDmg": 2,
+        "price": 24,
+        "element": "",
+        "extras": {
+          "pierce": 2,
+          "spread": 0.035
+        }
+      },
+      {
+        "tier": 2,
+        "damage": 18,
+        "cooldown": 0.18,
+        "speed": 560,
+        "crit": 0.14,
+        "critDmg": 2.2,
+        "price": 50,
+        "element": "",
+        "extras": {
+          "pierce": 3,
+          "spread": 0.03
+        }
+      },
+      {
+        "tier": 3,
+        "damage": 29,
+        "cooldown": 0.16,
+        "speed": 620,
+        "crit": 0.17,
+        "critDmg": 2.4,
+        "price": 100,
+        "element": "",
+        "extras": {
+          "pierce": 4,
+          "spread": 0.025
+        }
+      }
+    ]
+  },
+  {
+    "id": "schrottkanone",
+    "name": "Schrottkanone",
+    "classes": [
+      "gun",
+      "heavy"
+    ],
+    "type": "projectile",
+    "color": "#b08a4a",
+    "scaling": {
+      "ranged": 0.5,
+      "dmg": 0.3
+    },
+    "unlockDefault": true,
+    "unlock": null,
+    "special": "Geladen mit allem, was der Wertstoffhof hergibt. Eine breite Wolke aus Schrauben, Blech und Scherben.",
+    "tiers": [
+      {
+        "tier": 0,
+        "damage": 6,
+        "cooldown": 0.95,
+        "speed": 300,
+        "crit": 0.06,
+        "critDmg": 1.7,
+        "price": 20,
+        "element": "",
+        "extras": {
+          "pellets": 7,
+          "spread": 0.48
+        }
+      },
+      {
+        "tier": 1,
+        "damage": 10,
+        "cooldown": 0.9,
+        "speed": 330,
+        "crit": 0.07,
+        "critDmg": 1.8,
+        "price": 40,
+        "element": "",
+        "extras": {
+          "pellets": 8,
+          "spread": 0.45
+        }
+      },
+      {
+        "tier": 2,
+        "damage": 16,
+        "cooldown": 0.84,
+        "speed": 360,
+        "crit": 0.08,
+        "critDmg": 2,
+        "price": 82,
+        "element": "",
+        "extras": {
+          "pellets": 10,
+          "spread": 0.42
+        }
+      },
+      {
+        "tier": 3,
+        "damage": 26,
+        "cooldown": 0.78,
+        "speed": 400,
+        "crit": 0.1,
+        "critDmg": 2.2,
+        "price": 165,
+        "element": "",
+        "extras": {
+          "pellets": 12,
+          "spread": 0.38
+        }
+      }
+    ]
+  },
+  {
+    "id": "bierwerfer",
+    "name": "Bierkastenwerfer",
+    "classes": [
+      "explosive",
+      "heavy"
+    ],
+    "type": "projectile",
+    "color": "#e0a83a",
+    "scaling": {
+      "dmg": 0.5,
+      "expSize": 0.2
+    },
+    "unlockDefault": true,
+    "unlock": null,
+    "special": "Ein voller Kasten fliegt weit und geht laut zu Bruch. Die Scherben machen den Boden rutschig.",
+    "tiers": [
+      {
+        "tier": 0,
+        "damage": 16,
+        "cooldown": 1.25,
+        "speed": 380,
+        "crit": 0.05,
+        "critDmg": 1.8,
+        "price": 26,
+        "element": "ice",
+        "extras": {
+          "boom": 78,
+          "slow": 0.2,
+          "slowT": 1.4
+        }
+      },
+      {
+        "tier": 1,
+        "damage": 26,
+        "cooldown": 1.15,
+        "speed": 410,
+        "crit": 0.06,
+        "critDmg": 1.9,
+        "price": 52,
+        "element": "ice",
+        "extras": {
+          "boom": 92,
+          "slow": 0.24,
+          "slowT": 1.6
+        }
+      },
+      {
+        "tier": 2,
+        "damage": 42,
+        "cooldown": 1.05,
+        "speed": 450,
+        "crit": 0.07,
+        "critDmg": 2,
+        "price": 108,
+        "element": "ice",
+        "extras": {
+          "boom": 108,
+          "slow": 0.28,
+          "slowT": 1.8
+        }
+      },
+      {
+        "tier": 3,
+        "damage": 68,
+        "cooldown": 0.95,
+        "speed": 500,
+        "crit": 0.09,
+        "critDmg": 2.2,
+        "price": 215,
+        "element": "ice",
+        "extras": {
+          "boom": 128,
+          "slow": 0.32,
+          "slowT": 2
+        }
+      }
+    ]
+  },
+  {
+    "id": "magnetmine",
+    "name": "Magnetmine",
+    "classes": [
+      "explosive",
+      "precise"
+    ],
+    "type": "projectile",
+    "color": "#ff6b3d",
+    "scaling": {
+      "dmg": 0.45,
+      "expSize": 0.25
+    },
+    "unlockDefault": true,
+    "unlock": null,
+    "special": "Haftet am ersten Ziel und zündet kurz darauf. Wer getroffen wird, nimmt die Mine mit in die Menge.",
+    "tiers": [
+      {
+        "tier": 0,
+        "damage": 22,
+        "cooldown": 1.5,
+        "speed": 420,
+        "crit": 0.08,
+        "critDmg": 2,
+        "price": 30,
+        "element": "boom",
+        "extras": {
+          "boom": 86,
+          "stick": 1.1,
+          "armorPierce": 4
+        }
+      },
+      {
+        "tier": 1,
+        "damage": 36,
+        "cooldown": 1.4,
+        "speed": 450,
+        "crit": 0.09,
+        "critDmg": 2.1,
+        "price": 60,
+        "element": "boom",
+        "extras": {
+          "boom": 100,
+          "stick": 1,
+          "armorPierce": 6
+        }
+      },
+      {
+        "tier": 2,
+        "damage": 58,
+        "cooldown": 1.3,
+        "speed": 490,
+        "crit": 0.11,
+        "critDmg": 2.3,
+        "price": 122,
+        "element": "boom",
+        "extras": {
+          "boom": 118,
+          "stick": 0.9,
+          "armorPierce": 8
+        }
+      },
+      {
+        "tier": 3,
+        "damage": 94,
+        "cooldown": 1.2,
+        "speed": 540,
+        "crit": 0.13,
+        "critDmg": 2.5,
+        "price": 245,
+        "element": "boom",
+        "extras": {
+          "boom": 140,
+          "stick": 0.8,
+          "armorPierce": 12
+        }
+      }
+    ]
+  },
+  {
+    "id": "taubenschwarm",
+    "name": "Taubenschwarm",
+    "classes": [
+      "primitive",
+      "support"
+    ],
+    "type": "projectile",
+    "color": "#9fb4d8",
+    "scaling": {
+      "ranged": 0.4,
+      "luck": 0.3
+    },
+    "unlockDefault": true,
+    "unlock": null,
+    "special": "Aufgescheuchte Kurpark-Tauben suchen sich ihr Ziel selbst. Nicht elegant, aber unbeirrbar.",
+    "tiers": [
+      {
+        "tier": 0,
+        "damage": 9,
+        "cooldown": 0.62,
+        "speed": 620,
+        "crit": 0.08,
+        "critDmg": 1.8,
+        "price": 22,
+        "element": "",
+        "extras": {
+          "pellets": 3,
+          "spread": 0.6,
+          "homing": 3.2
+        }
+      },
+      {
+        "tier": 1,
+        "damage": 14,
+        "cooldown": 0.58,
+        "speed": 660,
+        "crit": 0.09,
+        "critDmg": 1.9,
+        "price": 44,
+        "element": "",
+        "extras": {
+          "pellets": 4,
+          "spread": 0.6,
+          "homing": 3.6
+        }
+      },
+      {
+        "tier": 2,
+        "damage": 23,
+        "cooldown": 0.54,
+        "speed": 700,
+        "crit": 0.11,
+        "critDmg": 2,
+        "price": 92,
+        "element": "",
+        "extras": {
+          "pellets": 5,
+          "spread": 0.65,
+          "homing": 4.2
+        }
+      },
+      {
+        "tier": 3,
+        "damage": 37,
+        "cooldown": 0.5,
+        "speed": 760,
+        "crit": 0.13,
+        "critDmg": 2.2,
+        "price": 184,
+        "element": "",
+        "extras": {
+          "pellets": 6,
+          "spread": 0.7,
+          "homing": 5
+        }
+      }
+    ]
+  },
+  {
+    "id": "kettensaege",
+    "name": "Kettensäge",
+    "classes": [
+      "blade",
+      "heavy"
+    ],
+    "type": "melee",
+    "color": "#ff8a3d",
+    "scaling": {
+      "melee": 0.6,
+      "dmg": 0.25
+    },
+    "unlockDefault": true,
+    "unlock": null,
+    "special": "Läuft durch, solange der Finger am Gas bleibt. Sehr kurze Reichweite, dafür ein durchgehender Fleischwolf.",
+    "tiers": [
+      {
+        "tier": 0,
+        "damage": 9,
+        "cooldown": 0.18,
+        "speed": 92,
+        "crit": 0.07,
+        "critDmg": 1.8,
+        "price": 24,
+        "element": "",
+        "extras": {
+          "arc": 0.95,
+          "knock": 40,
+          "bleed": 1
+        }
+      },
+      {
+        "tier": 1,
+        "damage": 15,
+        "cooldown": 0.17,
+        "speed": 100,
+        "crit": 0.08,
+        "critDmg": 1.9,
+        "price": 48,
+        "element": "",
+        "extras": {
+          "arc": 1,
+          "knock": 46,
+          "bleed": 1
+        }
+      },
+      {
+        "tier": 2,
+        "damage": 25,
+        "cooldown": 0.16,
+        "speed": 108,
+        "crit": 0.1,
+        "critDmg": 2.1,
+        "price": 100,
+        "element": "",
+        "extras": {
+          "arc": 1.05,
+          "knock": 54,
+          "bleed": 1
+        }
+      },
+      {
+        "tier": 3,
+        "damage": 41,
+        "cooldown": 0.15,
+        "speed": 118,
+        "crit": 0.12,
+        "critDmg": 2.3,
+        "price": 200,
+        "element": "",
+        "extras": {
+          "arc": 1.15,
+          "knock": 62,
+          "bleed": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": "laserzirkel",
+    "name": "Laserzirkel",
+    "classes": [
+      "elemental",
+      "precise"
+    ],
+    "type": "aura",
+    "color": "#59e6ff",
+    "scaling": {
+      "elem": 0.5,
+      "range": 0.2
+    },
+    "unlockDefault": true,
+    "unlock": null,
+    "special": "Zwei rotierende Schnittstrahlen kreisen um den Träger und brennen alles an, was zu nah kommt.",
+    "tiers": [
+      {
+        "tier": 0,
+        "damage": 7,
+        "cooldown": 0.32,
+        "speed": 116,
+        "crit": 0.06,
+        "critDmg": 1.7,
+        "price": 28,
+        "element": "fire",
+        "extras": {
+          "elemental": 1,
+          "burn": 4
+        }
+      },
+      {
+        "tier": 1,
+        "damage": 12,
+        "cooldown": 0.3,
+        "speed": 128,
+        "crit": 0.07,
+        "critDmg": 1.8,
+        "price": 56,
+        "element": "fire",
+        "extras": {
+          "elemental": 1,
+          "burn": 6
+        }
+      },
+      {
+        "tier": 2,
+        "damage": 19,
+        "cooldown": 0.28,
+        "speed": 142,
+        "crit": 0.09,
+        "critDmg": 2,
+        "price": 116,
+        "element": "fire",
+        "extras": {
+          "elemental": 1,
+          "burn": 9
+        }
+      },
+      {
+        "tier": 3,
+        "damage": 31,
+        "cooldown": 0.26,
+        "speed": 158,
+        "crit": 0.11,
+        "critDmg": 2.2,
+        "price": 232,
+        "element": "fire",
+        "extras": {
+          "elemental": 1,
+          "burn": 13
+        }
+      }
+    ]
+  },
+  {
+    "id": "blitzableiter",
+    "name": "Blitzableiter",
+    "classes": [
+      "elemental",
+      "support"
+    ],
+    "type": "chain",
+    "color": "#ffe27a",
+    "scaling": {
+      "elem": 0.55
+    },
+    "unlockDefault": true,
+    "unlock": null,
+    "special": "Zieht die Entladung vom Dach in die Menge. Springt weiter als jede andere Kette und betäubt kurz.",
+    "tiers": [
+      {
+        "tier": 0,
+        "damage": 11,
+        "cooldown": 0.78,
+        "speed": 300,
+        "crit": 0.07,
+        "critDmg": 1.8,
+        "price": 26,
+        "element": "shock",
+        "extras": {
+          "chain": 4,
+          "chainRange": 150,
+          "elemental": 1,
+          "shock": 1
+        }
+      },
+      {
+        "tier": 1,
+        "damage": 18,
+        "cooldown": 0.72,
+        "speed": 330,
+        "crit": 0.08,
+        "critDmg": 1.9,
+        "price": 52,
+        "element": "shock",
+        "extras": {
+          "chain": 5,
+          "chainRange": 165,
+          "elemental": 1,
+          "shock": 1
+        }
+      },
+      {
+        "tier": 2,
+        "damage": 29,
+        "cooldown": 0.66,
+        "speed": 360,
+        "crit": 0.1,
+        "critDmg": 2.1,
+        "price": 108,
+        "element": "shock",
+        "extras": {
+          "chain": 7,
+          "chainRange": 180,
+          "elemental": 1,
+          "shock": 1
+        }
+      },
+      {
+        "tier": 3,
+        "damage": 47,
+        "cooldown": 0.6,
+        "speed": 400,
+        "crit": 0.12,
+        "critDmg": 2.3,
+        "price": 216,
+        "element": "shock",
+        "extras": {
+          "chain": 9,
+          "chainRange": 200,
+          "elemental": 1,
+          "shock": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": "ratschlaege",
+    "name": "Gute Ratschläge",
+    "classes": [
+      "support",
+      "precise"
+    ],
+    "type": "projectile",
+    "color": "#ffd24a",
+    "scaling": {
+      "ranged": 0.55,
+      "luck": 0.3
+    },
+    "unlockDefault": true,
+    "unlock": null,
+    "special": "Ös Signature: gut gemeinte Ratschläge als Sprechblasen. Sie schweben leicht, durchschlagen mehrere Gegner und lassen sie grübelnd langsamer werden.",
+    "tiers": [
+      {
+        "tier": 0,
+        "damage": 10,
+        "cooldown": 0.5,
+        "speed": 560,
+        "crit": 0.07,
+        "critDmg": 1.7,
+        "price": 14,
+        "element": "ice",
+        "extras": {
+          "pierce": 1,
+          "slow": 0.22,
+          "slowT": 1.6,
+          "advice": 1
+        }
+      },
+      {
+        "tier": 1,
+        "damage": 16,
+        "cooldown": 0.47,
+        "speed": 600,
+        "crit": 0.08,
+        "critDmg": 1.8,
+        "price": 28,
+        "element": "ice",
+        "extras": {
+          "pierce": 2,
+          "slow": 0.26,
+          "slowT": 1.8,
+          "advice": 1
+        }
+      },
+      {
+        "tier": 2,
+        "damage": 26,
+        "cooldown": 0.44,
+        "speed": 660,
+        "crit": 0.1,
+        "critDmg": 2,
+        "price": 58,
+        "element": "ice",
+        "extras": {
+          "pierce": 3,
+          "slow": 0.3,
+          "slowT": 2,
+          "advice": 1
+        }
+      },
+      {
+        "tier": 3,
+        "damage": 42,
+        "cooldown": 0.4,
+        "speed": 740,
+        "crit": 0.12,
+        "critDmg": 2.2,
+        "price": 116,
+        "element": "ice",
+        "extras": {
+          "pierce": 4,
+          "slow": 0.34,
+          "slowT": 2.2,
+          "advice": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": "gravgun",
+    "name": "Gravity Gun",
+    "classes": [
+      "heavy",
+      "explosive"
+    ],
+    "type": "projectile",
+    "color": "#a06bff",
+    "scaling": {
+      "ranged": 0.8,
+      "eng": 0.3
+    },
+    "unlockDefault": false,
+    "unlock": {
+      "key": "pulled",
+      "need": 500,
+      "text": "Ziehe 500 Gegner mit der Gravity Gun an"
+    },
+    "special": "Erzeugt ein Gravitationszentrum, das Gegner heranzieht und zerquetscht.",
+    "tiers": [
+      {
+        "tier": 0,
+        "damage": 15,
+        "cooldown": 1.8,
+        "speed": 300,
+        "crit": 0.03,
+        "critDmg": 1.5,
+        "price": 40,
+        "element": "boom",
+        "extras": {
+          "pull": 100,
+          "boom": 60
+        }
+      },
+      {
+        "tier": 1,
+        "damage": 25,
+        "cooldown": 1.7,
+        "speed": 320,
+        "crit": 0.03,
+        "critDmg": 1.5,
+        "price": 78,
+        "element": "boom",
+        "extras": {
+          "pull": 130,
+          "boom": 70
+        }
+      },
+      {
+        "tier": 2,
+        "damage": 40,
+        "cooldown": 1.6,
+        "speed": 350,
+        "crit": 0.03,
+        "critDmg": 1.75,
+        "price": 152,
+        "element": "boom",
+        "extras": {
+          "pull": 160,
+          "boom": 80
+        }
+      },
+      {
+        "tier": 3,
+        "damage": 60,
+        "cooldown": 1.5,
+        "speed": 400,
+        "crit": 0.03,
+        "critDmg": 2,
+        "price": 298,
+        "element": "boom",
+        "extras": {
+          "pull": 200,
+          "boom": 95
+        }
+      }
+    ]
+  },
+  {
+    "id": "tesla",
+    "name": "Tesla Coil",
+    "classes": [
+      "elemental",
+      "support"
+    ],
+    "type": "chain",
+    "color": "#39e6ff",
+    "scaling": {
+      "elem": 0.3,
+      "eng": 0.3
+    },
+    "unlockDefault": false,
+    "unlock": {
+      "key": "chain10",
+      "need": 1,
+      "text": "Treffe 10 Gegner mit einer einzigen Kette"
+    },
+    "special": "Kettenblitz springt auf 3/4/5/7 Gegner über — Partikelblitz mit Funkenflug. Skaliert mit Elementar und Technik.",
+    "tiers": [
+      {
+        "tier": 0,
+        "damage": 10,
+        "cooldown": 0.3,
+        "speed": 250,
+        "crit": 0.08,
+        "critDmg": 1.8,
+        "price": 22,
+        "element": "shock",
+        "extras": {
+          "chain": 3,
+          "elemental": 1
+        }
+      },
+      {
+        "tier": 1,
+        "damage": 17,
+        "cooldown": 0.28,
+        "speed": 280,
+        "crit": 0.08,
+        "critDmg": 1.8,
+        "price": 44,
+        "element": "shock",
+        "extras": {
+          "chain": 4,
+          "elemental": 1
+        }
+      },
+      {
+        "tier": 2,
+        "damage": 28,
+        "cooldown": 0.26,
+        "speed": 320,
+        "crit": 0.1,
+        "critDmg": 2,
+        "price": 88,
+        "element": "shock",
+        "extras": {
+          "chain": 5,
+          "elemental": 1
+        }
+      },
+      {
+        "tier": 3,
+        "damage": 45,
+        "cooldown": 0.24,
+        "speed": 380,
+        "crit": 0.1,
+        "critDmg": 2,
+        "price": 176,
+        "element": "shock",
+        "extras": {
+          "chain": 7,
+          "elemental": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": "frost",
+    "name": "Frost Cannon",
+    "classes": [
+      "gun",
+      "medieval"
+    ],
+    "type": "projectile",
+    "color": "#9fe4ff",
+    "scaling": {
+      "ranged": 0.65
+    },
+    "unlockDefault": false,
+    "unlock": {
+      "key": "flawless10",
+      "need": 1,
+      "text": "Überlebe Welle 10 ohne Schaden zu nehmen"
+    },
+    "special": "Vereist Gegner: verlangsamt um 30–60% für 2–4 s.",
+    "tiers": [
+      {
+        "tier": 0,
+        "damage": 12,
+        "cooldown": 1.2,
+        "speed": 500,
+        "crit": 0.03,
+        "critDmg": 1.5,
+        "price": 30,
+        "element": "ice",
+        "extras": {
+          "slow": 0.3,
+          "slowT": 2,
+          "elemental": 1
+        }
+      },
+      {
+        "tier": 1,
+        "damage": 20,
+        "cooldown": 1.1,
+        "speed": 550,
+        "crit": 0.03,
+        "critDmg": 1.5,
+        "price": 58,
+        "element": "ice",
+        "extras": {
+          "slow": 0.4,
+          "slowT": 2.5,
+          "elemental": 1
+        }
+      },
+      {
+        "tier": 2,
+        "damage": 32,
+        "cooldown": 1,
+        "speed": 600,
+        "crit": 0.03,
+        "critDmg": 1.75,
+        "price": 114,
+        "element": "ice",
+        "extras": {
+          "slow": 0.5,
+          "slowT": 3,
+          "elemental": 1
+        }
+      },
+      {
+        "tier": 3,
+        "damage": 50,
+        "cooldown": 0.9,
+        "speed": 700,
+        "crit": 0.03,
+        "critDmg": 2,
+        "price": 224,
+        "element": "ice",
+        "extras": {
+          "slow": 0.6,
+          "slowT": 4,
+          "elemental": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": "spore",
+    "name": "Spore Launcher",
+    "classes": [
+      "primitive",
+      "explosive"
+    ],
+    "type": "projectile",
+    "color": "#b8d98a",
+    "scaling": {
+      "ranged": 0.55,
+      "elem": 0.25
+    },
+    "unlockDefault": false,
+    "unlock": {
+      "key": "poisonKills",
+      "need": 50,
+      "text": "Töte 50 Gegner mit Gift"
+    },
+    "special": "Hinterlässt eine Giftwolke: 8–36 Schaden über 3 s.",
+    "tiers": [
+      {
+        "tier": 0,
+        "damage": 6,
+        "cooldown": 0.8,
+        "speed": 400,
+        "crit": 0.05,
+        "critDmg": 1.5,
+        "price": 25,
+        "element": "poison",
+        "extras": {
+          "poison": 8,
+          "poisonT": 3,
+          "cloud": 60
+        }
+      },
+      {
+        "tier": 1,
+        "damage": 10,
+        "cooldown": 0.75,
+        "speed": 430,
+        "crit": 0.05,
+        "critDmg": 1.5,
+        "price": 48,
+        "element": "poison",
+        "extras": {
+          "poison": 14,
+          "poisonT": 3,
+          "cloud": 68
+        }
+      },
+      {
+        "tier": 2,
+        "damage": 16,
+        "cooldown": 0.7,
+        "speed": 470,
+        "crit": 0.05,
+        "critDmg": 1.75,
+        "price": 96,
+        "element": "poison",
+        "extras": {
+          "poison": 22,
+          "poisonT": 3,
+          "cloud": 76
+        }
+      },
+      {
+        "tier": 3,
+        "damage": 26,
+        "cooldown": 0.65,
+        "speed": 550,
+        "crit": 0.05,
+        "critDmg": 2,
+        "price": 188,
+        "element": "poison",
+        "extras": {
+          "poison": 36,
+          "poisonT": 3,
+          "cloud": 92
+        }
+      }
+    ]
+  },
+  {
+    "id": "photon",
+    "name": "Photon Rifle",
+    "classes": [
+      "precise",
+      "gun"
+    ],
+    "type": "projectile",
+    "color": "#ffe27a",
+    "scaling": {
+      "ranged": 0.75
+    },
+    "unlockDefault": false,
+    "unlock": {
+      "key": "critStreak",
+      "need": 10,
+      "text": "Erziele 10 kritische Treffer in Folge"
+    },
+    "special": "Präzisionsschuss ignoriert 20–50% der gegnerischen Rüstung.",
+    "tiers": [
+      {
+        "tier": 0,
+        "damage": 18,
+        "cooldown": 1.3,
+        "speed": 600,
+        "crit": 0.15,
+        "critDmg": 2,
+        "price": 38,
+        "element": "",
+        "extras": {
+          "armorPierce": 0.2
+        }
+      },
+      {
+        "tier": 1,
+        "damage": 30,
+        "cooldown": 1.2,
+        "speed": 650,
+        "crit": 0.18,
+        "critDmg": 2.25,
+        "price": 74,
+        "element": "",
+        "extras": {
+          "armorPierce": 0.3
+        }
+      },
+      {
+        "tier": 2,
+        "damage": 48,
+        "cooldown": 1.1,
+        "speed": 720,
+        "crit": 0.2,
+        "critDmg": 2.5,
+        "price": 146,
+        "element": "",
+        "extras": {
+          "armorPierce": 0.4
+        }
+      },
+      {
+        "tier": 3,
+        "damage": 75,
+        "cooldown": 1,
+        "speed": 800,
+        "crit": 0.25,
+        "critDmg": 3,
+        "price": 286,
+        "element": "",
+        "extras": {
+          "armorPierce": 0.5
+        }
+      }
+    ]
+  },
+  {
+    "id": "arc",
+    "name": "Arc Thrower",
+    "classes": [
+      "elemental",
+      "heavy"
+    ],
+    "type": "charge",
+    "color": "#5dff9b",
+    "scaling": {
+      "elem": 0.6
+    },
+    "unlockDefault": false,
+    "unlock": {
+      "key": "fullCharges",
+      "need": 100,
+      "text": "Lade die Waffe 100 Mal voll auf"
+    },
+    "special": "Lädt sich auf: bis zu 200–300% Schaden als durchschlagender Bogenblitz.",
+    "tiers": [
+      {
+        "tier": 0,
+        "damage": 10,
+        "cooldown": 1,
+        "speed": 280,
+        "crit": 0.03,
+        "critDmg": 1.5,
+        "price": 32,
+        "element": "",
+        "extras": {
+          "chargeMax": 2,
+          "chargeT": 1.4,
+          "elemental": 1
+        }
+      },
+      {
+        "tier": 1,
+        "damage": 18,
+        "cooldown": 0.95,
+        "speed": 310,
+        "crit": 0.03,
+        "critDmg": 1.5,
+        "price": 62,
+        "element": "",
+        "extras": {
+          "chargeMax": 2.2,
+          "chargeT": 1.4,
+          "elemental": 1
+        }
+      },
+      {
+        "tier": 2,
+        "damage": 28,
+        "cooldown": 0.9,
+        "speed": 350,
+        "crit": 0.03,
+        "critDmg": 1.75,
+        "price": 122,
+        "element": "",
+        "extras": {
+          "chargeMax": 2.5,
+          "chargeT": 1.3,
+          "elemental": 1
+        }
+      },
+      {
+        "tier": 3,
+        "damage": 45,
+        "cooldown": 0.85,
+        "speed": 420,
+        "crit": 0.03,
+        "critDmg": 2,
+        "price": 240,
+        "element": "",
+        "extras": {
+          "chargeMax": 3,
+          "chargeT": 1.2,
+          "elemental": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": "needle",
+    "name": "Needle Gun",
+    "classes": [
+      "precise",
+      "medical"
+    ],
+    "type": "projectile",
+    "color": "#8affb0",
+    "scaling": {
+      "ranged": 0.45,
+      "hpRegen": 0.3
+    },
+    "unlockDefault": false,
+    "unlock": {
+      "key": "needleHeal",
+      "need": 500,
+      "text": "Heile 500 HP mit der Needle Gun"
+    },
+    "special": "Heilnadeln: 1–5 HP Heilung pro Treffer.",
+    "tiers": [
+      {
+        "tier": 0,
+        "damage": 3,
+        "cooldown": 0.15,
+        "speed": 400,
+        "crit": 0.1,
+        "critDmg": 1.5,
+        "price": 20,
+        "element": "",
+        "extras": {
+          "healHit": 1
+        }
+      },
+      {
+        "tier": 1,
+        "damage": 5,
+        "cooldown": 0.14,
+        "speed": 430,
+        "crit": 0.12,
+        "critDmg": 1.5,
+        "price": 40,
+        "element": "",
+        "extras": {
+          "healHit": 2
+        }
+      },
+      {
+        "tier": 2,
+        "damage": 9,
+        "cooldown": 0.13,
+        "speed": 470,
+        "crit": 0.15,
+        "critDmg": 1.75,
+        "price": 80,
+        "element": "",
+        "extras": {
+          "healHit": 3
+        }
+      },
+      {
+        "tier": 3,
+        "damage": 15,
+        "cooldown": 0.12,
+        "speed": 550,
+        "crit": 0.18,
+        "critDmg": 2,
+        "price": 160,
+        "element": "",
+        "extras": {
+          "healHit": 5
+        }
+      }
+    ]
+  },
+  {
+    "id": "vortex",
+    "name": "Vortex Cannon",
+    "classes": [
+      "support",
+      "explosive"
+    ],
+    "type": "aura",
+    "color": "#ff2e88",
+    "scaling": {
+      "ranged": 0.35,
+      "eng": 0.35
+    },
+    "unlockDefault": false,
+    "unlock": {
+      "key": "vortexPulled",
+      "need": 200,
+      "text": "Ziehe 200 Gegner in einen Wirbel"
+    },
+    "special": "Permanenter Wirbel um dich: zieht Gegner an und fügt Dauerschaden zu.",
+    "tiers": [
+      {
+        "tier": 0,
+        "damage": 2,
+        "cooldown": 0.2,
+        "speed": 200,
+        "crit": 0.03,
+        "critDmg": 1.5,
+        "price": 26,
+        "element": "",
+        "extras": {
+          "pull": 120,
+          "dur": 1.5
+        }
+      },
+      {
+        "tier": 1,
+        "damage": 4,
+        "cooldown": 0.18,
+        "speed": 230,
+        "crit": 0.03,
+        "critDmg": 1.5,
+        "price": 50,
+        "element": "",
+        "extras": {
+          "pull": 150,
+          "dur": 2
+        }
+      },
+      {
+        "tier": 2,
+        "damage": 7,
+        "cooldown": 0.16,
+        "speed": 270,
+        "crit": 0.03,
+        "critDmg": 1.75,
+        "price": 100,
+        "element": "",
+        "extras": {
+          "pull": 180,
+          "dur": 3
+        }
+      },
+      {
+        "tier": 3,
+        "damage": 12,
+        "cooldown": 0.14,
+        "speed": 330,
+        "crit": 0.03,
+        "critDmg": 2,
+        "price": 196,
+        "element": "",
+        "extras": {
+          "pull": 220,
+          "dur": 4
+        }
+      }
+    ]
+  },
+  {
+    "id": "starfall",
+    "name": "Starfall Bow",
+    "classes": [
+      "medieval",
+      "precise"
+    ],
+    "type": "projectile",
+    "color": "#ffd7f5",
+    "scaling": {
+      "ranged": 0.7
+    },
+    "unlockDefault": false,
+    "unlock": {
+      "key": "starfall3",
+      "need": 1,
+      "text": "Treffe 3 Gegner gleichzeitig mit Sternenregen"
+    },
+    "special": "Sternenregen: 3–6 Leuchtpfeile gleichzeitig, die beim Aufprall funkeln.",
+    "tiers": [
+      {
+        "tier": 0,
+        "damage": 14,
+        "cooldown": 1.1,
+        "speed": 550,
+        "crit": 0.08,
+        "critDmg": 2,
+        "price": 36,
+        "element": "",
+        "extras": {
+          "pellets": 3,
+          "spread": 0.3,
+          "arcRain": 1
+        }
+      },
+      {
+        "tier": 1,
+        "damage": 22,
+        "cooldown": 1,
+        "speed": 600,
+        "crit": 0.1,
+        "critDmg": 2.25,
+        "price": 70,
+        "element": "",
+        "extras": {
+          "pellets": 4,
+          "spread": 0.32,
+          "arcRain": 1
+        }
+      },
+      {
+        "tier": 2,
+        "damage": 35,
+        "cooldown": 0.9,
+        "speed": 660,
+        "crit": 0.12,
+        "critDmg": 2.5,
+        "price": 138,
+        "element": "",
+        "extras": {
+          "pellets": 5,
+          "spread": 0.34,
+          "arcRain": 1
+        }
+      },
+      {
+        "tier": 3,
+        "damage": 55,
+        "cooldown": 0.8,
+        "speed": 750,
+        "crit": 0.15,
+        "critDmg": 3,
+        "price": 270,
+        "element": "",
+        "extras": {
+          "pellets": 6,
+          "spread": 0.36,
+          "arcRain": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": "leg_rheingold",
+    "name": "RHEINGOLD-ORGEL",
+    "classes": [
+      "gun",
+      "heavy",
+      "explosive"
+    ],
+    "type": "projectile",
+    "color": "#f4c25a",
+    "scaling": {
+      "ranged": 0.7,
+      "eng": 0.3
+    },
+    "unlockDefault": false,
+    "unlock": null,
+    "special": "Legendär: Acht goldene Rohre — jede Salve detoniert mit Elementarkraft.",
+    "tiers": [
+      {
+        "tier": 0,
+        "damage": 16,
+        "cooldown": 0.32,
+        "speed": 380,
+        "crit": 0.06,
+        "critDmg": 1.8,
+        "price": 90,
+        "element": "boom",
+        "extras": {
+          "pellets": 6,
+          "spread": 0.42,
+          "boom": 42,
+          "elemental": 1
+        }
+      },
+      {
+        "tier": 1,
+        "damage": 27,
+        "cooldown": 0.3,
+        "speed": 420,
+        "crit": 0.07,
+        "critDmg": 1.8,
+        "price": 180,
+        "element": "boom",
+        "extras": {
+          "pellets": 7,
+          "spread": 0.44,
+          "boom": 52,
+          "elemental": 1
+        }
+      },
+      {
+        "tier": 2,
+        "damage": 44,
+        "cooldown": 0.27,
+        "speed": 470,
+        "crit": 0.08,
+        "critDmg": 2,
+        "price": 360,
+        "element": "boom",
+        "extras": {
+          "pellets": 8,
+          "spread": 0.46,
+          "boom": 64,
+          "elemental": 1
+        }
+      },
+      {
+        "tier": 3,
+        "damage": 70,
+        "cooldown": 0.24,
+        "speed": 540,
+        "crit": 0.1,
+        "critDmg": 2.25,
+        "price": 720,
+        "element": "boom",
+        "extras": {
+          "pellets": 10,
+          "spread": 0.5,
+          "boom": 80,
+          "elemental": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": "leg_neroberg",
+    "name": "NEROBERG-STURM",
+    "classes": [
+      "elemental",
+      "heavy"
+    ],
+    "type": "chain",
+    "color": "#b9a6ff",
+    "scaling": {
+      "elem": 0.45,
+      "eng": 0.3
+    },
+    "unlockDefault": false,
+    "unlock": null,
+    "special": "Legendär: Ein lebender Blitz gewinnt mit jedem Sprung an Schärfe.",
+    "tiers": [
+      {
+        "tier": 0,
+        "damage": 11,
+        "cooldown": 0.26,
+        "speed": 320,
+        "crit": 0.08,
+        "critDmg": 1.9,
+        "price": 90,
+        "element": "shock",
+        "extras": {
+          "chain": 8,
+          "elemental": 1
+        }
+      },
+      {
+        "tier": 1,
+        "damage": 18,
+        "cooldown": 0.24,
+        "speed": 360,
+        "crit": 0.1,
+        "critDmg": 2,
+        "price": 180,
+        "element": "shock",
+        "extras": {
+          "chain": 10,
+          "elemental": 1
+        }
+      },
+      {
+        "tier": 2,
+        "damage": 30,
+        "cooldown": 0.22,
+        "speed": 420,
+        "crit": 0.12,
+        "critDmg": 2.25,
+        "price": 360,
+        "element": "shock",
+        "extras": {
+          "chain": 12,
+          "elemental": 1
+        }
+      },
+      {
+        "tier": 3,
+        "damage": 48,
+        "cooldown": 0.2,
+        "speed": 500,
+        "crit": 0.15,
+        "critDmg": 2.5,
+        "price": 720,
+        "element": "shock",
+        "extras": {
+          "chain": 15,
+          "elemental": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": "leg_thermal",
+    "name": "THERMAL-DAMPFKANONE",
+    "classes": [
+      "elemental",
+      "gun",
+      "support"
+    ],
+    "type": "cone",
+    "color": "#ff7a3d",
+    "scaling": {
+      "elem": 0.5,
+      "eng": 0.25
+    },
+    "unlockDefault": false,
+    "unlock": null,
+    "special": "Legendär: Überdruck-Dampfstrahl — verbrennt Feinde und lädt Elementarreaktionen.",
+    "tiers": [
+      {
+        "tier": 0,
+        "damage": 10,
+        "cooldown": 0.34,
+        "speed": 330,
+        "crit": 0.04,
+        "critDmg": 1.6,
+        "price": 90,
+        "element": "fire",
+        "extras": {
+          "cone": 1.4,
+          "burn": 2.4,
+          "elemental": 1
+        }
+      },
+      {
+        "tier": 1,
+        "damage": 17,
+        "cooldown": 0.31,
+        "speed": 370,
+        "crit": 0.05,
+        "critDmg": 1.7,
+        "price": 180,
+        "element": "fire",
+        "extras": {
+          "cone": 1.5,
+          "burn": 3.2,
+          "elemental": 1
+        }
+      },
+      {
+        "tier": 2,
+        "damage": 28,
+        "cooldown": 0.28,
+        "speed": 420,
+        "crit": 0.06,
+        "critDmg": 1.8,
+        "price": 360,
+        "element": "fire",
+        "extras": {
+          "cone": 1.6,
+          "burn": 4,
+          "elemental": 1
+        }
+      },
+      {
+        "tier": 3,
+        "damage": 45,
+        "cooldown": 0.25,
+        "speed": 500,
+        "crit": 0.08,
+        "critDmg": 2,
+        "price": 720,
+        "element": "fire",
+        "extras": {
+          "cone": 1.8,
+          "burn": 5,
+          "elemental": 1
+        }
+      }
+    ]
+  }
+]

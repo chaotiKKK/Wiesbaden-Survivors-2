@@ -1,0 +1,161 @@
+id,name,cls,type,tier,damage,cooldown,speed,crit,critdmg,price,element,extras,special
+pistol,Dienstpistole,gun|precise,projectile,0,8,0.65,420,0.06,1.6,10,,{},"Zuverlässig, günstig, trifft immer den nächsten Feind."
+pistol,Dienstpistole,gun|precise,projectile,1,13,0.6,450,0.07,1.6,22,,{},"Zuverlässig, günstig, trifft immer den nächsten Feind."
+pistol,Dienstpistole,gun|precise,projectile,2,21,0.55,490,0.08,1.8,46,,{},"Zuverlässig, günstig, trifft immer den nächsten Feind."
+pistol,Dienstpistole,gun|precise,projectile,3,34,0.5,560,0.1,2,92,,{},"Zuverlässig, günstig, trifft immer den nächsten Feind."
+smg,MP Rheingau,gun,projectile,0,4,0.18,340,0.05,1.5,14,,{},"Sehr hohe Feuerrate, geringe Einzelschadenswerte."
+smg,MP Rheingau,gun,projectile,1,7,0.17,360,0.06,1.5,28,,{},"Sehr hohe Feuerrate, geringe Einzelschadenswerte."
+smg,MP Rheingau,gun,projectile,2,11,0.16,390,0.07,1.7,58,,{},"Sehr hohe Feuerrate, geringe Einzelschadenswerte."
+smg,MP Rheingau,gun,projectile,3,18,0.15,450,0.08,2,118,,{},"Sehr hohe Feuerrate, geringe Einzelschadenswerte."
+shotgun,Schrotflinte,gun|heavy,projectile,0,5,1.05,260,0.05,1.5,16,,"{""pellets"":4,""spread"":0.45}","Streuschuss: mehrere Projektile pro Schuss, tödlich auf kurze Distanz."
+shotgun,Schrotflinte,gun|heavy,projectile,1,8,1,280,0.06,1.5,32,,"{""pellets"":5,""spread"":0.45}","Streuschuss: mehrere Projektile pro Schuss, tödlich auf kurze Distanz."
+shotgun,Schrotflinte,gun|heavy,projectile,2,13,0.95,310,0.07,1.75,66,,"{""pellets"":6,""spread"":0.42}","Streuschuss: mehrere Projektile pro Schuss, tödlich auf kurze Distanz."
+shotgun,Schrotflinte,gun|heavy,projectile,3,21,0.9,360,0.08,2,134,,"{""pellets"":8,""spread"":0.4}","Streuschuss: mehrere Projektile pro Schuss, tödlich auf kurze Distanz."
+chaingun,Kettenkanone,gun|heavy,projectile,0,2,0.11,320,0.04,1.5,20,,{},Nerf-Protokoll 1984: Dauerfeuer mit reduziertem Krit-Multiplikator.
+chaingun,Kettenkanone,gun|heavy,projectile,1,4,0.1,340,0.05,1.5,40,,{},Nerf-Protokoll 1984: Dauerfeuer mit reduziertem Krit-Multiplikator.
+chaingun,Kettenkanone,gun|heavy,projectile,2,7,0.09,370,0.06,1.5,82,,{},Nerf-Protokoll 1984: Dauerfeuer mit reduziertem Krit-Multiplikator.
+chaingun,Kettenkanone,gun|heavy,projectile,3,12,0.08,420,0.07,1.5,166,,{},Nerf-Protokoll 1984: Dauerfeuer mit reduziertem Krit-Multiplikator.
+sniper,Scharfschützengewehr,gun|precise,projectile,0,22,1,700,0.18,2,30,,"{""pierce"":2}","Durchschlägt mehrere Gegner, extreme Reichweite und Krit-Werte."
+sniper,Scharfschützengewehr,gun|precise,projectile,1,36,0.95,760,0.2,2.2,60,,"{""pierce"":3}","Durchschlägt mehrere Gegner, extreme Reichweite und Krit-Werte."
+sniper,Scharfschützengewehr,gun|precise,projectile,2,58,0.9,820,0.22,2.4,122,,"{""pierce"":4}","Durchschlägt mehrere Gegner, extreme Reichweite und Krit-Werte."
+sniper,Scharfschützengewehr,gun|precise,projectile,3,92,0.85,900,0.25,2.8,246,,"{""pierce"":6}","Durchschlägt mehrere Gegner, extreme Reichweite und Krit-Werte."
+medgun,Medi-Blaster,gun|medical|support,projectile,0,6,0.45,380,0.05,1.5,18,,"{""lifesteal"":0.65}",Buff-Protokoll: 65% Lebensraub — heilt auch den Koop-Partner in Reichweite.
+medgun,Medi-Blaster,gun|medical|support,projectile,1,10,0.42,410,0.06,1.5,36,,"{""lifesteal"":0.65}",Buff-Protokoll: 65% Lebensraub — heilt auch den Koop-Partner in Reichweite.
+medgun,Medi-Blaster,gun|medical|support,projectile,2,16,0.39,450,0.07,1.75,74,,"{""lifesteal"":0.7}",Buff-Protokoll: 65% Lebensraub — heilt auch den Koop-Partner in Reichweite.
+medgun,Medi-Blaster,gun|medical|support,projectile,3,26,0.36,520,0.08,2,150,,"{""lifesteal"":0.75}",Buff-Protokoll: 65% Lebensraub — heilt auch den Koop-Partner in Reichweite.
+shredder,Schredder,gun|explosive,projectile,0,7,0.55,330,0.05,1.5,24,boom,"{""boom"":44,""bounce"":1}",Abprallende Splittergranaten mit vergrößertem Explosionsradius.
+shredder,Schredder,gun|explosive,projectile,1,12,0.52,355,0.06,1.5,48,boom,"{""boom"":55,""bounce"":1}",Abprallende Splittergranaten mit vergrößertem Explosionsradius.
+shredder,Schredder,gun|explosive,projectile,2,19,0.49,390,0.07,1.75,98,boom,"{""boom"":66,""bounce"":2}",Abprallende Splittergranaten mit vergrößertem Explosionsradius.
+shredder,Schredder,gun|explosive,projectile,3,31,0.46,450,0.08,2,198,boom,"{""boom"":88,""bounce"":3}",Abprallende Splittergranaten mit vergrößertem Explosionsradius.
+knife,Taschenmesser,blade|precise,melee,0,10,0.5,90,0.2,2,12,,"{""arc"":1}",Schnelle Stiche mit hoher Kritchance. Trifft mehrere Gegner im Bogen.
+knife,Taschenmesser,blade|precise,melee,1,16,0.47,100,0.22,2.2,24,,"{""arc"":1}",Schnelle Stiche mit hoher Kritchance. Trifft mehrere Gegner im Bogen.
+knife,Taschenmesser,blade|precise,melee,2,26,0.44,110,0.24,2.4,50,,"{""arc"":1.1}",Schnelle Stiche mit hoher Kritchance. Trifft mehrere Gegner im Bogen.
+knife,Taschenmesser,blade|precise,melee,3,42,0.4,125,0.28,2.8,100,,"{""arc"":1.2}",Schnelle Stiche mit hoher Kritchance. Trifft mehrere Gegner im Bogen.
+spear,Speer,blade|primitive,melee,0,14,0.8,150,0.08,1.6,16,,"{""arc"":0.45,""pierce"":99}","Langer Stoß, durchbohrt eine ganze Reihe Gegner."
+spear,Speer,blade|primitive,melee,1,23,0.76,165,0.09,1.6,32,,"{""arc"":0.45,""pierce"":99}","Langer Stoß, durchbohrt eine ganze Reihe Gegner."
+spear,Speer,blade|primitive,melee,2,37,0.72,180,0.1,1.8,66,,"{""arc"":0.5,""pierce"":99}","Langer Stoß, durchbohrt eine ganze Reihe Gegner."
+spear,Speer,blade|primitive,melee,3,60,0.68,210,0.12,2,132,,"{""arc"":0.55,""pierce"":99}","Langer Stoß, durchbohrt eine ganze Reihe Gegner."
+hammer,Vorschlaghammer,blunt|medieval,melee,0,26,1.35,120,0.05,1.6,22,,"{""arc"":1.6,""stun"":0.8,""knock"":260}","Massiver Rundumschlag: hoher Schaden, Betäubung und Rückstoß."
+hammer,Vorschlaghammer,blunt|medieval,melee,1,43,1.3,132,0.06,1.6,44,,"{""arc"":1.7,""stun"":0.9,""knock"":300}","Massiver Rundumschlag: hoher Schaden, Betäubung und Rückstoß."
+hammer,Vorschlaghammer,blunt|medieval,melee,2,70,1.25,145,0.07,1.8,90,,"{""arc"":1.8,""stun"":1,""knock"":340}","Massiver Rundumschlag: hoher Schaden, Betäubung und Rückstoß."
+hammer,Vorschlaghammer,blunt|medieval,melee,3,112,1.2,165,0.08,2,182,,"{""arc"":2,""stun"":1.2,""knock"":420}","Massiver Rundumschlag: hoher Schaden, Betäubung und Rückstoß."
+wrench,Schraubenschlüssel,blunt|support,melee,0,9,0.6,100,0.06,1.5,14,,"{""arc"":1.2,""engSpark"":1}",Skaliert mit Technik und schleudert bei jedem Treffer Reparaturfunken auf Gegner.
+wrench,Schraubenschlüssel,blunt|support,melee,1,15,0.57,110,0.07,1.5,28,,"{""arc"":1.25,""engSpark"":2}",Skaliert mit Technik und schleudert bei jedem Treffer Reparaturfunken auf Gegner.
+wrench,Schraubenschlüssel,blunt|support,melee,2,24,0.54,120,0.08,1.75,58,,"{""arc"":1.3,""engSpark"":3}",Skaliert mit Technik und schleudert bei jedem Treffer Reparaturfunken auf Gegner.
+wrench,Schraubenschlüssel,blunt|support,melee,3,39,0.5,140,0.09,2,116,,"{""arc"":1.4,""engSpark"":4}",Skaliert mit Technik und schleudert bei jedem Treffer Reparaturfunken auf Gegner.
+chopper,Chopper,blade|heavy,melee,0,20,1,135,0.07,1.7,20,,"{""arc"":2.2}",Rotierender Rundumschlag mit korrigierter Reichweitenkurve.
+chopper,Chopper,blade|heavy,melee,1,33,0.95,150,0.08,1.8,40,,"{""arc"":2.3}",Rotierender Rundumschlag mit korrigierter Reichweitenkurve.
+chopper,Chopper,blade|heavy,melee,2,53,0.9,165,0.09,2,82,,"{""arc"":2.5}",Rotierender Rundumschlag mit korrigierter Reichweitenkurve.
+chopper,Chopper,blade|heavy,melee,3,85,0.85,180,0.11,2.3,166,,"{""arc"":2.8}",Rotierender Rundumschlag mit korrigierter Reichweitenkurve.
+nunchaku,Nunchaku,blunt|precise,melee,0,11,0.4,120,0.15,1.8,14,,"{""arc"":1.8,""knock"":70}","Zwei Nunchakus: schnelle Doppelhiebe mit weitem Bogen, Rückstoß und ordentlicher Krit-Chance."
+nunchaku,Nunchaku,blunt|precise,melee,1,18,0.38,132,0.16,2,28,,"{""arc"":1.9,""knock"":80}","Zwei Nunchakus: schnelle Doppelhiebe mit weitem Bogen, Rückstoß und ordentlicher Krit-Chance."
+nunchaku,Nunchaku,blunt|precise,melee,2,29,0.36,145,0.18,2.2,58,,"{""arc"":2,""knock"":90}","Zwei Nunchakus: schnelle Doppelhiebe mit weitem Bogen, Rückstoß und ordentlicher Krit-Chance."
+nunchaku,Nunchaku,blunt|precise,melee,3,47,0.34,160,0.2,2.4,116,,"{""arc"":2.2,""knock"":100}","Zwei Nunchakus: schnelle Doppelhiebe mit weitem Bogen, Rückstoß und ordentlicher Krit-Chance."
+flamer,Feuerwehrflammer,elemental|support,cone,0,3,0.12,200,0.03,1.5,26,fire,"{""cone"":0.55,""burn"":4}","Dauerfeuer-Kegel, setzt Gegner in Brand (Schaden über Zeit)."
+flamer,Feuerwehrflammer,elemental|support,cone,1,5,0.11,220,0.03,1.5,52,fire,"{""cone"":0.6,""burn"":7}","Dauerfeuer-Kegel, setzt Gegner in Brand (Schaden über Zeit)."
+flamer,Feuerwehrflammer,elemental|support,cone,2,9,0.1,250,0.04,1.75,106,fire,"{""cone"":0.65,""burn"":11}","Dauerfeuer-Kegel, setzt Gegner in Brand (Schaden über Zeit)."
+flamer,Feuerwehrflammer,elemental|support,cone,3,15,0.09,300,0.05,2,214,fire,"{""cone"":0.75,""burn"":18}","Dauerfeuer-Kegel, setzt Gegner in Brand (Schaden über Zeit)."
+railgun,Railgun,gun|heavy,hitscan,0,25,1.5,800,0.05,1.5,35,,"{""perHit"":0}",Durchdringt ALLE Gegner auf der Linie. Ab Stufe 2 wächst der Schaden pro getroffenem Gegner.
+railgun,Railgun,gun|heavy,hitscan,1,40,1.4,850,0.05,1.5,68,,"{""perHit"":0.1}",Durchdringt ALLE Gegner auf der Linie. Ab Stufe 2 wächst der Schaden pro getroffenem Gegner.
+railgun,Railgun,gun|heavy,hitscan,2,60,1.3,900,0.05,1.75,132,,"{""perHit"":0.15}",Durchdringt ALLE Gegner auf der Linie. Ab Stufe 2 wächst der Schaden pro getroffenem Gegner.
+railgun,Railgun,gun|heavy,hitscan,3,90,1.2,1000,0.05,2,258,,"{""perHit"":0.2}",Durchdringt ALLE Gegner auf der Linie. Ab Stufe 2 wächst der Schaden pro getroffenem Gegner.
+plasma,Plasma Caster,elemental|explosive,projectile,0,8,0.9,450,0.03,1.5,28,boom,"{""boom"":60,""elemental"":1}",Plasma-Explosion beim Aufschlag (Radius 60/75/90/120).
+plasma,Plasma Caster,elemental|explosive,projectile,1,14,0.85,480,0.03,1.5,55,boom,"{""boom"":75,""elemental"":1}",Plasma-Explosion beim Aufschlag (Radius 60/75/90/120).
+plasma,Plasma Caster,elemental|explosive,projectile,2,22,0.8,520,0.03,1.75,108,boom,"{""boom"":90,""elemental"":1}",Plasma-Explosion beim Aufschlag (Radius 60/75/90/120).
+plasma,Plasma Caster,elemental|explosive,projectile,3,35,0.75,600,0.03,2,210,boom,"{""boom"":120,""elemental"":1}",Plasma-Explosion beim Aufschlag (Radius 60/75/90/120).
+sonic,Sonic Blaster,gun|support,cone,0,5,0.5,350,0.1,1.5,18,,"{""cone"":1.75}",Schallwellen treffen alle Gegner im Kegel (100°/120°/140°/180°).
+sonic,Sonic Blaster,gun|support,cone,1,9,0.45,380,0.12,1.5,36,,"{""cone"":2.09}",Schallwellen treffen alle Gegner im Kegel (100°/120°/140°/180°).
+sonic,Sonic Blaster,gun|support,cone,2,15,0.4,420,0.15,1.75,72,,"{""cone"":2.44}",Schallwellen treffen alle Gegner im Kegel (100°/120°/140°/180°).
+sonic,Sonic Blaster,gun|support,cone,3,25,0.35,500,0.18,2,144,,"{""cone"":3.14}",Schallwellen treffen alle Gegner im Kegel (100°/120°/140°/180°).
+loeschwasser,Löschwasserstrahl,elemental|support,cone,0,6,0.3,700,0.07,1.5,26,,"{""cone"":0.3}","Leonidas Hochdruckstrahl: langer, schmaler Wasserstrahl über die ganze Arena — löscht Brände, verlangsamt und drückt Gegner weg."
+loeschwasser,Löschwasserstrahl,elemental|support,cone,1,10,0.28,780,0.08,1.5,52,,"{""cone"":0.34}","Leonidas Hochdruckstrahl: langer, schmaler Wasserstrahl über die ganze Arena — löscht Brände, verlangsamt und drückt Gegner weg."
+loeschwasser,Löschwasserstrahl,elemental|support,cone,2,16,0.26,880,0.09,1.75,104,,"{""cone"":0.38}","Leonidas Hochdruckstrahl: langer, schmaler Wasserstrahl über die ganze Arena — löscht Brände, verlangsamt und drückt Gegner weg."
+loeschwasser,Löschwasserstrahl,elemental|support,cone,3,26,0.24,1000,0.1,2,208,,"{""cone"":0.44}","Leonidas Hochdruckstrahl: langer, schmaler Wasserstrahl über die ganze Arena — löscht Brände, verlangsamt und drückt Gegner weg."
+musiknoten,Noten-Sturm,elemental|support,projectile,0,16,0.6,900,0.1,1.8,26,,"{""pierce"":1,""elemental"":1}",T.Boehmers Signature: eine große Musiknote startet mittig und fliegt weit im Zickzack — durchschlägt Gegner.
+musiknoten,Noten-Sturm,elemental|support,projectile,1,26,0.55,980,0.12,1.8,52,,"{""pierce"":1,""elemental"":1}",T.Boehmers Signature: eine große Musiknote startet mittig und fliegt weit im Zickzack — durchschlägt Gegner.
+musiknoten,Noten-Sturm,elemental|support,projectile,2,40,0.5,1080,0.14,2,104,,"{""pierce"":2,""elemental"":1}",T.Boehmers Signature: eine große Musiknote startet mittig und fliegt weit im Zickzack — durchschlägt Gegner.
+musiknoten,Noten-Sturm,elemental|support,projectile,3,62,0.45,1200,0.16,2.2,208,,"{""pierce"":3,""elemental"":1}",T.Boehmers Signature: eine große Musiknote startet mittig und fliegt weit im Zickzack — durchschlägt Gegner.
+nagler,Nagelpistole,gun|precise,projectile,0,7,0.22,480,0.1,1.9,12,,"{""pierce"":1,""spread"":0.04}","Schneller Nagelhagel: dünne Stifte, die sich durch ganze Reihen fädeln. Hohe Krit-Chance, wenig Einzelschaden."
+nagler,Nagelpistole,gun|precise,projectile,1,11,0.2,520,0.12,2,24,,"{""pierce"":2,""spread"":0.035}","Schneller Nagelhagel: dünne Stifte, die sich durch ganze Reihen fädeln. Hohe Krit-Chance, wenig Einzelschaden."
+nagler,Nagelpistole,gun|precise,projectile,2,18,0.18,560,0.14,2.2,50,,"{""pierce"":3,""spread"":0.03}","Schneller Nagelhagel: dünne Stifte, die sich durch ganze Reihen fädeln. Hohe Krit-Chance, wenig Einzelschaden."
+nagler,Nagelpistole,gun|precise,projectile,3,29,0.16,620,0.17,2.4,100,,"{""pierce"":4,""spread"":0.025}","Schneller Nagelhagel: dünne Stifte, die sich durch ganze Reihen fädeln. Hohe Krit-Chance, wenig Einzelschaden."
+schrottkanone,Schrottkanone,gun|heavy,projectile,0,6,0.95,300,0.06,1.7,20,,"{""pellets"":7,""spread"":0.48}","Geladen mit allem, was der Wertstoffhof hergibt. Eine breite Wolke aus Schrauben, Blech und Scherben."
+schrottkanone,Schrottkanone,gun|heavy,projectile,1,10,0.9,330,0.07,1.8,40,,"{""pellets"":8,""spread"":0.45}","Geladen mit allem, was der Wertstoffhof hergibt. Eine breite Wolke aus Schrauben, Blech und Scherben."
+schrottkanone,Schrottkanone,gun|heavy,projectile,2,16,0.84,360,0.08,2,82,,"{""pellets"":10,""spread"":0.42}","Geladen mit allem, was der Wertstoffhof hergibt. Eine breite Wolke aus Schrauben, Blech und Scherben."
+schrottkanone,Schrottkanone,gun|heavy,projectile,3,26,0.78,400,0.1,2.2,165,,"{""pellets"":12,""spread"":0.38}","Geladen mit allem, was der Wertstoffhof hergibt. Eine breite Wolke aus Schrauben, Blech und Scherben."
+bierwerfer,Bierkastenwerfer,explosive|heavy,projectile,0,16,1.25,380,0.05,1.8,26,ice,"{""boom"":78,""slow"":0.2,""slowT"":1.4}",Ein voller Kasten fliegt weit und geht laut zu Bruch. Die Scherben machen den Boden rutschig.
+bierwerfer,Bierkastenwerfer,explosive|heavy,projectile,1,26,1.15,410,0.06,1.9,52,ice,"{""boom"":92,""slow"":0.24,""slowT"":1.6}",Ein voller Kasten fliegt weit und geht laut zu Bruch. Die Scherben machen den Boden rutschig.
+bierwerfer,Bierkastenwerfer,explosive|heavy,projectile,2,42,1.05,450,0.07,2,108,ice,"{""boom"":108,""slow"":0.28,""slowT"":1.8}",Ein voller Kasten fliegt weit und geht laut zu Bruch. Die Scherben machen den Boden rutschig.
+bierwerfer,Bierkastenwerfer,explosive|heavy,projectile,3,68,0.95,500,0.09,2.2,215,ice,"{""boom"":128,""slow"":0.32,""slowT"":2}",Ein voller Kasten fliegt weit und geht laut zu Bruch. Die Scherben machen den Boden rutschig.
+magnetmine,Magnetmine,explosive|precise,projectile,0,22,1.5,420,0.08,2,30,boom,"{""boom"":86,""stick"":1.1,""armorPierce"":4}","Haftet am ersten Ziel und zündet kurz darauf. Wer getroffen wird, nimmt die Mine mit in die Menge."
+magnetmine,Magnetmine,explosive|precise,projectile,1,36,1.4,450,0.09,2.1,60,boom,"{""boom"":100,""stick"":1,""armorPierce"":6}","Haftet am ersten Ziel und zündet kurz darauf. Wer getroffen wird, nimmt die Mine mit in die Menge."
+magnetmine,Magnetmine,explosive|precise,projectile,2,58,1.3,490,0.11,2.3,122,boom,"{""boom"":118,""stick"":0.9,""armorPierce"":8}","Haftet am ersten Ziel und zündet kurz darauf. Wer getroffen wird, nimmt die Mine mit in die Menge."
+magnetmine,Magnetmine,explosive|precise,projectile,3,94,1.2,540,0.13,2.5,245,boom,"{""boom"":140,""stick"":0.8,""armorPierce"":12}","Haftet am ersten Ziel und zündet kurz darauf. Wer getroffen wird, nimmt die Mine mit in die Menge."
+taubenschwarm,Taubenschwarm,primitive|support,projectile,0,9,0.62,620,0.08,1.8,22,,"{""pellets"":3,""spread"":0.6,""homing"":3.2}","Aufgescheuchte Kurpark-Tauben suchen sich ihr Ziel selbst. Nicht elegant, aber unbeirrbar."
+taubenschwarm,Taubenschwarm,primitive|support,projectile,1,14,0.58,660,0.09,1.9,44,,"{""pellets"":4,""spread"":0.6,""homing"":3.6}","Aufgescheuchte Kurpark-Tauben suchen sich ihr Ziel selbst. Nicht elegant, aber unbeirrbar."
+taubenschwarm,Taubenschwarm,primitive|support,projectile,2,23,0.54,700,0.11,2,92,,"{""pellets"":5,""spread"":0.65,""homing"":4.2}","Aufgescheuchte Kurpark-Tauben suchen sich ihr Ziel selbst. Nicht elegant, aber unbeirrbar."
+taubenschwarm,Taubenschwarm,primitive|support,projectile,3,37,0.5,760,0.13,2.2,184,,"{""pellets"":6,""spread"":0.7,""homing"":5}","Aufgescheuchte Kurpark-Tauben suchen sich ihr Ziel selbst. Nicht elegant, aber unbeirrbar."
+kettensaege,Kettensäge,blade|heavy,melee,0,9,0.18,92,0.07,1.8,24,,"{""arc"":0.95,""knock"":40,""bleed"":1}","Läuft durch, solange der Finger am Gas bleibt. Sehr kurze Reichweite, dafür ein durchgehender Fleischwolf."
+kettensaege,Kettensäge,blade|heavy,melee,1,15,0.17,100,0.08,1.9,48,,"{""arc"":1,""knock"":46,""bleed"":1}","Läuft durch, solange der Finger am Gas bleibt. Sehr kurze Reichweite, dafür ein durchgehender Fleischwolf."
+kettensaege,Kettensäge,blade|heavy,melee,2,25,0.16,108,0.1,2.1,100,,"{""arc"":1.05,""knock"":54,""bleed"":1}","Läuft durch, solange der Finger am Gas bleibt. Sehr kurze Reichweite, dafür ein durchgehender Fleischwolf."
+kettensaege,Kettensäge,blade|heavy,melee,3,41,0.15,118,0.12,2.3,200,,"{""arc"":1.15,""knock"":62,""bleed"":1}","Läuft durch, solange der Finger am Gas bleibt. Sehr kurze Reichweite, dafür ein durchgehender Fleischwolf."
+laserzirkel,Laserzirkel,elemental|precise,aura,0,7,0.32,116,0.06,1.7,28,fire,"{""elemental"":1,""burn"":4}","Zwei rotierende Schnittstrahlen kreisen um den Träger und brennen alles an, was zu nah kommt."
+laserzirkel,Laserzirkel,elemental|precise,aura,1,12,0.3,128,0.07,1.8,56,fire,"{""elemental"":1,""burn"":6}","Zwei rotierende Schnittstrahlen kreisen um den Träger und brennen alles an, was zu nah kommt."
+laserzirkel,Laserzirkel,elemental|precise,aura,2,19,0.28,142,0.09,2,116,fire,"{""elemental"":1,""burn"":9}","Zwei rotierende Schnittstrahlen kreisen um den Träger und brennen alles an, was zu nah kommt."
+laserzirkel,Laserzirkel,elemental|precise,aura,3,31,0.26,158,0.11,2.2,232,fire,"{""elemental"":1,""burn"":13}","Zwei rotierende Schnittstrahlen kreisen um den Träger und brennen alles an, was zu nah kommt."
+blitzableiter,Blitzableiter,elemental|support,chain,0,11,0.78,300,0.07,1.8,26,shock,"{""chain"":4,""chainRange"":150,""elemental"":1,""shock"":1}",Zieht die Entladung vom Dach in die Menge. Springt weiter als jede andere Kette und betäubt kurz.
+blitzableiter,Blitzableiter,elemental|support,chain,1,18,0.72,330,0.08,1.9,52,shock,"{""chain"":5,""chainRange"":165,""elemental"":1,""shock"":1}",Zieht die Entladung vom Dach in die Menge. Springt weiter als jede andere Kette und betäubt kurz.
+blitzableiter,Blitzableiter,elemental|support,chain,2,29,0.66,360,0.1,2.1,108,shock,"{""chain"":7,""chainRange"":180,""elemental"":1,""shock"":1}",Zieht die Entladung vom Dach in die Menge. Springt weiter als jede andere Kette und betäubt kurz.
+blitzableiter,Blitzableiter,elemental|support,chain,3,47,0.6,400,0.12,2.3,216,shock,"{""chain"":9,""chainRange"":200,""elemental"":1,""shock"":1}",Zieht die Entladung vom Dach in die Menge. Springt weiter als jede andere Kette und betäubt kurz.
+ratschlaege,Gute Ratschläge,support|precise,projectile,0,10,0.5,560,0.07,1.7,14,ice,"{""pierce"":1,""slow"":0.22,""slowT"":1.6,""advice"":1}","Ös Signature: gut gemeinte Ratschläge als Sprechblasen. Sie schweben leicht, durchschlagen mehrere Gegner und lassen sie grübelnd langsamer werden."
+ratschlaege,Gute Ratschläge,support|precise,projectile,1,16,0.47,600,0.08,1.8,28,ice,"{""pierce"":2,""slow"":0.26,""slowT"":1.8,""advice"":1}","Ös Signature: gut gemeinte Ratschläge als Sprechblasen. Sie schweben leicht, durchschlagen mehrere Gegner und lassen sie grübelnd langsamer werden."
+ratschlaege,Gute Ratschläge,support|precise,projectile,2,26,0.44,660,0.1,2,58,ice,"{""pierce"":3,""slow"":0.3,""slowT"":2,""advice"":1}","Ös Signature: gut gemeinte Ratschläge als Sprechblasen. Sie schweben leicht, durchschlagen mehrere Gegner und lassen sie grübelnd langsamer werden."
+ratschlaege,Gute Ratschläge,support|precise,projectile,3,42,0.4,740,0.12,2.2,116,ice,"{""pierce"":4,""slow"":0.34,""slowT"":2.2,""advice"":1}","Ös Signature: gut gemeinte Ratschläge als Sprechblasen. Sie schweben leicht, durchschlagen mehrere Gegner und lassen sie grübelnd langsamer werden."
+gravgun,Gravity Gun,heavy|explosive,projectile,0,15,1.8,300,0.03,1.5,40,boom,"{""pull"":100,""boom"":60}","Erzeugt ein Gravitationszentrum, das Gegner heranzieht und zerquetscht."
+gravgun,Gravity Gun,heavy|explosive,projectile,1,25,1.7,320,0.03,1.5,78,boom,"{""pull"":130,""boom"":70}","Erzeugt ein Gravitationszentrum, das Gegner heranzieht und zerquetscht."
+gravgun,Gravity Gun,heavy|explosive,projectile,2,40,1.6,350,0.03,1.75,152,boom,"{""pull"":160,""boom"":80}","Erzeugt ein Gravitationszentrum, das Gegner heranzieht und zerquetscht."
+gravgun,Gravity Gun,heavy|explosive,projectile,3,60,1.5,400,0.03,2,298,boom,"{""pull"":200,""boom"":95}","Erzeugt ein Gravitationszentrum, das Gegner heranzieht und zerquetscht."
+tesla,Tesla Coil,elemental|support,chain,0,10,0.3,250,0.08,1.8,22,shock,"{""chain"":3,""elemental"":1}",Kettenblitz springt auf 3/4/5/7 Gegner über — Partikelblitz mit Funkenflug. Skaliert mit Elementar und Technik.
+tesla,Tesla Coil,elemental|support,chain,1,17,0.28,280,0.08,1.8,44,shock,"{""chain"":4,""elemental"":1}",Kettenblitz springt auf 3/4/5/7 Gegner über — Partikelblitz mit Funkenflug. Skaliert mit Elementar und Technik.
+tesla,Tesla Coil,elemental|support,chain,2,28,0.26,320,0.1,2,88,shock,"{""chain"":5,""elemental"":1}",Kettenblitz springt auf 3/4/5/7 Gegner über — Partikelblitz mit Funkenflug. Skaliert mit Elementar und Technik.
+tesla,Tesla Coil,elemental|support,chain,3,45,0.24,380,0.1,2,176,shock,"{""chain"":7,""elemental"":1}",Kettenblitz springt auf 3/4/5/7 Gegner über — Partikelblitz mit Funkenflug. Skaliert mit Elementar und Technik.
+frost,Frost Cannon,gun|medieval,projectile,0,12,1.2,500,0.03,1.5,30,ice,"{""slow"":0.3,""slowT"":2,""elemental"":1}",Vereist Gegner: verlangsamt um 30–60% für 2–4 s.
+frost,Frost Cannon,gun|medieval,projectile,1,20,1.1,550,0.03,1.5,58,ice,"{""slow"":0.4,""slowT"":2.5,""elemental"":1}",Vereist Gegner: verlangsamt um 30–60% für 2–4 s.
+frost,Frost Cannon,gun|medieval,projectile,2,32,1,600,0.03,1.75,114,ice,"{""slow"":0.5,""slowT"":3,""elemental"":1}",Vereist Gegner: verlangsamt um 30–60% für 2–4 s.
+frost,Frost Cannon,gun|medieval,projectile,3,50,0.9,700,0.03,2,224,ice,"{""slow"":0.6,""slowT"":4,""elemental"":1}",Vereist Gegner: verlangsamt um 30–60% für 2–4 s.
+spore,Spore Launcher,primitive|explosive,projectile,0,6,0.8,400,0.05,1.5,25,poison,"{""poison"":8,""poisonT"":3,""cloud"":60}",Hinterlässt eine Giftwolke: 8–36 Schaden über 3 s.
+spore,Spore Launcher,primitive|explosive,projectile,1,10,0.75,430,0.05,1.5,48,poison,"{""poison"":14,""poisonT"":3,""cloud"":68}",Hinterlässt eine Giftwolke: 8–36 Schaden über 3 s.
+spore,Spore Launcher,primitive|explosive,projectile,2,16,0.7,470,0.05,1.75,96,poison,"{""poison"":22,""poisonT"":3,""cloud"":76}",Hinterlässt eine Giftwolke: 8–36 Schaden über 3 s.
+spore,Spore Launcher,primitive|explosive,projectile,3,26,0.65,550,0.05,2,188,poison,"{""poison"":36,""poisonT"":3,""cloud"":92}",Hinterlässt eine Giftwolke: 8–36 Schaden über 3 s.
+photon,Photon Rifle,precise|gun,projectile,0,18,1.3,600,0.15,2,38,,"{""armorPierce"":0.2}",Präzisionsschuss ignoriert 20–50% der gegnerischen Rüstung.
+photon,Photon Rifle,precise|gun,projectile,1,30,1.2,650,0.18,2.25,74,,"{""armorPierce"":0.3}",Präzisionsschuss ignoriert 20–50% der gegnerischen Rüstung.
+photon,Photon Rifle,precise|gun,projectile,2,48,1.1,720,0.2,2.5,146,,"{""armorPierce"":0.4}",Präzisionsschuss ignoriert 20–50% der gegnerischen Rüstung.
+photon,Photon Rifle,precise|gun,projectile,3,75,1,800,0.25,3,286,,"{""armorPierce"":0.5}",Präzisionsschuss ignoriert 20–50% der gegnerischen Rüstung.
+arc,Arc Thrower,elemental|heavy,charge,0,10,1,280,0.03,1.5,32,,"{""chargeMax"":2,""chargeT"":1.4,""elemental"":1}",Lädt sich auf: bis zu 200–300% Schaden als durchschlagender Bogenblitz.
+arc,Arc Thrower,elemental|heavy,charge,1,18,0.95,310,0.03,1.5,62,,"{""chargeMax"":2.2,""chargeT"":1.4,""elemental"":1}",Lädt sich auf: bis zu 200–300% Schaden als durchschlagender Bogenblitz.
+arc,Arc Thrower,elemental|heavy,charge,2,28,0.9,350,0.03,1.75,122,,"{""chargeMax"":2.5,""chargeT"":1.3,""elemental"":1}",Lädt sich auf: bis zu 200–300% Schaden als durchschlagender Bogenblitz.
+arc,Arc Thrower,elemental|heavy,charge,3,45,0.85,420,0.03,2,240,,"{""chargeMax"":3,""chargeT"":1.2,""elemental"":1}",Lädt sich auf: bis zu 200–300% Schaden als durchschlagender Bogenblitz.
+needle,Needle Gun,precise|medical,projectile,0,3,0.15,400,0.1,1.5,20,,"{""healHit"":1}",Heilnadeln: 1–5 HP Heilung pro Treffer.
+needle,Needle Gun,precise|medical,projectile,1,5,0.14,430,0.12,1.5,40,,"{""healHit"":2}",Heilnadeln: 1–5 HP Heilung pro Treffer.
+needle,Needle Gun,precise|medical,projectile,2,9,0.13,470,0.15,1.75,80,,"{""healHit"":3}",Heilnadeln: 1–5 HP Heilung pro Treffer.
+needle,Needle Gun,precise|medical,projectile,3,15,0.12,550,0.18,2,160,,"{""healHit"":5}",Heilnadeln: 1–5 HP Heilung pro Treffer.
+vortex,Vortex Cannon,support|explosive,aura,0,2,0.2,200,0.03,1.5,26,,"{""pull"":120,""dur"":1.5}",Permanenter Wirbel um dich: zieht Gegner an und fügt Dauerschaden zu.
+vortex,Vortex Cannon,support|explosive,aura,1,4,0.18,230,0.03,1.5,50,,"{""pull"":150,""dur"":2}",Permanenter Wirbel um dich: zieht Gegner an und fügt Dauerschaden zu.
+vortex,Vortex Cannon,support|explosive,aura,2,7,0.16,270,0.03,1.75,100,,"{""pull"":180,""dur"":3}",Permanenter Wirbel um dich: zieht Gegner an und fügt Dauerschaden zu.
+vortex,Vortex Cannon,support|explosive,aura,3,12,0.14,330,0.03,2,196,,"{""pull"":220,""dur"":4}",Permanenter Wirbel um dich: zieht Gegner an und fügt Dauerschaden zu.
+starfall,Starfall Bow,medieval|precise,projectile,0,14,1.1,550,0.08,2,36,,"{""pellets"":3,""spread"":0.3,""arcRain"":1}","Sternenregen: 3–6 Leuchtpfeile gleichzeitig, die beim Aufprall funkeln."
+starfall,Starfall Bow,medieval|precise,projectile,1,22,1,600,0.1,2.25,70,,"{""pellets"":4,""spread"":0.32,""arcRain"":1}","Sternenregen: 3–6 Leuchtpfeile gleichzeitig, die beim Aufprall funkeln."
+starfall,Starfall Bow,medieval|precise,projectile,2,35,0.9,660,0.12,2.5,138,,"{""pellets"":5,""spread"":0.34,""arcRain"":1}","Sternenregen: 3–6 Leuchtpfeile gleichzeitig, die beim Aufprall funkeln."
+starfall,Starfall Bow,medieval|precise,projectile,3,55,0.8,750,0.15,3,270,,"{""pellets"":6,""spread"":0.36,""arcRain"":1}","Sternenregen: 3–6 Leuchtpfeile gleichzeitig, die beim Aufprall funkeln."
+leg_rheingold,RHEINGOLD-ORGEL,gun|heavy|explosive,projectile,0,16,0.32,380,0.06,1.8,90,boom,"{""pellets"":6,""spread"":0.42,""boom"":42,""elemental"":1}",Legendär: Acht goldene Rohre — jede Salve detoniert mit Elementarkraft.
+leg_rheingold,RHEINGOLD-ORGEL,gun|heavy|explosive,projectile,1,27,0.3,420,0.07,1.8,180,boom,"{""pellets"":7,""spread"":0.44,""boom"":52,""elemental"":1}",Legendär: Acht goldene Rohre — jede Salve detoniert mit Elementarkraft.
+leg_rheingold,RHEINGOLD-ORGEL,gun|heavy|explosive,projectile,2,44,0.27,470,0.08,2,360,boom,"{""pellets"":8,""spread"":0.46,""boom"":64,""elemental"":1}",Legendär: Acht goldene Rohre — jede Salve detoniert mit Elementarkraft.
+leg_rheingold,RHEINGOLD-ORGEL,gun|heavy|explosive,projectile,3,70,0.24,540,0.1,2.25,720,boom,"{""pellets"":10,""spread"":0.5,""boom"":80,""elemental"":1}",Legendär: Acht goldene Rohre — jede Salve detoniert mit Elementarkraft.
+leg_neroberg,NEROBERG-STURM,elemental|heavy,chain,0,11,0.26,320,0.08,1.9,90,shock,"{""chain"":8,""elemental"":1}",Legendär: Ein lebender Blitz gewinnt mit jedem Sprung an Schärfe.
+leg_neroberg,NEROBERG-STURM,elemental|heavy,chain,1,18,0.24,360,0.1,2,180,shock,"{""chain"":10,""elemental"":1}",Legendär: Ein lebender Blitz gewinnt mit jedem Sprung an Schärfe.
+leg_neroberg,NEROBERG-STURM,elemental|heavy,chain,2,30,0.22,420,0.12,2.25,360,shock,"{""chain"":12,""elemental"":1}",Legendär: Ein lebender Blitz gewinnt mit jedem Sprung an Schärfe.
+leg_neroberg,NEROBERG-STURM,elemental|heavy,chain,3,48,0.2,500,0.15,2.5,720,shock,"{""chain"":15,""elemental"":1}",Legendär: Ein lebender Blitz gewinnt mit jedem Sprung an Schärfe.
+leg_thermal,THERMAL-DAMPFKANONE,elemental|gun|support,cone,0,10,0.34,330,0.04,1.6,90,fire,"{""cone"":1.4,""burn"":2.4,""elemental"":1}",Legendär: Überdruck-Dampfstrahl — verbrennt Feinde und lädt Elementarreaktionen.
+leg_thermal,THERMAL-DAMPFKANONE,elemental|gun|support,cone,1,17,0.31,370,0.05,1.7,180,fire,"{""cone"":1.5,""burn"":3.2,""elemental"":1}",Legendär: Überdruck-Dampfstrahl — verbrennt Feinde und lädt Elementarreaktionen.
+leg_thermal,THERMAL-DAMPFKANONE,elemental|gun|support,cone,2,28,0.28,420,0.06,1.8,360,fire,"{""cone"":1.6,""burn"":4,""elemental"":1}",Legendär: Überdruck-Dampfstrahl — verbrennt Feinde und lädt Elementarreaktionen.
+leg_thermal,THERMAL-DAMPFKANONE,elemental|gun|support,cone,3,45,0.25,500,0.08,2,720,fire,"{""cone"":1.8,""burn"":5,""elemental"":1}",Legendär: Überdruck-Dampfstrahl — verbrennt Feinde und lädt Elementarreaktionen.
