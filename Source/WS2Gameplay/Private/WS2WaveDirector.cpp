@@ -18,10 +18,13 @@ UWS2WaveDirector::UWS2WaveDirector()
 	PrimaryComponentTick.bCanEverTick = true;
 }
 
-void UWS2WaveDirector::StartSlice(bool bInAllTypes, float InBossHpScale, float InProofBossHp)
+void UWS2WaveDirector::StartSlice(bool bInAllTypes, float InBossHpScale, float InProofBossHp, bool bInShortRun,
+	bool bInSpawnBoss)
 {
 	GameMode = Cast<AWS2GameMode>(GetOwner());
 	bAllTypes = bInAllTypes;
+	bShortRun = bInShortRun;
+	bSpawnBoss = bInSpawnBoss;
 	BossHpScale = FMath::Clamp(InBossHpScale, 0.0005f, 1.f);
 	ProofBossHp = FMath::Max(0.f, InProofBossHp);
 	Rng = FWS2Rng(1984ull);
@@ -36,15 +39,19 @@ void UWS2WaveDirector::StartSlice(bool bInAllTypes, float InBossHpScale, float I
 			BossDefIndices.Add(Index);
 		}
 	}
-	// One boss beat per assigned boss: 5 waves for a single-boss arena, 6 for
-	// Innenstadt and Neroberg, which each carry two encounters.
-	MaxWaves = FMath::Max(SliceWaves, 4 + BossDefIndices.Num());
+	// Proof runs keep the five-wave slice. A normal run is the full 20-wave
+	// arena campaign; the assigned bosses close it out in their phase order.
+	MaxWaves = bShortRun ? FMath::Max(SliceWaves, 4 + BossDefIndices.Num()) : FullWaves;
+	BossFirstWave = FMath::Max(1, MaxWaves - BossDefIndices.Num() + 1);
 	bSliceComplete = false;
 	bBossWave = false;
 	bBossSpawned = false;
 
-	UE_LOG(LogWS2Wave, Display, TEXT("Arena %s: %d boss(es), %d waves%s"),
-		*ArenaId, BossDefIndices.Num(), MaxWaves, bAllTypes ? TEXT(", roster proof") : TEXT(""));
+	UE_LOG(LogWS2Wave, Display, TEXT("Arena %s: %d boss(es), %d waves%s%s%s"),
+		*ArenaId, BossDefIndices.Num(), MaxWaves,
+		bShortRun ? TEXT(", short proof") : TEXT(", full run"),
+		bAllTypes ? TEXT(", roster proof") : TEXT(""),
+		bSpawnBoss ? TEXT("") : TEXT(", bosses off"));
 
 	StartWave(1);
 
@@ -85,7 +92,7 @@ void UWS2WaveDirector::StartWave(int32 InWave)
 		return;
 	}
 
-	bBossWave = Wave >= SliceWaves && (Wave - SliceWaves) < BossDefIndices.Num();
+	bBossWave = bSpawnBoss && Wave >= BossFirstWave && (Wave - BossFirstWave) < BossDefIndices.Num();
 	bBossSpawned = false;
 	bBossAlive = false;
 
@@ -124,7 +131,7 @@ void UWS2WaveDirector::StartWave(int32 InWave)
 
 	if (bBossWave)
 	{
-		SpawnArenaBoss(Wave - SliceWaves);
+		SpawnArenaBoss(Wave - BossFirstWave);
 	}
 }
 

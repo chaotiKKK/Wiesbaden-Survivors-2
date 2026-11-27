@@ -3,7 +3,9 @@
 #include "Misc/Parse.h"
 #include "WS2Crowd.h"
 #include "WS2GameMode.h"
+#include "WS2PackageTrace.h"
 #include "WS2PlayerPawn.h"
+#include "GameFramework/PlayerState.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogWS2Weapon, Log, All);
 
@@ -40,10 +42,19 @@ void UWS2WeaponComponent::BeginPlay()
 	OwnerPawn = Cast<AWS2PlayerPawn>(GetOwner());
 	GameMode = GetWorld() ? GetWorld()->GetAuthGameMode<AWS2GameMode>() : nullptr;
 
-	if (WeaponId.IsEmpty())
+	if (WeaponId.IsEmpty() && bAutoEquipDefault)
 	{
 		SetWeapon(TEXT("pistol"));
 	}
+}
+
+void UWS2WeaponComponent::ClearWeapon()
+{
+	WeaponId.Reset();
+	Def = nullptr;
+	Tier = 0;
+	Cooldown = 0.f;
+	LastBehavior.Reset();
 }
 
 void UWS2WeaponComponent::SetWeapon(const FString& InWeaponId, int32 InTier)
@@ -89,6 +100,12 @@ void UWS2WeaponComponent::TickComponent(float DeltaTime, ELevelTick TickType, FA
 	if (!OwnerPawn)
 	{
 		OwnerPawn = Cast<AWS2PlayerPawn>(GetOwner());
+	}
+	if (!OwnerPawn || !OwnerPawn->HasAuthority())
+	{
+		// Auto-fire is server-authoritative; remote clients see the replicated
+		// projectiles and hit flashes instead of running a second simulation.
+		return;
 	}
 	if (!GameMode)
 	{
@@ -137,11 +154,11 @@ bool UWS2WeaponComponent::FireProofOnce()
 	FVector2D Target = From + OwnerPawn->GetAimDir() * 320.f;
 	Crowd->FindNearestEnemy(From, 2500.f, Target);
 	Cooldown = 0.f;
-	FireAt(From, Target);
+	FireAt(From, Target, true);
 	return true;
 }
 
-void UWS2WeaponComponent::FireAt(const FVector2D& From, const FVector2D& Target)
+void UWS2WeaponComponent::FireAt(const FVector2D& From, const FVector2D& Target, bool bFromInput)
 {
 	AWS2Crowd* Crowd = GameMode ? GameMode->GetCrowd() : nullptr;
 	if (!Crowd || !Def || !OwnerPawn)
@@ -229,6 +246,18 @@ void UWS2WeaponComponent::FireAt(const FVector2D& From, const FVector2D& Target)
 	}
 
 	OwnerPawn->PlayAttackAnim();
+	if (GameMode && GameMode->IsNetVerifyActive())
+	{
+		const AController* Controller = OwnerPawn->GetController();
+		const FString OwnerName = Controller && Controller->PlayerState
+			? Controller->PlayerState->GetPlayerName() : OwnerPawn->GetName();
+		UE_LOG(LogWS2Weapon, Display, TEXT("NETVERIFY SERVER FIRE owner=%s pawn=%s manual=%d kind=%s hits=%d from=%.0f,%.0f target=%.0f,%.0f"),
+			*OwnerName, *OwnerPawn->GetName(), bFromInput ? 1 : 0, *Kind, Hits,
+			From.X, From.Y, Target.X, Target.Y);
+		WS2PackageTrace::Write(FString::Printf(TEXT("NETVERIFY SERVER FIRE owner=%s pawn=%s manual=%d kind=%s hits=%d from=%.0f,%.0f target=%.0f,%.0f"),
+			*OwnerName, *OwnerPawn->GetName(), bFromInput ? 1 : 0, *Kind, Hits,
+			From.X, From.Y, Target.X, Target.Y));
+	}
 
 	const float AttackSpeed = 1.f + OwnerPawn->GetAttackSpeedPct() / 100.f;
 	Cooldown = FMath::Max(0.04f, TierData.Cooldown / AttackSpeed);

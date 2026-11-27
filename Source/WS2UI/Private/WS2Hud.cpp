@@ -85,6 +85,20 @@ void SWS2Hud::Construct(const FArguments& InArgs)
 					[
 						StatRow(TEXT("LEVEL"), TAttribute<FText>::CreateLambda([this] { return LevelText(); }))
 					]
+					+ SVerticalBox::Slot().AutoHeight().Padding(0.f, 0.f, 0.f, 3.f)
+					[
+						SNew(STextBlock)
+						.Text_Lambda([this] { return PartyText(); })
+						.Font(FCoreStyle::GetDefaultFontStyle("Regular", 11))
+						.ColorAndOpacity(LabelColor)
+					]
+					+ SVerticalBox::Slot().AutoHeight().Padding(0.f, 0.f, 0.f, 3.f)
+					[
+						SNew(STextBlock)
+						.Text_Lambda([this] { return MetaText(); })
+						.Font(FCoreStyle::GetDefaultFontStyle("Regular", 10))
+						.ColorAndOpacity(FLinearColor(0.58f, 0.72f, 0.58f, 0.9f))
+					]
 					+ SVerticalBox::Slot().AutoHeight().Padding(0.f, 0.f, 0.f, 2.f)
 					[
 						StatRow(TEXT("WAFFE"), TAttribute<FText>::CreateLambda([this] { return WeaponText(); }))
@@ -245,6 +259,20 @@ FText SWS2Hud::LevelText() const
 	return State.IsValid()
 		? FText::FromString(FString::Printf(TEXT("%d  (%d / %d EP)"), State->Level, State->Xp, State->XpNext))
 		: FText::GetEmpty();
+}
+
+FText SWS2Hud::PartyText() const
+{
+	if (!State.IsValid() || State->PartyLines.Num() == 0)
+	{
+		return FText::GetEmpty();
+	}
+	return FText::FromString(FString::Join(State->PartyLines, TEXT("\n")));
+}
+
+FText SWS2Hud::MetaText() const
+{
+	return State.IsValid() ? FText::FromString(State->MetaText) : FText::GetEmpty();
 }
 
 FText SWS2Hud::WeaponText() const

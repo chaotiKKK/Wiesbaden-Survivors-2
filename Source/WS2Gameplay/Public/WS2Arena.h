@@ -23,6 +23,7 @@ public:
 
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 	void Configure(const WS2::FArenaDef& InDef);
 	bool ResolveCircle(FVector2D& Pos, float Radius) const;
@@ -107,6 +108,12 @@ private:
 	TArray<FPoisonPool> PoisonPools;
 	TArray<FSpeedField> SpeedFields;
 	TArray<FMovingWall> MovingWalls;
+
+	UPROPERTY(ReplicatedUsing = OnRep_NetArenaId)
+	FString NetArenaId;
+
+	UFUNCTION()
+	void OnRep_NetArenaId();
 
 	UPROPERTY()
 	USceneComponent* Root = nullptr;

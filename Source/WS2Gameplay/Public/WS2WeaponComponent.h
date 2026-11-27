@@ -25,6 +25,9 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	void SetWeapon(const FString& InWeaponId, int32 InTier = 0);
+	/** Empties the slot; used by the six-slot loadout before the run starts. */
+	void ClearWeapon();
+	void SetAutoEquipDefault(bool bInAutoEquip) { bAutoEquipDefault = bInAutoEquip; }
 	void SetTier(int32 InTier) { Tier = FMath::Max(0, InTier); }
 
 	const FString& GetWeaponId() const { return WeaponId; }
@@ -38,11 +41,12 @@ public:
 	bool FireProofOnce();
 
 private:
-	void FireAt(const FVector2D& From, const FVector2D& Target);
+	void FireAt(const FVector2D& From, const FVector2D& Target, bool bFromInput = false);
 
 	FString WeaponId;
 	int32 Tier = 0;
 	const WS2::FWeaponDef* Def = nullptr;
+	bool bAutoEquipDefault = true;
 
 	float Cooldown = 0.f;
 	FString LastBehavior;

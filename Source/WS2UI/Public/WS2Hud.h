@@ -27,6 +27,8 @@ private:
 	FText WeaponText() const;
 	FText StatusText() const;
 	FText LevelText() const;
+	FText PartyText() const;
+	FText MetaText() const;
 	FText BossText() const;
 	FText ShopTitleText() const;
 	FText ShopOffersText() const;

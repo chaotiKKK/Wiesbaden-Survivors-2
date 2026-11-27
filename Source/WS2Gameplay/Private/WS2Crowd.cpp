@@ -6,8 +6,11 @@
 #include "Materials/MaterialInstanceDynamic.h"
 #include "Materials/MaterialInterface.h"
 #include "Misc/Parse.h"
+#include "Net/UnrealNetwork.h"
 #include "WS2Arena.h"
+#include "WS2Audio.h"
 #include "WS2GameMode.h"
+#include "WS2PackageTrace.h"
 #include "WS2PlayerPawn.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogWS2Crowd, Log, All);
@@ -100,6 +103,11 @@ namespace
 AWS2Crowd::AWS2Crowd()
 {
 	PrimaryActorTick.bCanEverTick = true;
+	bReplicates = true;
+	bAlwaysRelevant = true;
+	SetNetUpdateFrequency(20.f);
+	SetMinNetUpdateFrequency(10.f);
+	SetNetCullDistanceSquared(1.0e12f);
 
 	Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 	SetRootComponent(Root);
@@ -135,14 +143,86 @@ void AWS2Crowd::BeginPlay()
 	EnsurePickupMesh();
 	UE_LOG(LogWS2Crowd, Display, TEXT("Crowd ready: %d enemy archetypes, %d bosses, %d weapons"),
 		Db.NumEnemies(), Db.Bosses.Num(), Db.Weapons.Num());
+	if (!HasAuthority())
+	{
+		RenderNetSnapshot();
+	}
+}
+
+void AWS2Crowd::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(AWS2Crowd, NetEnemies);
+	DOREPLIFETIME(AWS2Crowd, NetProjectiles);
+	DOREPLIFETIME(AWS2Crowd, NetShots);
+	DOREPLIFETIME(AWS2Crowd, NetPickups);
+	DOREPLIFETIME(AWS2Crowd, NetAliveCount);
 }
 
 void AWS2Crowd::Init(AWS2Arena* InArena, AWS2PlayerPawn* InPlayer, AWS2GameMode* InGameMode)
 {
 	Arena = InArena;
-	Player = InPlayer;
 	GameMode = InGameMode;
+	Players.Reset();
+	AddPlayer(InPlayer);
 	Enemies.Reserve(2048);
+}
+
+void AWS2Crowd::AddPlayer(AWS2PlayerPawn* InPlayer)
+{
+	if (!InPlayer)
+	{
+		return;
+	}
+	Players.AddUnique(InPlayer);
+	if (!Player)
+	{
+		Player = InPlayer;
+	}
+}
+
+void AWS2Crowd::RemovePlayer(AWS2PlayerPawn* InPlayer)
+{
+	Players.Remove(InPlayer);
+	if (Player == InPlayer)
+	{
+		Player = Players.Num() > 0 ? Players[0] : nullptr;
+	}
+}
+
+void AWS2Crowd::PrunePlayers()
+{
+	const int32 Before = Players.Num();
+	Players.RemoveAll([](AWS2PlayerPawn* Candidate) { return !IsValid(Candidate); });
+	if (!IsValid(Player))
+	{
+		Player = Players.Num() > 0 ? Players[0] : nullptr;
+	}
+	if (Players.Num() != Before)
+	{
+		UE_LOG(LogWS2Crowd, Display, TEXT("pruned player roster %d -> %d"), Before, Players.Num());
+	}
+}
+
+AWS2PlayerPawn* AWS2Crowd::NearestPlayer(const FVector2D& From) const
+{
+	AWS2PlayerPawn* Best = nullptr;
+	float BestDistSq = TNumericLimits<float>::Max();
+	for (AWS2PlayerPawn* Candidate : Players)
+	{
+		if (!IsValid(Candidate))
+		{
+			continue;
+		}
+		const float DistSq = FVector2D::DistSquared(From, Candidate->GetArenaPos());
+		const float Bias = Candidate->bDown ? 1.0e12f : 0.f;
+		if (DistSq + Bias < BestDistSq)
+		{
+			BestDistSq = DistSq + Bias;
+			Best = Candidate;
+		}
+	}
+	return Best;
 }
 
 UStaticMesh* AWS2Crowd::LoadEnemyArchetype(const WS2::FEnemyDef& Def, FString& OutAssetKey) const
@@ -731,6 +811,12 @@ void AWS2Crowd::ClearAll()
 	{
 		PickupMesh->ClearInstances();
 	}
+	NetEnemies.Reset();
+	NetProjectiles.Reset();
+	NetShots.Reset();
+	NetPickups.Reset();
+	NetAliveCount = 0;
+	ForceNetUpdate();
 }
 
 void AWS2Crowd::RebuildGrid()
@@ -749,9 +835,17 @@ void AWS2Crowd::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	if (!Arena || !Player)
+	if (!HasAuthority())
 	{
 		return;
+	}
+	if (!Arena || Players.Num() == 0)
+	{
+		return;
+	}
+	if (!Player)
+	{
+		Player = NearestPlayer(Arena->GetCenter());
 	}
 
 	const float Dt = FMath::Min(DeltaSeconds, 0.05f);
@@ -767,13 +861,17 @@ void AWS2Crowd::Tick(float DeltaSeconds)
 	UpdateEnemyProjectiles(Dt);
 	UpdatePickups(Dt);
 	UpdateRender();
+
+	NetSnapshotTimer += Dt;
+	if (NetSnapshotTimer >= 0.05f)
+	{
+		NetSnapshotTimer = 0.f;
+		UpdateNetSnapshot();
+	}
 }
 
 void AWS2Crowd::UpdateEnemies(float Dt)
 {
-	const FVector2D PlayerPos = Player->GetArenaPos();
-	const float PlayerRadius = Player->GetRadius();
-
 	TArray<int32> Neighbors;
 	for (int32 Index = 0; Index < Enemies.Num(); ++Index)
 	{
@@ -782,6 +880,13 @@ void AWS2Crowd::UpdateEnemies(float Dt)
 		{
 			continue;
 		}
+		AWS2PlayerPawn* TargetPlayer = NearestPlayer(Enemy.Pos);
+		if (!TargetPlayer)
+		{
+			continue;
+		}
+		const FVector2D PlayerPos = TargetPlayer->GetArenaPos();
+		const float PlayerRadius = TargetPlayer->GetRadius();
 
 		if (Enemy.BurnTime > 0.f)
 		{
@@ -889,7 +994,7 @@ void AWS2Crowd::UpdateEnemies(float Dt)
 		{
 			Enemy.Pos = Arena->ClampToBounds(Enemy.Pos, Enemy.Radius);
 		}
-		ConstrainToPlayer(Enemy);
+		ConstrainToPlayer(Enemy, TargetPlayer);
 
 		// Resolve this body against its neighbours straight away. The global pass
 		// below only has crumbs left to fix, which is what keeps a 300-body horde
@@ -928,7 +1033,7 @@ void AWS2Crowd::UpdateEnemies(float Dt)
 			}
 			else
 			{
-				Player->ApplyContactDamage(Enemy.Damage * Dt * 1.8f);
+				TargetPlayer->ApplyContactDamage(Enemy.Damage * Dt * 1.8f);
 				if (Def.AI == TEXT("leech") || Def.AI == TEXT("vampire"))
 				{
 					Enemy.Hp = FMath::Min(Enemy.MaxHp, Enemy.Hp + Enemy.Damage * Dt * 0.6f);
@@ -1097,7 +1202,8 @@ void AWS2Crowd::FireBossPattern(FEnemy& Enemy, int32 PhaseIndex)
 	}
 	const WS2::FBossDef& Def = Db.Bosses[Enemy.BossIndex];
 	const WS2::FBossPhase& Phase = Def.Phases[PhaseIndex];
-	const FVector2D ToPlayer = (Player ? Player->GetArenaPos() : Enemy.Pos) - Enemy.Pos;
+	AWS2PlayerPawn* TargetPlayer = NearestPlayer(Enemy.Pos);
+	const FVector2D ToPlayer = (TargetPlayer ? TargetPlayer->GetArenaPos() : Enemy.Pos) - Enemy.Pos;
 	const FVector2D Aim = ToPlayer.GetSafeNormal();
 	const FLinearColor Color = CrowdHex(Def.Color, FLinearColor(1.f, 0.4f, 0.3f));
 	const int32 Count = FMath::Clamp(Phase.Count, 1, 40);
@@ -1147,7 +1253,7 @@ void AWS2Crowd::FireBossPattern(FEnemy& Enemy, int32 PhaseIndex)
 	{
 		for (int32 i = 0; i < Count; ++i)
 		{
-			FVector2D Target = (Player ? Player->GetArenaPos() : Enemy.Pos) +
+			FVector2D Target = (TargetPlayer ? TargetPlayer->GetArenaPos() : Enemy.Pos) +
 				FVector2D(Rng.Range(-260.f, 260.f), Rng.Range(-260.f, 260.f));
 			FireEnemyShot(Enemy.Pos, (Target - Enemy.Pos).GetSafeNormal(), Phase.BulletSpeed, Damage, Color, 9.f);
 		}
@@ -1384,15 +1490,15 @@ FVector2D AWS2Crowd::DepenetrateSpawn(const FVector2D& Wanted, float Radius)
 	return Pos;
 }
 
-void AWS2Crowd::ConstrainToPlayer(FEnemy& Enemy) const
+void AWS2Crowd::ConstrainToPlayer(FEnemy& Enemy, AWS2PlayerPawn* TargetPlayer) const
 {
-	if (!Player)
+	if (!TargetPlayer)
 	{
 		return;
 	}
 
-	const FVector2D PlayerPos = Player->GetArenaPos();
-	const float MinDist = Enemy.Radius + Player->GetRadius();
+	const FVector2D PlayerPos = TargetPlayer->GetArenaPos();
+	const float MinDist = Enemy.Radius + TargetPlayer->GetRadius();
 	FVector2D Away = Enemy.Pos - PlayerPos;
 	const float AwayDist = Away.Size();
 	if (AwayDist >= MinDist)
@@ -1439,10 +1545,11 @@ void AWS2Crowd::ResolveOverlapsOnce()
 		}
 
 		Grid.Query(Enemy.Pos, Enemy.Radius + MaxEnemyRadius, Neighbors);
-		if (Player && !Enemy.bFlying)
+		AWS2PlayerPawn* TargetPlayer = NearestPlayer(Enemy.Pos);
+		if (TargetPlayer && !Enemy.bFlying)
 		{
-			const float PlayerRadius = Player->GetRadius();
-			FVector2D ToPlayer = Enemy.Pos - Player->GetArenaPos();
+			const float PlayerRadius = TargetPlayer->GetRadius();
+			FVector2D ToPlayer = Enemy.Pos - TargetPlayer->GetArenaPos();
 			float PlayerGap = ToPlayer.Size();
 			const float PlayerWanted = Enemy.Radius + PlayerRadius;
 			if (PlayerGap < PlayerWanted)
@@ -1505,8 +1612,9 @@ void AWS2Crowd::MeasureOverlaps()
 	WorstOverlap = 0.f;
 
 	TArray<int32> Neighbors;
-	const FVector2D PlayerPos = Player ? Player->GetArenaPos() : FVector2D::ZeroVector;
-	const float PlayerRadius = Player ? Player->GetRadius() : 0.f;
+	AWS2PlayerPawn* Nearest = NearestPlayer(Player ? Player->GetArenaPos() : FVector2D::ZeroVector);
+	const FVector2D PlayerPos = Nearest ? Nearest->GetArenaPos() : FVector2D::ZeroVector;
+	const float PlayerRadius = Nearest ? Nearest->GetRadius() : 0.f;
 
 	for (int32 Index = 0; Index < Enemies.Num(); ++Index)
 	{
@@ -1516,7 +1624,7 @@ void AWS2Crowd::MeasureOverlaps()
 			continue;
 		}
 
-		if (Player)
+		if (Nearest)
 		{
 			const float PlayerGap = FVector2D::Distance(Enemy.Pos, PlayerPos);
 			const float Wanted = Enemy.Radius + PlayerRadius;
@@ -1586,9 +1694,12 @@ void AWS2Crowd::UpdateProjectiles(float Dt)
 					Projectile.Element, Projectile.SlowTime, Projectile.BurnDps, Projectile.StunTime,
 					Projectile.ArmorPierce);
 
-				if (Projectile.Lifesteal > 0.f && Player)
+				if (Projectile.Lifesteal > 0.f)
 				{
-					Player->Heal(Projectile.Damage * Projectile.Lifesteal * 0.01f);
+					if (AWS2PlayerPawn* Healer = NearestPlayer(Projectile.Pos))
+					{
+						Healer->Heal(Projectile.Damage * Projectile.Lifesteal * 0.01f);
+					}
 				}
 				if (Projectile.Chain > 0.f)
 				{
@@ -1620,12 +1731,10 @@ void AWS2Crowd::UpdateProjectiles(float Dt)
 
 void AWS2Crowd::UpdateEnemyProjectiles(float Dt)
 {
-	if (!Player)
+	if (Players.Num() == 0)
 	{
 		return;
 	}
-	const FVector2D PlayerPos = Player->GetArenaPos();
-	const float PlayerRadius = Player->GetRadius();
 	const FVector2D Extent = Arena->GetExtent();
 
 	for (int32 Index = EnemyProjectiles.Num() - 1; Index >= 0; --Index)
@@ -1636,10 +1745,17 @@ void AWS2Crowd::UpdateEnemyProjectiles(float Dt)
 
 		bool bDead = Shot.Life <= 0.f || Shot.Pos.X < 0.f || Shot.Pos.Y < 0.f ||
 			Shot.Pos.X > Extent.X || Shot.Pos.Y > Extent.Y;
-		if (!bDead && FVector2D::Distance(Shot.Pos, PlayerPos) < PlayerRadius + Shot.Radius)
+		if (!bDead)
 		{
-			Player->ApplyContactDamage(Shot.Damage);
-			bDead = true;
+			for (AWS2PlayerPawn* Target : Players)
+			{
+				if (IsValid(Target) && FVector2D::Distance(Shot.Pos, Target->GetArenaPos()) < Target->GetRadius() + Shot.Radius)
+				{
+					Target->ApplyContactDamage(Shot.Damage);
+					bDead = true;
+					break;
+				}
+			}
 		}
 		if (bDead)
 		{
@@ -1650,16 +1766,16 @@ void AWS2Crowd::UpdateEnemyProjectiles(float Dt)
 
 void AWS2Crowd::UpdatePickups(float Dt)
 {
-	if (!Player)
-	{
-		return;
-	}
-
-	const FVector2D PlayerPos = Player->GetArenaPos();
 	for (int32 Index = Pickups.Num() - 1; Index >= 0; --Index)
 	{
 		FPickup& Pickup = Pickups[Index];
 		Pickup.Life -= Dt;
+		AWS2PlayerPawn* Nearest = NearestPlayer(Pickup.Pos);
+		if (!Nearest)
+		{
+			continue;
+		}
+		const FVector2D PlayerPos = Nearest->GetArenaPos();
 
 		const FVector2D Delta = PlayerPos - Pickup.Pos;
 		const float Dist = Delta.Size();
@@ -1673,6 +1789,13 @@ void AWS2Crowd::UpdatePickups(float Dt)
 			if (GameMode)
 			{
 				GameMode->AddMaterials(Pickup.Amount);
+				GameMode->NotifyNetVerifyPickup(Nearest, Pickup.Amount);
+			}
+			if (Arena && GetWorld() && GetWorld()->GetTimeSeconds() - LastPickupSfxTime > 0.075f)
+			{
+				LastPickupSfxTime = GetWorld()->GetTimeSeconds();
+				const FVector2D PickupWorld = Arena->ArenaToWorld(Pickup.Pos);
+				MulticastPlaySfx(static_cast<uint8>(WS2Audio::ESfx::Pickup), FVector(PickupWorld.X, PickupWorld.Y, 0.f));
 			}
 			Pickups.RemoveAtSwap(Index, 1, EAllowShrinking::No);
 			continue;
@@ -1683,6 +1806,19 @@ void AWS2Crowd::UpdatePickups(float Dt)
 			Pickups.RemoveAtSwap(Index, 1, EAllowShrinking::No);
 		}
 	}
+}
+
+void AWS2Crowd::SpawnPickupAt(const FVector2D& Position, int32 Amount)
+{
+	if (!HasAuthority())
+	{
+		return;
+	}
+	FPickup Pickup;
+	Pickup.Pos = Position;
+	Pickup.Amount = FMath::Max(1, Amount);
+	Pickup.Life = 22.f;
+	Pickups.Add(Pickup);
 }
 
 void AWS2Crowd::DamageEnemy(int32 Index, float Damage, bool bCrit, const FVector2D& Dir, float Knockback,
@@ -1712,6 +1848,20 @@ void AWS2Crowd::DamageEnemy(int32 Index, float Damage, bool bCrit, const FVector
 	Enemy.Hp -= Applied;
 	Enemy.Flash = 0.14f;
 	++ProjectileHits;
+	if (GameMode && GameMode->IsNetVerifyActive() && NetVerifyDamageLogs < 40 && Applied > 0.f)
+	{
+		++NetVerifyDamageLogs;
+		UE_LOG(LogWS2Crowd, Display, TEXT("NETVERIFY SERVER DAMAGE enemy=%d applied=%.1f hp=%.1f pos=%.0f,%.0f"),
+			Index, Applied, Enemy.Hp, Enemy.Pos.X, Enemy.Pos.Y);
+		WS2PackageTrace::Write(FString::Printf(TEXT("NETVERIFY SERVER DAMAGE enemy=%d applied=%.1f hp=%.1f pos=%.0f,%.0f"),
+			Index, Applied, Enemy.Hp, Enemy.Pos.X, Enemy.Pos.Y));
+	}
+	if (Arena && GetWorld() && GetWorld()->GetTimeSeconds() - LastHitSfxTime > 0.085f)
+	{
+		LastHitSfxTime = GetWorld()->GetTimeSeconds();
+		const FVector2D HitWorld = Arena->ArenaToWorld(Enemy.Pos);
+		MulticastPlaySfx(static_cast<uint8>(WS2Audio::ESfx::Hit), FVector(HitWorld.X, HitWorld.Y, 0.f));
+	}
 
 	if (Element == TEXT("fire")) { Enemy.BurnTime = FMath::Max(Enemy.BurnTime, 2.2f); Enemy.BurnDps = FMath::Max(Enemy.BurnDps, (BurnDps > 0.f ? BurnDps : 3.f)); }
 	else if (Element == TEXT("ice")) { Enemy.SlowTime = FMath::Max(Enemy.SlowTime, SlowTime > 0.f ? SlowTime : 1.6f); }
@@ -1753,7 +1903,20 @@ void AWS2Crowd::KillEnemy(int32 Index)
 	Enemy.bAlive = false;
 	--AliveCount;
 	++KillCount;
+	if (GameMode && GameMode->IsNetVerifyActive())
+	{
+		UE_LOG(LogWS2Crowd, Display, TEXT("NETVERIFY SERVER KILL enemy=%d pos=%.0f,%.0f alive=%d"),
+			Index, Enemy.Pos.X, Enemy.Pos.Y, AliveCount);
+		WS2PackageTrace::Write(FString::Printf(TEXT("NETVERIFY SERVER KILL enemy=%d pos=%.0f,%.0f alive=%d"),
+			Index, Enemy.Pos.X, Enemy.Pos.Y, AliveCount));
+	}
 	FreeSlots.AddUnique(Index);
+	if (Arena && GetWorld() && GetWorld()->GetTimeSeconds() - LastKillSfxTime > 0.10f)
+	{
+		LastKillSfxTime = GetWorld()->GetTimeSeconds();
+		const FVector2D KillWorld = Arena->ArenaToWorld(Enemy.Pos);
+		MulticastPlaySfx(static_cast<uint8>(WS2Audio::ESfx::Kill), FVector(KillWorld.X, KillWorld.Y, 0.f));
+	}
 
 	if (Enemy.bBoss)
 	{
@@ -1992,5 +2155,173 @@ void AWS2Crowd::UpdateRender()
 		const FVector2D World = Arena->ArenaToWorld(Pickup.Pos);
 		PickupMesh->AddInstance(FTransform(FRotator::ZeroRotator,
 			FVector(World.X, World.Y, 18.f), FVector(0.22f, 0.22f, 0.12f)), false);
+	}
+}
+
+void AWS2Crowd::UpdateNetSnapshot()
+{
+	if (!Arena)
+	{
+		return;
+	}
+
+	NetEnemies.Reset(AliveCount);
+	for (const FEnemy& Enemy : Enemies)
+	{
+		if (!Enemy.bAlive)
+		{
+			continue;
+		}
+		FWS2NetEnemy Row;
+		const FVector2D World = Arena->ArenaToWorld(Enemy.Pos);
+		Row.WorldPos = World;
+		Row.Radius = Enemy.Radius;
+		Row.Flash = Enemy.Flash;
+		Row.DefIndex = Enemy.DefIndex;
+		Row.BossIndex = Enemy.BossIndex;
+		Row.bBoss = Enemy.bBoss;
+		Row.bElite = Enemy.bElite;
+		NetEnemies.Add(Row);
+	}
+
+	NetProjectiles.Reset(Projectiles.Num());
+	for (const FProjectile& Projectile : Projectiles)
+	{
+		FWS2NetProjectile Row;
+		Row.WorldPos = Arena->ArenaToWorld(Projectile.Pos);
+		Row.Radius = Projectile.Radius;
+		Row.Color = Projectile.Color;
+		NetProjectiles.Add(Row);
+	}
+
+	NetShots.Reset(EnemyProjectiles.Num());
+	for (const FEnemyShot& Shot : EnemyProjectiles)
+	{
+		FWS2NetEnemyShot Row;
+		Row.WorldPos = Arena->ArenaToWorld(Shot.Pos);
+		Row.Radius = Shot.Radius;
+		NetShots.Add(Row);
+	}
+
+	NetPickups.Reset(Pickups.Num());
+	for (const FPickup& Pickup : Pickups)
+	{
+		FWS2NetPickup Row;
+		Row.WorldPos = Arena->ArenaToWorld(Pickup.Pos);
+		NetPickups.Add(Row);
+	}
+
+	NetAliveCount = AliveCount;
+	ForceNetUpdate();
+}
+
+void AWS2Crowd::OnRep_NetSnapshot()
+{
+	if (AWS2GameMode::IsNetVerifyRequested() && !bNetVerifyHitSnapshotLogged)
+	{
+		int32 Flashing = 0;
+		for (const FWS2NetEnemy& Enemy : NetEnemies)
+		{
+			if (Enemy.Flash > 0.01f)
+			{
+				++Flashing;
+			}
+		}
+		if (Flashing > 0)
+		{
+			bNetVerifyHitSnapshotLogged = true;
+			UE_LOG(LogWS2Crowd, Display, TEXT("NETVERIFY CLIENT SNAPSHOT HIT flashes=%d enemies=%d projectiles=%d pickups=%d"),
+				Flashing, NetEnemies.Num(), NetProjectiles.Num(), NetPickups.Num());
+		}
+	}
+	if (!bLoggedClientSnapshot)
+	{
+		bLoggedClientSnapshot = true;
+		UE_LOG(LogWS2Crowd, Display, TEXT("CLIENT SNAPSHOT enemies=%d projectiles=%d shots=%d pickups=%d"),
+			NetEnemies.Num(), NetProjectiles.Num(), NetShots.Num(), NetPickups.Num());
+	}
+	RenderNetSnapshot();
+}
+
+void AWS2Crowd::MulticastPlaySfx_Implementation(uint8 Sfx, FVector Location)
+{
+	WS2Audio::Play(GetWorld(), static_cast<WS2Audio::ESfx>(Sfx), Location, 0.42f);
+}
+
+void AWS2Crowd::RenderNetSnapshot()
+{
+	for (UInstancedStaticMeshComponent* Mesh : EnemyMeshes)
+	{
+		if (Mesh)
+		{
+			Mesh->ClearInstances();
+		}
+	}
+	for (UInstancedStaticMeshComponent* Mesh : BossMeshes)
+	{
+		if (Mesh)
+		{
+			Mesh->ClearInstances();
+		}
+	}
+
+	for (const FWS2NetEnemy& Enemy : NetEnemies)
+	{
+		if (Enemy.bBoss)
+		{
+			const int32* MeshIndex = BossToMesh.Find(Enemy.BossIndex);
+			const float* Scale = BossScale.Find(Enemy.BossIndex);
+			if (!MeshIndex || !BossMeshes.IsValidIndex(*MeshIndex) || !BossMeshes[*MeshIndex])
+			{
+				continue;
+			}
+			const float Pulse = 1.f + Enemy.Flash * 1.8f;
+			const float UseScale = Pulse * (Scale ? *Scale : 1.f);
+			BossMeshes[*MeshIndex]->AddInstance(FTransform(FRotator::ZeroRotator,
+				FVector(Enemy.WorldPos.X, Enemy.WorldPos.Y, 20.f), FVector(UseScale)), false);
+			continue;
+		}
+
+		const int32* MeshIndexPtr = DefToMesh.Find(Enemy.DefIndex);
+		if (!MeshIndexPtr || !EnemyMeshes.IsValidIndex(*MeshIndexPtr) || !EnemyMeshes[*MeshIndexPtr])
+		{
+			continue;
+		}
+		const float* FoundScale = DefScale.Find(Enemy.DefIndex);
+		const float Scale = (1.f + Enemy.Flash * 1.8f) * (FoundScale ? *FoundScale : 1.f);
+		EnemyMeshes[*MeshIndexPtr]->AddInstance(FTransform(FRotator::ZeroRotator,
+			FVector(Enemy.WorldPos.X, Enemy.WorldPos.Y, 0.f), FVector(Scale)), false);
+	}
+
+	if (ProjectileMesh)
+	{
+		ProjectileMesh->ClearInstances();
+		for (const FWS2NetProjectile& Projectile : NetProjectiles)
+		{
+			const float Scale = Projectile.Radius * 2.f / 100.f;
+			ProjectileMesh->AddInstance(FTransform(FRotator::ZeroRotator,
+				FVector(Projectile.WorldPos.X, Projectile.WorldPos.Y, 42.f), FVector(Scale)), false);
+		}
+	}
+
+	if (EnemyShotMesh)
+	{
+		EnemyShotMesh->ClearInstances();
+		for (const FWS2NetEnemyShot& Shot : NetShots)
+		{
+			const float Scale = Shot.Radius * 2.f / 100.f;
+			EnemyShotMesh->AddInstance(FTransform(FRotator::ZeroRotator,
+				FVector(Shot.WorldPos.X, Shot.WorldPos.Y, 38.f), FVector(Scale)), false);
+		}
+	}
+
+	if (PickupMesh)
+	{
+		PickupMesh->ClearInstances();
+		for (const FWS2NetPickup& Pickup : NetPickups)
+		{
+			PickupMesh->AddInstance(FTransform(FRotator::ZeroRotator,
+				FVector(Pickup.WorldPos.X, Pickup.WorldPos.Y, 18.f), FVector(0.22f, 0.22f, 0.12f)), false);
+		}
 	}
 }

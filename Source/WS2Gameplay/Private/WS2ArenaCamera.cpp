@@ -1,6 +1,7 @@
 #include "WS2ArenaCamera.h"
 
 #include "Camera/CameraComponent.h"
+#include "WS2GameState.h"
 #include "WS2GameMode.h"
 #include "WS2PlayerPawn.h"
 
@@ -93,8 +94,13 @@ void AWS2ArenaCamera::Tick(float DeltaSeconds)
 	}
 
 	AWS2GameMode* GameMode = GetWorld() ? GetWorld()->GetAuthGameMode<AWS2GameMode>() : nullptr;
+	AWS2GameState* NetState = GetWorld() ? GetWorld()->GetGameState<AWS2GameState>() : nullptr;
 	const FWS2RunState& State = GameMode ? GameMode->GetState() : FWS2RunState();
-	const int32 Alive = State.AliveEnemies;
+	const int32 Alive = NetState ? NetState->AliveEnemies : State.AliveEnemies;
+	if (!GameMode && NetState)
+	{
+		SetBossTarget(NetState->bBossAlive, NetState->BossWorldPos, NetState->BossHpPct);
+	}
 
 	const TCHAR* Band = DensityBand(Alive);
 	if (Band != LastBand)

@@ -47,4 +47,8 @@ struct FWS2RunState
 	float BossHpPct = 0.f;
 	int32 BossPhase = 0;
 	FString ArenaMods = TEXT("");
+
+	// Co-op roster, already formatted by the replicated game state.
+	TArray<FString> PartyLines;
+	FString MetaText;
 };

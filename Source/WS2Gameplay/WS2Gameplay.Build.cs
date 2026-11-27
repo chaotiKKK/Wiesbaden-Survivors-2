@@ -7,7 +7,7 @@ public class WS2Gameplay : ModuleRules
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 		PublicDependencyModuleNames.AddRange(new string[]
 		{
-			"Core", "CoreUObject", "Engine", "InputCore", "Slate", "SlateCore",
+			"Core", "CoreUObject", "Engine", "InputCore", "Slate", "SlateCore", "Sockets",
 			"WS2Core", "WS2UI"
 		});
 	}

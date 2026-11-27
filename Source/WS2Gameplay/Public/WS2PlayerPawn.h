@@ -23,6 +23,7 @@ public:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 	void MoveForward(float Value);
 	void MoveRight(float Value);
@@ -31,6 +32,16 @@ public:
 	void Heal(float Amount);
 	/** Fired by the weapon: switches the VAT atlas to the attack clip. */
 	void PlayAttackAnim();
+	UFUNCTION(NetMulticast, Unreliable)
+	void MulticastPlaySfx(uint8 Sfx, FVector Location);
+	void ApplyHeroStats(const FString& HeroId, bool bResetHealth = true);
+	/** Adds a weapon to the first free slot, or upgrades a matching weapon. */
+	UWS2WeaponComponent* AddOrUpgradeWeapon(const FString& WeaponId, int32 Tier);
+	UWS2WeaponComponent* GetWeapon() const { return Weapon; }
+	/** Direct player fire input; the server remains the firing authority. */
+	void FireInput();
+	UFUNCTION(Server, Reliable)
+	void ServerFireOnce();
 
 	FVector2D GetPos2D() const;
 	/** Player position in arena space (top-left origin), used by the simulation. */
@@ -48,13 +59,25 @@ public:
 	float GetLifestealPct() const { return LifestealPct; }
 	float GetRangeMultiplier() const { return 1.f + RangePct / 100.f; }
 	float GetPickupRadius() const { return PickupRadius; }
+	FString GetHeroName() const;
+	FString GetWeaponDisplayName() const;
 
 	/** Applies one item's stat block; the shop calls this for every purchased item. */
 	void ApplyItemStats(const TMap<FString, float>& Stats);
 	UStaticMeshComponent* GetBody() const { return Body; }
 
+	UPROPERTY(Replicated)
+	FString HeroId = TEXT("leonidas");
+
+	/** Set before FinishSpawning so BeginPlay configures the selected hero. */
+	FString SelectedHeroId = TEXT("leonidas");
+
+	UPROPERTY(Replicated)
 	float Hp = 100.f;
+
+	UPROPERTY(Replicated)
 	float MaxHp = 100.f;
+
 	float HpRegen = 0.f;
 	float AttackSpeedPct = 0.f;
 	float DamagePct = 0.f;
@@ -77,12 +100,24 @@ public:
 	float BounceBonus = 0.f;
 	float Engineering = 0.f;
 	float PickupRadius = 260.f;
+
+	UPROPERTY(Replicated)
 	bool bDown = false;
+
 	bool bInvulnerable = false;
+	float RemoteInputTimeout = 0.f;
+	FVector NetVerifyStartLocation = FVector::ZeroVector;
+	bool bNetVerifyMoveLogged = false;
+	bool bNetVerifyInputLogged = false;
 
 private:
 	void FindTarget();
 	void SetHeroClip(const FString& Clip);
+	void BuildVisual();
+	void ApplyMovementStep(float DeltaSeconds, const FVector2D& Direction);
+
+	UFUNCTION(Server, Unreliable)
+	void ServerSetInput(float Forward, float Right);
 
 	UPROPERTY()
 	USphereComponent* Collision = nullptr;
@@ -91,15 +126,21 @@ private:
 	UStaticMeshComponent* Body = nullptr;
 
 	UPROPERTY()
+	TArray<UWS2WeaponComponent*> Weapons;
+
+	UPROPERTY()
 	UWS2WeaponComponent* Weapon = nullptr;
 
 	FVector2D InputVector = FVector2D::ZeroVector;
+	FVector2D RemoteInput = FVector2D::ZeroVector;
+
+	UPROPERTY(Replicated)
 	FVector2D AimDir = FVector2D(1.f, 0.f);
+
 	FVector2D AimTarget = FVector2D::ZeroVector;
 	float Radius = 34.f;
 	float FireAnimTime = 0.f;
 
-	// Vertex-animation playback for the hero body.
 	UPROPERTY()
 	UMaterialInstanceDynamic* BodyMid = nullptr;
 

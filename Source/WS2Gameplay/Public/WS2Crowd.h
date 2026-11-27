@@ -12,6 +12,48 @@ class AWS2Arena;
 class AWS2PlayerPawn;
 class AWS2GameMode;
 
+/** Compact visual rows replicated from the authoritative crowd to every client. */
+USTRUCT()
+struct FWS2NetEnemy
+{
+	GENERATED_BODY()
+
+	UPROPERTY() FVector2D WorldPos = FVector2D::ZeroVector;
+	UPROPERTY() float Radius = 12.f;
+	UPROPERTY() float Flash = 0.f;
+	UPROPERTY() int32 DefIndex = 0;
+	UPROPERTY() int32 BossIndex = -1;
+	UPROPERTY() bool bBoss = false;
+	UPROPERTY() bool bElite = false;
+};
+
+USTRUCT()
+struct FWS2NetProjectile
+{
+	GENERATED_BODY()
+
+	UPROPERTY() FVector2D WorldPos = FVector2D::ZeroVector;
+	UPROPERTY() float Radius = 8.f;
+	UPROPERTY() FLinearColor Color = FLinearColor::White;
+};
+
+USTRUCT()
+struct FWS2NetEnemyShot
+{
+	GENERATED_BODY()
+
+	UPROPERTY() FVector2D WorldPos = FVector2D::ZeroVector;
+	UPROPERTY() float Radius = 10.f;
+};
+
+USTRUCT()
+struct FWS2NetPickup
+{
+	GENERATED_BODY()
+
+	UPROPERTY() FVector2D WorldPos = FVector2D::ZeroVector;
+};
+
 /**
  * The horde layer: one actor owns every enemy, projectile and pickup in the run.
  * Nothing here is a UCharacter - entities are plain structs simulated on a fixed
@@ -28,8 +70,16 @@ public:
 
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 	void Init(AWS2Arena* InArena, AWS2PlayerPawn* InPlayer, AWS2GameMode* InGameMode);
+	void AddPlayer(AWS2PlayerPawn* InPlayer);
+	void RemovePlayer(AWS2PlayerPawn* InPlayer);
+
+	/** Drops roster entries whose pawn was torn down (client left mid-run). */
+	void PrunePlayers();
+	AWS2PlayerPawn* NearestPlayer(const FVector2D& From) const;
+	int32 GetPlayerCount() const { return Players.Num(); }
 
 	int32 SpawnEnemy(const WS2::FEnemyDef& Def, const FVector2D& Position, bool bElite = false);
 	int32 SpawnBoss(const WS2::FBossDef& Def, const FVector2D& Position, float HpScale);
@@ -61,10 +111,12 @@ public:
 
 	void RegisterShot(int32 Count = 1) { ProjectileFires += FMath::Max(0, Count); }
 	void RegisterHit(int32 Count = 1) { ProjectileHits += FMath::Max(0, Count); }
+	UFUNCTION(NetMulticast, Unreliable)
+	void MulticastPlaySfx(uint8 Sfx, FVector Location);
 
-	int32 GetAliveCount() const { return AliveCount; }
-	int32 GetProjectileCount() const { return Projectiles.Num(); }
-	int32 GetEnemyProjectileCount() const { return EnemyProjectiles.Num(); }
+	int32 GetAliveCount() const { return HasAuthority() ? AliveCount : NetAliveCount; }
+	int32 GetProjectileCount() const { return HasAuthority() ? Projectiles.Num() : NetProjectiles.Num(); }
+	int32 GetEnemyProjectileCount() const { return HasAuthority() ? EnemyProjectiles.Num() : NetShots.Num(); }
 	int32 GetPeakEnemies() const { return PeakEnemies; }
 	int32 GetProjectileFires() const { return ProjectileFires; }
 	int32 GetProjectileHits() const { return ProjectileHits; }
@@ -74,6 +126,8 @@ public:
 	/** One-line render self-check: instance totals, mesh and material actually bound. */
 	FString RenderDiag() const;
 	void ClearAll();
+	void SpawnPickupAt(const FVector2D& Position, int32 Amount);
+	int32 GetPickupCount() const { return HasAuthority() ? Pickups.Num() : NetPickups.Num(); }
 
 	float ConsumeHitStop()
 	{
@@ -202,12 +256,14 @@ private:
 	void ResolveOverlaps();
 	void ResolveOverlapsOnce();
 	FVector2D DepenetrateSpawn(const FVector2D& Wanted, float Radius);
-	void ConstrainToPlayer(FEnemy& Enemy) const;
+	void ConstrainToPlayer(FEnemy& Enemy, AWS2PlayerPawn* TargetPlayer) const;
 	void MeasureOverlaps();
 	void UpdateProjectiles(float Dt);
 	void UpdateEnemyProjectiles(float Dt);
 	void UpdatePickups(float Dt);
 	void UpdateRender();
+	void UpdateNetSnapshot();
+	void RenderNetSnapshot();
 	void KillEnemy(int32 Index);
 	void DamageEnemy(int32 Index, float Damage, bool bCrit, const FVector2D& Dir, float Knockback,
 		const FString& Element = FString(), float SlowTime = 0.f, float BurnDps = 0.f,
@@ -271,6 +327,26 @@ private:
 	AWS2Arena* Arena = nullptr;
 	AWS2PlayerPawn* Player = nullptr;
 	AWS2GameMode* GameMode = nullptr;
+	TArray<AWS2PlayerPawn*> Players;
+	float NetSnapshotTimer = 0.f;
+
+	UPROPERTY(ReplicatedUsing = OnRep_NetSnapshot)
+	TArray<FWS2NetEnemy> NetEnemies;
+
+	UPROPERTY(Replicated)
+	TArray<FWS2NetProjectile> NetProjectiles;
+
+	UPROPERTY(Replicated)
+	TArray<FWS2NetEnemyShot> NetShots;
+
+	UPROPERTY(Replicated)
+	TArray<FWS2NetPickup> NetPickups;
+
+	UPROPERTY(Replicated)
+	int32 NetAliveCount = 0;
+
+	UFUNCTION()
+	void OnRep_NetSnapshot();
 
 	float ElapsedTime = 0.f;
 	int32 AliveCount = 0;
@@ -285,4 +361,10 @@ private:
 	FVector2D PendingShakeAt = FVector2D::ZeroVector;
 	float PendingShakeAmount = 0.f;
 	float PendingPunch = 0.f;
+	bool bLoggedClientSnapshot = false;
+	float LastHitSfxTime = -1.f;
+	float LastKillSfxTime = -1.f;
+	float LastPickupSfxTime = -1.f;
+	int32 NetVerifyDamageLogs = 0;
+	bool bNetVerifyHitSnapshotLogged = false;
 };

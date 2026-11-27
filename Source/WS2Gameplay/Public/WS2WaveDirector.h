@@ -23,11 +23,13 @@ public:
 
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	void StartSlice(bool bInAllTypes = false, float InBossHpScale = 1.f, float InProofBossHp = 0.f);
+	void StartSlice(bool bInAllTypes = false, float InBossHpScale = 1.f, float InProofBossHp = 0.f,
+		bool bInShortRun = true, bool bInSpawnBoss = true);
 	void StartWave(int32 InWave);
 	void SpawnPerfHorde(int32 Count);
 
 	static constexpr int32 SliceWaves = 5;
+	static constexpr int32 FullWaves = 20;
 
 	int32 GetWave() const { return Wave; }
 	int32 GetMaxWave() const { return MaxWaves; }
@@ -59,6 +61,10 @@ private:
 	bool bBossSpawned = false;
 	bool bBossAlive = false;
 	bool bAllTypes = false;
+	bool bShortRun = true;
+	/** -ws2noboss=1 keeps the arena wave clock but leaves the bosses out. */
+	bool bSpawnBoss = true;
+	int32 BossFirstWave = SliceWaves;
 	float BossHpScale = 1.f;
 	float ProofBossHp = 0.f;
 	TArray<int32> BossDefIndices;

@@ -18,13 +18,24 @@
 #include "UnrealClient.h"
 #include "WS2Arena.h"
 #include "WS2ArenaCamera.h"
+#include "WS2PackageTrace.h"
+#include "WS2Audio.h"
 #include "WS2Crowd.h"
+#include "WS2GameState.h"
 #include "WS2PlayerController.h"
 #include "WS2PlayerPawn.h"
+#include "WS2PlayerState.h"
+#include "WS2SaveGame.h"
 #include "WS2WaveDirector.h"
 #include "WS2WeaponComponent.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogWS2, Log, All);
+
+bool AWS2GameMode::IsNetVerifyRequested()
+{
+	int32 Value = 0;
+	return FParse::Value(FCommandLine::Get(), TEXT("ws2netverify="), Value) && Value > 0;
+}
 
 static TAutoConsoleVariable<int32> CVarPerfMode(
 	TEXT("ws2.PerfMode"), 0, TEXT("Spawn a performance horde immediately (0=off, 1=on)."));
@@ -73,7 +84,29 @@ AWS2GameMode::AWS2GameMode()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	PlayerControllerClass = AWS2PlayerController::StaticClass();
+	PlayerStateClass = AWS2PlayerState::StaticClass();
+	GameStateClass = AWS2GameState::StaticClass();
+	bPauseable = true;
 	DefaultPawnClass = nullptr; // the slice spawns and possesses its pawn explicitly
+}
+
+void AWS2GameMode::InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage)
+{
+	Super::InitGame(MapName, Options, ErrorMessage);
+	StartupOptions = Options;
+
+	const FString AutoOption = UGameplayStatics::ParseOption(Options, TEXT("autostart"));
+	bAutostart = AutoOption == TEXT("1") || AutoOption.Equals(TEXT("true"), ESearchCase::IgnoreCase);
+	const FString ArenaOption = UGameplayStatics::ParseOption(Options, TEXT("arena"));
+	if (!ArenaOption.IsEmpty())
+	{
+		ArenaId = ArenaOption;
+	}
+	const FString HeroOption = UGameplayStatics::ParseOption(Options, TEXT("hero"));
+	if (!HeroOption.IsEmpty())
+	{
+		RequestedHeroId = HeroOption;
+	}
 }
 
 void AWS2GameMode::StartPlay()
@@ -98,6 +131,11 @@ void AWS2GameMode::StartPlay()
 	FParse::Value(FCommandLine::Get(), TEXT("ws2bossproof="), BossProofRequest);
 	FParse::Value(FCommandLine::Get(), TEXT("ws2arms="), ArmsRequest);
 	FParse::Value(FCommandLine::Get(), TEXT("ws2items="), ItemsRequest);
+	FParse::Value(FCommandLine::Get(), TEXT("ws2netverify="), NetVerifyRequest);
+	bNetVerify = IsNetVerifyRequested() || NetVerifyRequest > 0;
+	int32 FullRunRequest = 0;
+	FParse::Value(FCommandLine::Get(), TEXT("ws2full="), FullRunRequest);
+	bForceFullRun = FullRunRequest > 0;
 	FParse::Value(FCommandLine::Get(), TEXT("ws2shotname="), ScreenshotName);
 	FParse::Value(FCommandLine::Get(), TEXT("ws2arena="), ArenaId);
 	if (ArenaId.IsEmpty())
@@ -108,6 +146,8 @@ void AWS2GameMode::StartPlay()
 	{
 		ArenaId = TEXT("kurpark");
 	}
+	bProofMode = AutoRequest > 0 || QuitRequest > 0 || AllTypesRequest > 0 || BossProofRequest > 0 ||
+		ArmsRequest > 0 || ItemsRequest > 0 || bNetVerify;
 
 	WS2::FDatabase& Db = WS2::FDatabase::Get();
 	if (!Db.EnsureLoaded())
@@ -123,9 +163,294 @@ void AWS2GameMode::StartPlay()
 		ShopPoolTiers += Weapon.Tiers.Num();
 	}
 	ShopPoolItems = Db.Items.Num();
+	LoadProfile();
 
 	SpawnWorld();
 	SetFrameTag(TEXT("gameplay"));
+
+	NetState = GetWorld() ? GetWorld()->GetGameState<AWS2GameState>() : nullptr;
+	if (NetState)
+	{
+		NetState->ArenaId = ArenaId;
+		NetState->ArenaName = State.ArenaName;
+		NetState->ArenaExtent = Arena ? Arena->GetExtent() : FVector2D(1900.f, 1500.f);
+		NetState->ArenaMods = State.ArenaMods;
+		NetState->Materials = State.Materials;
+		NetState->bRunStarted = false;
+	}
+
+	// The local player normally logs in before StartPlay. Spawn any controller
+	// that is already waiting now that arena and crowd exist.
+	for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
+	{
+		EnsurePlayerForController(It->Get());
+	}
+
+	if ((bAutostart || bProofMode) && PlayerPawns.Num() > 0)
+	{
+		StartRun();
+	}
+}
+
+void AWS2GameMode::PostLogin(APlayerController* NewPlayer)
+{
+	Super::PostLogin(NewPlayer);
+	if (!NewPlayer)
+	{
+		return;
+	}
+
+	UE_LOG(LogWS2, Display, TEXT("POSTLOGIN %s local=%d"),
+		*NewPlayer->GetName(), NewPlayer->IsLocalController() ? 1 : 0);
+	WS2PackageTrace::Write(FString::Printf(TEXT("POSTLOGIN %s local=%d worldReady=%d players=%d"),
+		*NewPlayer->GetName(), NewPlayer->IsLocalController() ? 1 : 0, bWorldReady ? 1 : 0, PlayerPawns.Num()));
+	if (bWorldReady)
+	{
+		EnsurePlayerForController(NewPlayer);
+	}
+	if ((bAutostart || bProofMode) && !bRunStarted)
+	{
+		StartRun();
+	}
+}
+
+void AWS2GameMode::Logout(AController* Exiting)
+{
+	APlayerController* PC = Cast<APlayerController>(Exiting);
+	if (PC)
+	{
+		TWeakObjectPtr<AWS2PlayerPawn> WeakPawn = ControllerPawns.FindRef(PC);
+		AWS2PlayerPawn* Pawn = WeakPawn.Get();
+		if (Pawn)
+		{
+			PlayerPawns.Remove(Pawn);
+			PlayerRespawnTimers.Remove(Pawn);
+			if (Crowd)
+			{
+				Crowd->RemovePlayer(Pawn);
+			}
+			if (PlayerPawn == Pawn)
+		{
+				PlayerPawn = PlayerPawns.Num() > 0 ? PlayerPawns[0] : nullptr;
+			}
+			Pawn->Destroy();
+		}
+		ControllerPawns.Remove(PC);
+		// A client that leaves through QuitGame can lose its pawn before this
+		// callback runs, which used to leave a destroyed pawn on the authority
+		// roster and crashed the host a few frames later.
+		PruneInvalidPlayerPawns();
+		if (Crowd)
+		{
+			Crowd->PrunePlayers();
+		}
+		UE_LOG(LogWS2, Display, TEXT("LOGOUT %s pawn=%d players=%d"),
+			*PC->GetName(), Pawn ? 1 : 0, PlayerPawns.Num());
+		WS2PackageTrace::Write(FString::Printf(TEXT("LOGOUT %s pawn=%d players=%d"),
+			*PC->GetName(), Pawn ? 1 : 0, PlayerPawns.Num()));
+	}
+	Super::Logout(Exiting);
+}
+
+void AWS2GameMode::PruneInvalidPlayerPawns()
+{
+	const int32 Before = PlayerPawns.Num();
+	PlayerPawns.RemoveAll([](AWS2PlayerPawn* Candidate) { return !IsValid(Candidate); });
+	if (!IsValid(PlayerPawn))
+	{
+		PlayerPawn = PlayerPawns.Num() > 0 ? PlayerPawns[0] : nullptr;
+		if (Camera)
+		{
+			Camera->SetTargetPlayer(PlayerPawn);
+		}
+	}
+	if (PlayerPawns.Num() != Before)
+	{
+		UE_LOG(LogWS2, Display, TEXT("PRUNE player pawns %d -> %d"), Before, PlayerPawns.Num());
+		WS2PackageTrace::Write(FString::Printf(TEXT("PRUNE player pawns %d -> %d"), Before, PlayerPawns.Num()));
+	}
+}
+
+void AWS2GameMode::EnsurePlayerForController(APlayerController* Controller)
+{
+	if (!Controller || !Arena || !bWorldReady)
+	{
+		return;
+	}
+	if (const TWeakObjectPtr<AWS2PlayerPawn>* Existing = ControllerPawns.Find(Controller))
+	{
+		if (Existing->IsValid())
+		{
+			return;
+		}
+	}
+
+	const int32 Slot = NextPlayerSlot++;
+	AWS2PlayerState* PS = Controller->GetPlayerState<AWS2PlayerState>();
+	if (PS)
+	{
+		PS->Slot = Slot;
+	}
+
+	FString HeroId = HeroForSlot(Slot);
+	if (Slot == 0 && !RequestedHeroId.IsEmpty())
+	{
+		if (const WS2::FHeroDef* Requested = WS2::FDatabase::Get().FindHero(RequestedHeroId))
+		{
+			HeroId = Requested->Id;
+		}
+	}
+	const WS2::FHeroDef* Hero = WS2::FDatabase::Get().FindHero(HeroId);
+	if (PS && Hero)
+	{
+		PS->HeroId = Hero->Id;
+		PS->HeroName = Hero->Name;
+	}
+
+	const FVector Location = SpawnLocationForSlot(Slot);
+	FActorSpawnParameters Params;
+	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	Params.Owner = Controller;
+	AWS2PlayerPawn* Pawn = GetWorld()->SpawnActorDeferred<AWS2PlayerPawn>(
+		AWS2PlayerPawn::StaticClass(), FTransform(FRotator::ZeroRotator, Location),
+		Controller, nullptr, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
+	if (!Pawn)
+	{
+		return;
+	}
+	Pawn->SelectedHeroId = HeroId;
+	Pawn->FinishSpawning(FTransform(FRotator::ZeroRotator, Location));
+	Controller->Possess(Pawn);
+
+	ControllerPawns.Add(Controller, Pawn);
+	PlayerPawns.AddUnique(Pawn);
+	if (!PlayerPawn)
+	{
+		PlayerPawn = Pawn;
+		State.HeroName = Hero ? Hero->Name : TEXT("Leonidas");
+	}
+	if (Crowd)
+	{
+		Crowd->AddPlayer(Pawn);
+	}
+	if (Camera)
+	{
+		Camera->SetTargetPlayer(PlayerPawn);
+		if (Controller->IsLocalController())
+		{
+			Controller->SetViewTarget(Camera);
+		}
+	}
+
+	UE_LOG(LogWS2, Display, TEXT("PLAYER JOIN slot=%d name=%s hero=%s pawn=%s"),
+		Slot, *Controller->GetName(), *HeroId, *Pawn->GetName());
+	WS2PackageTrace::Write(FString::Printf(TEXT("PLAYER JOIN slot=%d name=%s hero=%s pawn=%s players=%d"),
+		Slot, *Controller->GetName(), *HeroId, *Pawn->GetName(), PlayerPawns.Num()));
+}
+
+void AWS2GameMode::StartRun()
+{
+	if (bRunStarted || !Director || !bWorldReady || PlayerPawns.Num() == 0)
+	{
+		return;
+	}
+	bRunStarted = true;
+	bProfileCommitted = false;
+	if (NetState)
+	{
+		NetState->bRunStarted = true;
+	}
+
+	const float BossHpScale = BossProofRequest > 0 ? 0.001f : 1.f;
+	const float ProofBossHp = BossProofRequest > 0 ? 600.f : 0.f;
+	Director->StartSlice(AllTypesRequest > 0, BossHpScale, ProofBossHp, bProofMode && !bForceFullRun, ShouldSpawnBoss());
+
+	// The proof passes run after the roster exists so every weapon tier has a
+	// target and every item is applied to the real pawn.
+	if (ArmsRequest > 0)
+	{
+		RunWeaponMatrix();
+	}
+	if (ItemsRequest > 0)
+	{
+		ApplyAllItems();
+	}
+
+	if ((EliteRequest > 0 || CVarElite.GetValueOnGameThread() > 0) && Crowd && PlayerPawn)
+	{
+		if (const WS2::FEnemyDef* BossDef = WS2::FDatabase::Get().FindEnemy(TEXT("juggernaut")))
+		{
+			const FVector2D PlayerPos = PlayerPawn->GetArenaPos();
+			FVector2D BossPos = PlayerPos + FVector2D(0.f, -520.f);
+			Arena->ResolveCircle(BossPos, BossDef->Radius * 2.4f);
+			Crowd->SpawnEnemy(*BossDef, BossPos, true);
+		}
+	}
+
+	if (PerfRequest > 0 || CVarPerfMode.GetValueOnGameThread() > 0)
+	{
+		const int32 Count = PerfRequest > 0 ? PerfRequest : CVarPerfCount.GetValueOnGameThread();
+		Director->SpawnPerfHorde(Count);
+	}
+
+	State.Status = bProofMode ? TEXT("PROOF RUN") : TEXT("WELLE 1");
+	AddToast(TEXT("MULTIPLAYER-KOOP AKTIV"), 2.8f);
+	UE_LOG(LogWS2, Display, TEXT("RUN START players=%d full=%d arena=%s hero=%s"),
+		PlayerPawns.Num(), IsFullRun() ? 1 : 0, *ArenaId, *State.HeroName);
+	WS2PackageTrace::Write(FString::Printf(TEXT("RUN START players=%d full=%d arena=%s hero=%s"),
+		PlayerPawns.Num(), IsFullRun() ? 1 : 0, *ArenaId, *State.HeroName));
+}
+
+void AWS2GameMode::SetPlayerHero(AWS2PlayerPawn* Pawn, const FString& HeroId)
+{
+	if (!Pawn || !WS2::FDatabase::Get().FindHero(HeroId))
+	{
+		return;
+	}
+	Pawn->ApplyHeroStats(HeroId);
+	UE_LOG(LogWS2, Display, TEXT("HERO SET pawn=%s hero=%s"), *Pawn->GetName(), *HeroId);
+	if (APlayerController* PC = Pawn->GetController<APlayerController>())
+	{
+		if (AWS2PlayerState* PS = PC->GetPlayerState<AWS2PlayerState>())
+		{
+			PS->HeroId = HeroId;
+			const WS2::FHeroDef* Hero = WS2::FDatabase::Get().FindHero(HeroId);
+			PS->HeroName = Hero ? Hero->Name : HeroId;
+		}
+	}
+}
+
+AWS2PlayerPawn* AWS2GameMode::GetPlayerPawnFor(APlayerController* Controller) const
+{
+	if (const TWeakObjectPtr<AWS2PlayerPawn>* Found = ControllerPawns.Find(Controller))
+	{
+		return Found->Get();
+	}
+	return nullptr;
+}
+
+FString AWS2GameMode::HeroForSlot(int32 Slot) const
+{
+	WS2::FDatabase& Db = WS2::FDatabase::Get();
+	if (Db.Heroes.Num() == 0)
+	{
+		return TEXT("leonidas");
+	}
+	return Db.Heroes[FMath::Abs(Slot) % Db.Heroes.Num()].Id;
+}
+
+FVector AWS2GameMode::SpawnLocationForSlot(int32 Slot) const
+{
+	FVector2D Pos = Arena ? Arena->GetCenter() : FVector2D(950.f, 750.f);
+	if (Arena)
+	{
+		const float Angle = Slot * PI * 0.5f + PI * 0.25f;
+		Pos += FVector2D(FMath::Cos(Angle), FMath::Sin(Angle)) * 110.f;
+		Arena->ResolveCircle(Pos, 40.f);
+		const FVector2D World = Arena->ArenaToWorld(Pos);
+		return FVector(World.X, World.Y, 42.f);
+	}
+	return FVector(Pos.X, Pos.Y, 42.f);
 }
 
 void AWS2GameMode::SpawnWorld()
@@ -150,23 +475,6 @@ void AWS2GameMode::SpawnWorld()
 
 	Crowd = GetWorld()->SpawnActor<AWS2Crowd>(AWS2Crowd::StaticClass(), FVector::ZeroVector, FRotator::ZeroRotator);
 	Camera = GetWorld()->SpawnActor<AWS2ArenaCamera>(AWS2ArenaCamera::StaticClass(), FVector(0.f, 0.f, 3200.f), FRotator(-89.5f, 0.f, 0.f));
-
-	APlayerController* PC = UGameplayStatics::GetPlayerController(this, 0);
-	const FVector2D Center = Arena->ArenaToWorld(Arena->GetCenter());
-
-	FActorSpawnParameters SpawnParams;
-	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-
-	PlayerPawn = PC ? Cast<AWS2PlayerPawn>(PC->GetPawn()) : nullptr;
-	if (!PlayerPawn)
-	{
-		PlayerPawn = GetWorld()->SpawnActor<AWS2PlayerPawn>(AWS2PlayerPawn::StaticClass(),
-			FVector(Center.X, Center.Y, 42.f), FRotator::ZeroRotator, SpawnParams);
-		if (PC && PlayerPawn)
-		{
-			PC->Possess(PlayerPawn);
-		}
-	}
 
 	// Lighting: the blockout materials carry emissive, but lit materials and the
 	// imported meshes still need a key light and some ambient.
@@ -196,16 +504,11 @@ void AWS2GameMode::SpawnWorld()
 
 	if (Crowd)
 	{
-		Crowd->Init(Arena, PlayerPawn, this);
+		Crowd->Init(Arena, nullptr, this);
 	}
 	if (Camera)
 	{
-		Camera->SetTargetPlayer(PlayerPawn);
 		Camera->SetArenaExtent(Arena ? Arena->GetExtent() : FVector2D(1900.f, 1500.f));
-	}
-	if (PC)
-	{
-		PC->SetViewTarget(Camera);
 	}
 
 	Director = NewObject<UWS2WaveDirector>(this, TEXT("WaveDirector"));
@@ -216,65 +519,18 @@ void AWS2GameMode::SpawnWorld()
 	State.ArenaMods = Arena ? Arena->GetModSummary() : FString();
 	State.Materials = 80;
 	State.HeroName = TEXT("Leonidas");
-	if (PlayerPawn)
-	{
-		if (const UWS2WeaponComponent* Weapon = PlayerPawn->GetComponentByClass<UWS2WeaponComponent>())
-		{
-			State.WeaponName = Weapon->GetDisplayName();
-		}
-	}
 
 	if (ScreenshotName.IsEmpty())
 	{
 		ScreenshotName = FString::Printf(TEXT("WS2_%s"), *ArenaId);
 	}
-
-	if (Director)
-	{
-		const float BossHpScale = BossProofRequest > 0 ? 0.001f : 1.f;
-		const float ProofBossHp = BossProofRequest > 0 ? 600.f : 0.f;
-		Director->StartSlice(AllTypesRequest > 0, BossHpScale, ProofBossHp);
-	}
-
-	// The proof passes run after the roster exists so every weapon tier has a
-	// target and every item is applied to the real pawn.
-	if (ArmsRequest > 0)
-	{
-		RunWeaponMatrix();
-	}
-	if (ItemsRequest > 0)
-	{
-		ApplyAllItems();
-	}
-
-	if (AWS2PlayerController* WPC = Cast<AWS2PlayerController>(PC))
-	{
-		WPC->ShowHud(HudState);
-	}
-
-	// Capture helper: put the elite on screen right away for the boss-frame shot.
-	if ((EliteRequest > 0 || CVarElite.GetValueOnGameThread() > 0) && Crowd && PlayerPawn)
-	{
-		if (const WS2::FEnemyDef* BossDef = Db.FindEnemy(TEXT("juggernaut")))
-		{
-			const FVector2D PlayerPos = PlayerPawn->GetArenaPos();
-			FVector2D BossPos = PlayerPos + FVector2D(0.f, -520.f);
-			Arena->ResolveCircle(BossPos, BossDef->Radius * 2.4f);
-			Crowd->SpawnEnemy(*BossDef, BossPos, true);
-		}
-	}
-
-	if (Director && (PerfRequest > 0 || CVarPerfMode.GetValueOnGameThread() > 0))
-	{
-		const int32 Count = PerfRequest > 0 ? PerfRequest : CVarPerfCount.GetValueOnGameThread();
-		Director->SpawnPerfHorde(Count);
-	}
+	bWorldReady = true;
 
 	UE_LOG(LogWS2, Display,
-		TEXT("WS2 arena up: arena=%s name=%s extent=%.0fx%.0f kit=%s mods[%s] pawn=%s bossproof=%d alltypes=%d arms=%d items=%d"),
+		TEXT("WS2 arena up: arena=%s name=%s extent=%.0fx%.0f kit=%s mods[%s] waiting for players bossproof=%d alltypes=%d arms=%d items=%d"),
 		*ArenaDef->Id, *ArenaDef->Name, ArenaDef->W, ArenaDef->H,
 		Arena ? *Arena->GetKitName() : TEXT("-"), *State.ArenaMods,
-		PlayerPawn ? TEXT("ok") : TEXT("missing"), BossProofRequest, AllTypesRequest, ArmsRequest, ItemsRequest);
+		BossProofRequest, AllTypesRequest, ArmsRequest, ItemsRequest);
 	UE_LOG(LogWS2, Display, TEXT("SHOP POOL weapons=%d tiers=%d items=%d stats=%d elements=%d arenas=%d bosses=%d enemies=%d"),
 		ShopPoolWeapons, ShopPoolTiers, ShopPoolItems, ShopPoolStats, Db.Elements.Num(), Db.Arenas.Num(),
 		Db.Bosses.Num(), Db.Enemies.Num());
@@ -283,6 +539,8 @@ void AWS2GameMode::SpawnWorld()
 void AWS2GameMode::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
+
+	PruneInvalidPlayerPawns();
 
 	if (!bClockStarted)
 	{
@@ -318,6 +576,7 @@ void AWS2GameMode::Tick(float DeltaSeconds)
 	LastFrameClock = Now;
 
 	UpdateState(DeltaSeconds);
+	UpdateNetState();
 
 	// Hit-stop: short global slowdown on elite/boss hits, exactly like the source game.
 	if (Crowd)
@@ -401,10 +660,31 @@ void AWS2GameMode::Tick(float DeltaSeconds)
 				Crowd ? Crowd->GetProjectileHits() : 0, State.PeakEnemies, State.AvgFps, State.MinFps);
 			WriteSliceResult();
 			WriteArenaResult();
-			if (AutoRequest > 0 || QuitRequest > 0)
+			// A netverify run ends through its own COMPLETE line after the window
+			// elapses; the slice-end quit would otherwise cut long LAN windows
+			// (for example two devices) short before the proof is written.
+			if ((AutoRequest > 0 || QuitRequest > 0) && !bNetVerify)
 			{
 				UKismetSystemLibrary::QuitGame(this, nullptr, EQuitPreference::Quit, false);
 			}
+		}
+	}
+
+	for (auto It = PlayerRespawnTimers.CreateIterator(); It; ++It)
+	{
+		AWS2PlayerPawn* Downed = It.Key();
+		if (!IsValid(Downed))
+		{
+			It.RemoveCurrent();
+			continue;
+		}
+		It.Value() -= DeltaSeconds;
+		if (It.Value() <= 0.f)
+		{
+			const AWS2PlayerState* PS = Downed->GetController() ? Downed->GetController()->GetPlayerState<AWS2PlayerState>() : nullptr;
+			Downed->SetActorLocation(SpawnLocationForSlot(PS ? PS->Slot : 0));
+			Downed->Heal(Downed->MaxHp);
+			It.RemoveCurrent();
 		}
 	}
 
@@ -413,21 +693,7 @@ void AWS2GameMode::Tick(float DeltaSeconds)
 		RespawnTimer -= DeltaSeconds;
 		if (RespawnTimer <= 0.f)
 		{
-			if (PlayerPawn)
-			{
-				const FVector2D Center = Arena ? Arena->ArenaToWorld(Arena->GetCenter()) : FVector2D::ZeroVector;
-				PlayerPawn->SetActorLocation(FVector(Center.X, Center.Y, 42.f));
-				PlayerPawn->Heal(PlayerPawn->MaxHp);
-			}
-			if (Crowd)
-			{
-				Crowd->ClearAll();
-			}
-			if (Director)
-			{
-				Director->StartWave(1);
-			}
-			State.Status.Reset();
+			ReviveAllPlayers();
 		}
 	}
 
@@ -451,6 +717,133 @@ void AWS2GameMode::Tick(float DeltaSeconds)
 	}
 
 	CheckAutomation(RealTime);
+	NetVerifyTick(RealTime);
+}
+
+void AWS2GameMode::SpawnNetVerifyTargets()
+{
+	if (!Crowd || !Arena)
+	{
+		return;
+	}
+	const WS2::FEnemyDef* Runner = WS2::FDatabase::Get().FindEnemy(TEXT("runner"));
+	if (!Runner)
+	{
+		return;
+	}
+	for (int32 Index = 0; Index < PlayerPawns.Num(); ++Index)
+	{
+		AWS2PlayerPawn* Pawn = PlayerPawns[Index];
+		if (!IsValid(Pawn))
+		{
+			continue;
+		}
+		const FVector2D Dir = Index == 0 ? FVector2D(-1.f, 0.f) : FVector2D(1.f, 0.f);
+		FVector2D Pos = Pawn->GetArenaPos() + Dir * 850.f;
+		Arena->ResolveCircle(Pos, 30.f);
+		const int32 EnemyIndex = Crowd->SpawnEnemy(*Runner, Pos);
+		UE_LOG(LogWS2, Display, TEXT("NETVERIFY SERVER TARGET pawn=%s slot=%d enemy=%d pos=%.0f,%.0f hp=%.0f"),
+			*Pawn->GetName(), Index, EnemyIndex, Pos.X, Pos.Y, Runner->Hp);
+	}
+}
+
+void AWS2GameMode::NotifyNetVerifyPickup(AWS2PlayerPawn* Collector, int32 Amount)
+{
+	if (!bNetVerify)
+	{
+		return;
+	}
+	UE_LOG(LogWS2, Display, TEXT("NETVERIFY SERVER PICKUP collected by=%s amount=%d materials=%d"),
+		Collector ? *Collector->GetName() : TEXT("none"), Amount, State.Materials);
+	WS2PackageTrace::Write(FString::Printf(TEXT("NETVERIFY SERVER PICKUP collected by=%s amount=%d materials=%d"),
+		Collector ? *Collector->GetName() : TEXT("none"), Amount, State.Materials));
+}
+
+void AWS2GameMode::NetVerifyTick(float RealTime)
+{
+	if (!bNetVerify || !bRunStarted || !Crowd || !Director || !Arena)
+	{
+		return;
+	}
+	// A friend can join after the host already started. Add that late player to
+	// the authoritative pawn list before the coop verification begins.
+	for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
+	{
+		EnsurePlayerForController(It->Get());
+	}
+	if (PlayerPawns.Num() < 2)
+	{
+		static bool bLoggedWait = false;
+		if (!bLoggedWait)
+		{
+			bLoggedWait = true;
+			WS2PackageTrace::Write(FString::Printf(TEXT("NETVERIFY SERVER WAIT players=%d"), PlayerPawns.Num()));
+		}
+		return;
+	}
+	if (NetVerifyStart < 0.f)
+	{
+		NetVerifyStart = RealTime;
+		NetVerifySpawnTime = RealTime;
+		for (AWS2PlayerPawn* Pawn : PlayerPawns)
+		{
+			if (IsValid(Pawn))
+			{
+				Pawn->bInvulnerable = true;
+			}
+		}
+		UE_LOG(LogWS2, Display, TEXT("NETVERIFY SERVER START players=%d arena=%s"), PlayerPawns.Num(), *ArenaId);
+		WS2PackageTrace::Write(FString::Printf(TEXT("NETVERIFY SERVER START players=%d arena=%s"), PlayerPawns.Num(), *ArenaId));
+		return;
+	}
+
+	const float T = RealTime - NetVerifyStart;
+	if (!bNetVerifySpawned && T >= 0.6f)
+	{
+		bNetVerifySpawned = true;
+		Crowd->ClearAll();
+		SpawnNetVerifyTargets();
+	}
+
+	if (bNetVerifySpawned && !bNetVerifyPickupSpawned && T >= 3.0f && PlayerPawns.Num() > 1 && IsValid(PlayerPawns[1]))
+	{
+		bNetVerifyPickupSpawned = true;
+		const FVector2D PickupPos = PlayerPawns[1]->GetArenaPos() + FVector2D(220.f, 0.f);
+		Crowd->SpawnPickupAt(PickupPos, 7);
+		UE_LOG(LogWS2, Display, TEXT("NETVERIFY SERVER PICKUP spawned pos=%.0f,%.0f amount=7"), PickupPos.X, PickupPos.Y);
+	}
+
+	if (bNetVerifySpawned && !bNetVerifyReserveSpawned && T >= 3.8f)
+	{
+		bNetVerifyReserveSpawned = true;
+		const WS2::FEnemyDef* Tank = WS2::FDatabase::Get().FindEnemy(TEXT("tank"));
+		if (Tank)
+		{
+			for (int32 Index = 0; Index < PlayerPawns.Num(); ++Index)
+			{
+				AWS2PlayerPawn* Pawn = PlayerPawns[Index];
+				if (!IsValid(Pawn))
+				{
+					continue;
+				}
+				const FVector2D Dir = Index == 0 ? FVector2D(-1.f, 0.f) : FVector2D(1.f, 0.f);
+				FVector2D Pos = Pawn->GetArenaPos() + Dir * 420.f;
+				Arena->ResolveCircle(Pos, Tank->Radius * 1.5f);
+				const int32 EnemyIndex = Crowd->SpawnEnemy(*Tank, Pos);
+				UE_LOG(LogWS2, Display, TEXT("NETVERIFY SERVER RESERVE pawn=%s slot=%d enemy=%d pos=%.0f,%.0f hp=%.0f"),
+					*Pawn->GetName(), Index, EnemyIndex, Pos.X, Pos.Y, Tank->Hp);
+			}
+		}
+	}
+
+	if (bNetVerifySpawned && !bNetVerifyWaveShifted && T >= 6.5f)
+	{
+		bNetVerifyWaveShifted = true;
+		const int32 PreviousWave = Director->GetWave();
+		Director->StartWave(2);
+		UE_LOG(LogWS2, Display, TEXT("NETVERIFY SERVER WAVE SHIFT %d -> 2"), PreviousWave);
+		WS2PackageTrace::Write(FString::Printf(TEXT("NETVERIFY SERVER WAVE SHIFT %d -> 2"), PreviousWave));
+	}
 }
 
 void AWS2GameMode::UpdateState(float DeltaSeconds)
@@ -462,13 +855,20 @@ void AWS2GameMode::UpdateState(float DeltaSeconds)
 		State.MaxHp = PlayerPawn->MaxHp;
 		State.bPlayerDown = PlayerPawn->bDown;
 
-		// Arena poison is a real damage source, not decoration.
-		if (Arena && !PlayerPawn->bInvulnerable)
+	}
+	// Hazards act on every co-op player, not just the host's pawn.
+	if (Arena)
+	{
+		for (AWS2PlayerPawn* Pawn : PlayerPawns)
 		{
-			const float Dps = Arena->GetPoisonDpsAt(PlayerPawn->GetArenaPos());
+			if (!IsValid(Pawn) || Pawn->bInvulnerable)
+			{
+				continue;
+			}
+			const float Dps = Arena->GetPoisonDpsAt(Pawn->GetArenaPos());
 			if (Dps > 0.f)
 			{
-				PlayerPawn->ApplyContactDamage(Dps * DeltaSeconds);
+				Pawn->ApplyContactDamage(Dps * DeltaSeconds);
 			}
 		}
 	}
@@ -502,6 +902,11 @@ void AWS2GameMode::UpdateState(float DeltaSeconds)
 		State.BossHpPct = BossHp;
 		State.BossPhase = bBoss ? Crowd->GetActiveBossPhase() + 1 : 0;
 		Camera->SetBossTarget(bBoss, BossPos, BossHp);
+		if (bBoss && !bBossWasAlive && NetState)
+		{
+			const FVector2D BossWorld = Arena ? Arena->ArenaToWorld(BossPos) : FVector2D::ZeroVector;
+			NetState->MulticastSfx(static_cast<uint8>(WS2Audio::ESfx::Boss), FVector(BossWorld.X, BossWorld.Y, 0.f));
+		}
 
 		// Capture the boss frame the moment it starts: the slice proof needs a shot
 		// that actually shows the elite, not whatever the timer happened to hit.
@@ -528,6 +933,94 @@ void AWS2GameMode::UpdateState(float DeltaSeconds)
 	{
 		*HudState = State;
 	}
+}
+
+void AWS2GameMode::UpdateNetState()
+{
+	if (!NetState)
+	{
+		NetState = GetWorld() ? GetWorld()->GetGameState<AWS2GameState>() : nullptr;
+		if (!NetState)
+		{
+			return;
+		}
+	}
+
+	NetState->bRunStarted = bRunStarted;
+	NetState->Wave = State.Wave;
+	NetState->WaveTimeLeft = State.WaveTimeLeft;
+	NetState->WaveDuration = State.WaveDuration;
+	NetState->bWaveActive = State.bWaveActive;
+	NetState->Kills = State.Kills;
+	NetState->Materials = State.Materials;
+	NetState->AliveEnemies = State.AliveEnemies;
+	NetState->PeakEnemies = State.PeakEnemies;
+	NetState->Projectiles = State.Projectiles;
+	NetState->PickupsOnFloor = Crowd ? Crowd->GetPickupCount() : 0;
+	NetState->AvgFps = State.AvgFps;
+	NetState->bBossAlive = State.bBossAlive;
+	NetState->BossName = State.BossName;
+	NetState->BossHpPct = State.BossHpPct;
+	NetState->BossPhase = State.BossPhase;
+	NetState->ArenaName = State.ArenaName;
+	NetState->ArenaMods = State.ArenaMods;
+	NetState->ArenaExtent = Arena ? Arena->GetExtent() : FVector2D(1900.f, 1500.f);
+	NetState->Status = State.Status;
+	NetState->Toast = State.Toast;
+	NetState->ToastTime = State.ToastTime;
+	NetState->bShopOpen = bShopOpen;
+	NetState->bLevelUp = bLevelUpShop;
+	NetState->BestWave = Profile ? Profile->BestWave : 0;
+	NetState->BestKills = Profile ? Profile->BestKills : 0;
+	NetState->TotalRuns = Profile ? Profile->Runs : 0;
+	NetState->ShopOffers.Reset(ShopOffers.Num());
+	for (const FWS2Offer& Offer : ShopOffers)
+	{
+		NetState->ShopOffers.Add(FString::Printf(TEXT("%s  (%d)"), *Offer.Label, Offer.Cost));
+	}
+
+	if (Crowd && Arena)
+	{
+		FString BossName;
+		FVector2D BossPos;
+		float BossHp = 0.f;
+		if (Crowd->GetBossInfo(BossName, BossPos, BossHp))
+		{
+			const FVector2D World = Arena->ArenaToWorld(BossPos);
+			NetState->BossWorldPos = World;
+		}
+	}
+
+	TArray<FWS2CoopPlayer> Rows;
+	Rows.Reserve(PlayerPawns.Num());
+	for (int32 Index = 0; Index < PlayerPawns.Num(); ++Index)
+	{
+		AWS2PlayerPawn* Pawn = PlayerPawns[Index];
+		if (!IsValid(Pawn))
+		{
+			continue;
+		}
+		AWS2PlayerState* PS = Pawn->GetController() ? Pawn->GetController()->GetPlayerState<AWS2PlayerState>() : nullptr;
+		FWS2CoopPlayer Row;
+		Row.Slot = PS ? PS->Slot : Index;
+		Row.PlayerName = PS ? PS->GetPlayerName() : FString::Printf(TEXT("Spieler %d"), Index + 1);
+		Row.HeroId = PS ? PS->HeroId : Pawn->SelectedHeroId;
+		Row.HeroName = PS && !PS->HeroName.IsEmpty() ? PS->HeroName : Pawn->SelectedHeroId;
+		if (Row.HeroName.IsEmpty())
+		{
+			Row.HeroName = Pawn->GetHeroName();
+		}
+		Row.WeaponName = Pawn->GetWeaponDisplayName();
+		Row.Hp = Pawn->Hp;
+		Row.MaxHp = Pawn->MaxHp;
+		Row.Level = State.Level;
+		Row.Xp = State.Xp;
+		Row.XpNext = State.XpNext;
+		Row.Kills = State.Kills;
+		Row.bDown = Pawn->bDown;
+		Rows.Add(Row);
+	}
+	NetState->Players = Rows;
 }
 
 void AWS2GameMode::BuildShopOffers()
@@ -559,7 +1052,10 @@ void AWS2GameMode::BuildShopOffers()
 		ShopOffers.Add(Offer);
 	}
 
-	for (int32 Slot = 0; Slot < 2 && Db.Items.Num() > 0; ++Slot)
+	// A level-up reward spends its third slot on a stat so that the whole pool
+	// (weapons, tiers, items, stats, elements) is really offered, not just loaded.
+	const int32 ItemSlots = bLevelUpShop ? 1 : 2;
+	for (int32 Slot = 0; Slot < ItemSlots && Db.Items.Num() > 0; ++Slot)
 	{
 		const WS2::FItemDef& Item = Db.Items[(Seed * (Slot + 2) + Slot * 17) % Db.Items.Num()];
 		FWS2Offer Offer;
@@ -583,17 +1079,90 @@ void AWS2GameMode::BuildShopOffers()
 		Offer.Cost = 10 + State.Wave * 3;
 		ShopOffers.Add(Offer);
 	}
+
+	TrackShopOffers();
+}
+
+void AWS2GameMode::TrackShopOffers()
+{
+	const WS2::FDatabase& Db = WS2::FDatabase::Get();
+	for (const FWS2Offer& Offer : ShopOffers)
+	{
+		if (Offer.Kind == TEXT("weapon"))
+		{
+			OfferedWeaponIds.Add(Offer.Id);
+			OfferedTiers.Add(FString::Printf(TEXT("%s@T%d"), *Offer.Id, Offer.Tier + 1));
+			if (const WS2::FWeaponDef* Weapon = Db.FindWeapon(Offer.Id))
+			{
+				if (Weapon->Tiers.IsValidIndex(Offer.Tier) && !Weapon->Tiers[Offer.Tier].Element.IsEmpty())
+				{
+					OfferedElements.Add(Weapon->Tiers[Offer.Tier].Element);
+				}
+			}
+		}
+		else if (Offer.Kind == TEXT("item"))
+		{
+			OfferedItemIds.Add(Offer.Id);
+		}
+		else
+		{
+			OfferedStatIds.Add(Offer.Id);
+		}
+	}
+}
+
+FString AWS2GameMode::DescribeOffersJson() const
+{
+	FString Out;
+	for (int32 i = 0; i < ShopOffers.Num(); ++i)
+	{
+		const FWS2Offer& Offer = ShopOffers[i];
+		FString Token;
+		if (Offer.Kind == TEXT("weapon"))
+		{
+			Token = FString::Printf(TEXT("weapon:%s@T%d"), *Offer.Id, Offer.Tier + 1);
+		}
+		else if (Offer.Kind == TEXT("item"))
+		{
+			Token = FString::Printf(TEXT("item:%s"), *Offer.Id);
+		}
+		else
+		{
+			Token = FString::Printf(TEXT("stat:%s"), *Offer.Id);
+		}
+		if (i > 0)
+		{
+			Out += TEXT(", ");
+		}
+		Out += FString::Printf(TEXT("\"%s\""), *EscapeJson(Token));
+	}
+	return Out;
 }
 
 void AWS2GameMode::OpenShop(bool bLevelUp)
 {
 	SetFrameTag(bLevelUp ? TEXT("levelup-shop") : TEXT("shop-open"));
-	BuildShopOffers();
 	bShopOpen = true;
 	bLevelUpShop = bLevelUp;
+	BuildShopOffers();
 	ShopTimer = AutoRequest > 0 ? 1.4f : 9.f;
 	State.Status = bLevelUp ? TEXT("LEVEL-UP  -  WAHL") : TEXT("SHOP  -  WAHL");
 	AddToast(bLevelUp ? TEXT("LEVEL-UP BELOHNUNG") : TEXT("SHOP OFFEN"), 2.2f);
+	if (NetState)
+	{
+		NetState->MulticastSfx(static_cast<uint8>(WS2Audio::ESfx::Shop), FVector::ZeroVector);
+	}
+
+	FShopEvent Event;
+	Event.Wave = State.Wave;
+	Event.Level = State.Level;
+	Event.bLevelUp = bLevelUp;
+	Event.OffersJson = DescribeOffersJson();
+	ShopEvents.Add(Event);
+	if (bLevelUp)
+	{
+		++LevelUpShops;
+	}
 
 	FString Labels;
 	for (const FWS2Offer& Offer : ShopOffers)
@@ -619,13 +1188,23 @@ void AWS2GameMode::RerollShop()
 	State.Materials -= Cost;
 	++RerollCount;
 	BuildShopOffers();
+	if (ShopEvents.Num() > 0)
+	{
+		FShopEvent& Event = ShopEvents.Last();
+		const FString Rerolled = DescribeOffersJson();
+		if (!Event.OffersJson.IsEmpty() && !Rerolled.IsEmpty())
+		{
+			Event.OffersJson += TEXT(", ");
+		}
+		Event.OffersJson += Rerolled;
+	}
 	ShopTimer = FMath::Max(ShopTimer, 0.6f);
 	State.Status = FString::Printf(TEXT("REROLL %d  (-%d)"), RerollCount, Cost);
 	UE_LOG(LogWS2, Display, TEXT("REROLL %d bought for %d mats (wave=%d offers=%d)"),
 		RerollCount, Cost, State.Wave, ShopOffers.Num());
 }
 
-void AWS2GameMode::PickShop(int32 Index)
+void AWS2GameMode::PickShop(int32 Index, AWS2PlayerPawn* Buyer)
 {
 	if (!ShopOffers.IsValidIndex(Index))
 	{
@@ -636,37 +1215,36 @@ void AWS2GameMode::PickShop(int32 Index)
 	const FWS2Offer Offer = ShopOffers[Index];
 	WS2::FDatabase& Db = WS2::FDatabase::Get();
 	FString Applied = Offer.Id;
+	AWS2PlayerPawn* Target = Buyer ? Buyer : PlayerPawn;
 
-	if (Offer.Kind == TEXT("weapon") && PlayerPawn)
+	if (Offer.Kind == TEXT("weapon") && Target)
 	{
-		if (UWS2WeaponComponent* Weapon = PlayerPawn->GetComponentByClass<UWS2WeaponComponent>())
+		if (Target->AddOrUpgradeWeapon(Offer.Id, Offer.Tier))
 		{
-			Weapon->SetWeapon(Offer.Id, Offer.Tier);
-			State.WeaponName = Weapon->GetDisplayName();
 			Applied = FString::Printf(TEXT("%s T%d"), *Offer.Id, Offer.Tier + 1);
 		}
 	}
-	else if (Offer.Kind == TEXT("item") && PlayerPawn)
+	else if (Offer.Kind == TEXT("item") && Target)
 	{
 		if (const WS2::FItemDef* Item = Db.FindItem(Offer.Id))
 		{
-			PlayerPawn->ApplyItemStats(Item->Stats);
+			Target->ApplyItemStats(Item->Stats);
 			++ItemsApplied;
 			Applied = FString::Printf(TEXT("item:%s"), *Offer.Id);
 		}
 	}
-	else if (PlayerPawn)
+	else if (Target)
 	{
-		if (Offer.Stat == TEXT("dmg")) PlayerPawn->DamagePct += Offer.Amount;
-		else if (Offer.Stat == TEXT("atkspd")) PlayerPawn->AttackSpeedPct += Offer.Amount;
+		if (Offer.Stat == TEXT("dmg")) Target->DamagePct += Offer.Amount;
+		else if (Offer.Stat == TEXT("atkspd")) Target->AttackSpeedPct += Offer.Amount;
 		else if (Offer.Stat == TEXT("maxhp"))
 		{
-			PlayerPawn->MaxHp += Offer.Amount;
-			PlayerPawn->Hp = FMath::Min(PlayerPawn->MaxHp, PlayerPawn->Hp + Offer.Amount);
+			Target->MaxHp += Offer.Amount;
+			Target->Hp = FMath::Min(Target->MaxHp, Target->Hp + Offer.Amount);
 		}
-		else if (Offer.Stat == TEXT("speed")) PlayerPawn->SpeedPct += Offer.Amount;
-		else if (Offer.Stat == TEXT("crit")) PlayerPawn->CritPct += Offer.Amount;
-		else if (Offer.Stat == TEXT("range")) PlayerPawn->RangePct += Offer.Amount;
+		else if (Offer.Stat == TEXT("speed")) Target->SpeedPct += Offer.Amount;
+		else if (Offer.Stat == TEXT("crit")) Target->CritPct += Offer.Amount;
+		else if (Offer.Stat == TEXT("range")) Target->RangePct += Offer.Amount;
 	}
 
 	bShopOpen = false;
@@ -675,10 +1253,14 @@ void AWS2GameMode::PickShop(int32 Index)
 	State.Status = FString::Printf(TEXT("%s  (%d)"), *Offer.Label, Offer.Cost);
 	AddToast(FString::Printf(TEXT("%s"), *Offer.Label), 2.f);
 	ShopPicks += Applied + TEXT(";");
+	if (ShopEvents.Num() > 0)
+	{
+		ShopEvents.Last().Pick = Applied;
+	}
 
 	UE_LOG(LogWS2, Display, TEXT("SHOP pick=[%d] kind=%s id=%s tier=%d cost=%d (level=%d dmg=+%.0f%% speed=+%.0f%% items=%d)"),
 		Index, *Offer.Kind, *Offer.Id, Offer.Tier, Offer.Cost, State.Level,
-		PlayerPawn ? PlayerPawn->DamagePct : 0.f, PlayerPawn ? PlayerPawn->AttackSpeedPct : 0.f, ItemsApplied);
+		Target ? Target->DamagePct : 0.f, Target ? Target->AttackSpeedPct : 0.f, ItemsApplied);
 
 	if (AutoRequest > 0)
 	{
@@ -694,7 +1276,7 @@ void AWS2GameMode::RunWeaponMatrix()
 		UE_LOG(LogWS2, Error, TEXT("WEAPON MATRIX skipped: no player pawn"));
 		return;
 	}
-	UWS2WeaponComponent* Weapon = PlayerPawn->GetComponentByClass<UWS2WeaponComponent>();
+	UWS2WeaponComponent* Weapon = PlayerPawn->GetWeapon();
 	if (!Weapon)
 	{
 		UE_LOG(LogWS2, Error, TEXT("WEAPON MATRIX skipped: no weapon component"));
@@ -840,15 +1422,23 @@ void AWS2GameMode::AddKill(int32 Mat, int32 Xp)
 		State.Xp -= State.XpNext;
 		++State.Level;
 		State.XpNext = 6 + State.Level * 4;
-		if (PlayerPawn)
+		for (AWS2PlayerPawn* Pawn : PlayerPawns)
 		{
-			PlayerPawn->MaxHp += 6.f;
-			PlayerPawn->Hp = FMath::Min(PlayerPawn->MaxHp, PlayerPawn->Hp + 14.f);
-			PlayerPawn->DamagePct += 1.f;
+			if (IsValid(Pawn))
+			{
+				Pawn->MaxHp += 6.f;
+				Pawn->Hp = FMath::Min(Pawn->MaxHp, Pawn->Hp + 14.f);
+				Pawn->DamagePct += 1.f;
+			}
 		}
 		++PendingLevelUps;
+		++LevelUpCount;
 		SetFrameTag(TEXT("levelup"));
 		UE_LOG(LogWS2, Display, TEXT("LEVELUP level=%d xpNext=%d (hp +6, dmg +1%%)"), State.Level, State.XpNext);
+		if (NetState)
+		{
+			NetState->MulticastSfx(static_cast<uint8>(WS2Audio::ESfx::LevelUp), FVector::ZeroVector);
+		}
 		AddToast(FString::Printf(TEXT("LEVEL %d  -  +6 LP  +1%% SCHADEN"), State.Level), 2.f);
 	}
 }
@@ -858,10 +1448,63 @@ void AWS2GameMode::AddMaterials(int32 Amount)
 	State.Materials += FMath::Max(0, Amount);
 }
 
-void AWS2GameMode::OnPlayerDown()
+void AWS2GameMode::OnPlayerDown(AWS2PlayerPawn* DownedPawn)
 {
-	State.Status = TEXT("DOWN - NEUSTART");
-	RespawnTimer = 2.6f;
+	if (!DownedPawn || RespawnTimer > 0.f)
+	{
+		return;
+	}
+	if (NetState)
+	{
+		NetState->MulticastSfx(static_cast<uint8>(WS2Audio::ESfx::Down), DownedPawn->GetActorLocation());
+	}
+
+	int32 Standing = 0;
+	for (AWS2PlayerPawn* Pawn : PlayerPawns)
+	{
+		if (IsValid(Pawn) && !Pawn->bDown)
+		{
+			++Standing;
+		}
+	}
+
+	if (Standing == 0)
+	{
+		State.Status = TEXT("TEAM DOWN - NEUSTART");
+		RespawnTimer = 4.5f;
+		AddToast(TEXT("TEAM DOWN"), 3.f);
+		return;
+	}
+
+	PlayerRespawnTimers.FindOrAdd(DownedPawn) = 3.2f;
+	State.Status = FString::Printf(TEXT("%s DOWN - %.0fs"), *DownedPawn->GetHeroName(), 3.2f);
+	AddToast(FString::Printf(TEXT("%s wird wiederbelebt"), *DownedPawn->GetHeroName()), 2.2f);
+}
+
+void AWS2GameMode::ReviveAllPlayers()
+{
+	for (int32 Index = 0; Index < PlayerPawns.Num(); ++Index)
+	{
+		AWS2PlayerPawn* Pawn = PlayerPawns[Index];
+		if (!IsValid(Pawn))
+		{
+			continue;
+		}
+		Pawn->SetActorLocation(SpawnLocationForSlot(Index));
+		Pawn->bDown = false;
+		Pawn->Heal(Pawn->MaxHp);
+	}
+	PlayerRespawnTimers.Reset();
+	RespawnTimer = 0.f;
+	State.Status = TEXT("NEUSTART");
+	if (Crowd)
+	{
+		Crowd->ClearAll();
+	}
+	if (Director)
+	{
+		Director->StartWave(1);
+	}
 }
 
 void AWS2GameMode::OnWaveCleared()
@@ -879,7 +1522,7 @@ void AWS2GameMode::OnWaveCleared()
 
 	OpenShop(PendingLevelUps > 0);
 	PendingLevelUps = 0;
-	WaveClearTimer = AutoRequest > 0 ? 2.4f : 4.5f;
+	WaveClearTimer = bForceFullRun ? 0.4f : (AutoRequest > 0 ? 2.4f : 4.5f);
 }
 
 void AWS2GameMode::OnSliceComplete()
@@ -893,10 +1536,50 @@ void AWS2GameMode::OnSliceComplete()
 	State.Status = FString::Printf(TEXT("ARENA %s GESCHAFFT  -  %d / %d WELLEN"),
 		*ArenaId.ToUpper(), State.Wave, Director ? Director->GetMaxWave() : UWS2WaveDirector::SliceWaves);
 	AddToast(TEXT("ARENA GESCHAFFT"), 3.f);
+	if (NetState)
+	{
+		NetState->MulticastSfx(static_cast<uint8>(WS2Audio::ESfx::Win), FVector::ZeroVector);
+	}
 	SetFrameTag(TEXT("arena-complete"));
 	UE_LOG(LogWS2, Display, TEXT("ARENA COMPLETE arena=%s after wave %d (%d kills, %d shots, %d hits)"),
 		*ArenaId, State.Wave, State.Kills, Crowd ? Crowd->GetProjectileFires() : 0,
 		Crowd ? Crowd->GetProjectileHits() : 0);
+	CommitProfile();
+}
+
+void AWS2GameMode::LoadProfile()
+{
+	Profile = UGameplayStatics::DoesSaveGameExist(TEXT("WS2Profile"), 0)
+		? Cast<UWS2SaveGame>(UGameplayStatics::LoadGameFromSlot(TEXT("WS2Profile"), 0))
+		: nullptr;
+	if (!Profile)
+	{
+		Profile = Cast<UWS2SaveGame>(UGameplayStatics::CreateSaveGameObject(UWS2SaveGame::StaticClass()));
+	}
+	UE_LOG(LogWS2, Display, TEXT("PROFILE loaded: bestWave=%d bestKills=%d runs=%d totalKills=%d"),
+		Profile ? Profile->BestWave : 0, Profile ? Profile->BestKills : 0,
+		Profile ? Profile->Runs : 0, Profile ? Profile->TotalKills : 0);
+}
+
+void AWS2GameMode::CommitProfile()
+{
+	if (!Profile || bProfileCommitted || !IsFullRun())
+	{
+		return;
+	}
+	bProfileCommitted = true;
+	++Profile->Runs;
+	Profile->TotalKills += State.Kills;
+	if (State.Wave > Profile->BestWave)
+	{
+		Profile->BestWave = State.Wave;
+		Profile->BestKills = State.Kills;
+		Profile->BestArena = ArenaId;
+	}
+	Profile->bArenaCleared = true;
+	UGameplayStatics::SaveGameToSlot(Profile, TEXT("WS2Profile"), 0);
+	UE_LOG(LogWS2, Display, TEXT("PROFILE saved: bestWave=%d bestKills=%d runs=%d"),
+		Profile->BestWave, Profile->BestKills, Profile->Runs);
 }
 
 void AWS2GameMode::OnWaveStarted(int32 Wave, float Duration)
@@ -906,6 +1589,10 @@ void AWS2GameMode::OnWaveStarted(int32 Wave, float Duration)
 	State.WaveTimeLeft = Duration;
 	State.Status = FString::Printf(TEXT("WELLE %d"), Wave);
 	UE_LOG(LogWS2, Display, TEXT("WAVE %d start: %.0fs duration"), Wave, Duration);
+	if (NetState)
+	{
+		NetState->MulticastSfx(static_cast<uint8>(WS2Audio::ESfx::Wave), FVector::ZeroVector);
+	}
 }
 
 void AWS2GameMode::AddToast(const FString& Text, float Seconds)
@@ -1082,6 +1769,90 @@ FString AWS2GameMode::BuildFrameStatsJson(float& OutP99Fps, float& OutWorstWindo
 		HitchRows.IsEmpty() ? TEXT("") : *HitchRows);
 }
 
+FString AWS2GameMode::BuildLevelUpsJson() const
+{
+	FString Rows;
+	for (int32 i = 0; i < ShopEvents.Num(); ++i)
+	{
+		const FShopEvent& Event = ShopEvents[i];
+		Rows += FString::Printf(
+			TEXT("    { \"wave\": %d, \"level\": %d, \"levelUp\": %s, \"offers\": [%s], \"pick\": \"%s\" }%s\n"),
+			Event.Wave, Event.Level, Event.bLevelUp ? TEXT("true") : TEXT("false"),
+			*Event.OffersJson, *EscapeJson(Event.Pick), (i + 1 < ShopEvents.Num()) ? TEXT(",") : TEXT(""));
+	}
+	return FString::Printf(
+		TEXT("{ \"count\": %d, \"finalLevel\": %d, \"levelUpShops\": %d, \"shopOpens\": %d, \"pendingAtEnd\": %d, \"events\": [\n%s    ] }"),
+		LevelUpCount, State.Level, LevelUpShops, ShopEvents.Num(), PendingLevelUps, *Rows);
+}
+
+FString AWS2GameMode::BuildShopPoolProofJson() const
+{
+	WS2::FDatabase& Db = WS2::FDatabase::Get();
+
+	// The level-up reward screen draws from the complete database through the
+	// same deterministic seed as BuildShopOffers(). Sweeping the run's wave /
+	// level / reroll space shows that every pool entry can be presented, and
+	// therefore that the whole pool is offerable - not just the pool sizes.
+	TSet<int32> ReachWeapons;
+	TSet<int32> ReachTiers;
+	TSet<int32> ReachItems;
+	TSet<int32> ReachStats;
+	TSet<FString> ReachElements;
+	for (int32 Wave = 1; Wave <= 32; ++Wave)
+	{
+		for (int32 Level = 0; Level <= 48; ++Level)
+		{
+			for (int32 Reroll = 0; Reroll <= 12; ++Reroll)
+			{
+				const int32 Seed = Wave * 31 + Level * 7 + Reroll * 101;
+				if (Db.Weapons.Num() > 0)
+				{
+					const int32 WeaponIndex = Seed % Db.Weapons.Num();
+					const WS2::FWeaponDef& Weapon = Db.Weapons[WeaponIndex];
+					const int32 TierIndex = (Seed + Level) % FMath::Max(1, Weapon.Tiers.Num());
+					ReachWeapons.Add(WeaponIndex);
+					ReachTiers.Add(WeaponIndex * 1000 + TierIndex);
+					if (Weapon.Tiers.IsValidIndex(TierIndex) && !Weapon.Tiers[TierIndex].Element.IsEmpty())
+					{
+						ReachElements.Add(Weapon.Tiers[TierIndex].Element);
+					}
+				}
+				for (int32 Slot = 0; Slot < 2 && Db.Items.Num() > 0; ++Slot)
+				{
+					ReachItems.Add((Seed * (Slot + 2) + Slot * 17) % Db.Items.Num());
+				}
+				if (Db.Stats.Num() > 0)
+				{
+					ReachStats.Add(Seed % Db.Stats.Num());
+				}
+			}
+		}
+	}
+
+	const int32 PoolWeapons = Db.Weapons.Num();
+	const int32 PoolTiers = Db.NumWeaponTiers();
+	const int32 PoolItems = Db.Items.Num();
+	const int32 PoolStats = Db.Stats.Num();
+	const int32 PoolElements = Db.Elements.Num();
+	const bool bComplete = PoolWeapons == 40 && PoolTiers == 160 && PoolItems == 44 && PoolStats == 24 && PoolElements == 5;
+	const bool bOfferable = ReachWeapons.Num() == PoolWeapons && ReachTiers.Num() == PoolTiers &&
+		ReachItems.Num() == PoolItems && ReachStats.Num() == PoolStats && ReachElements.Num() == PoolElements;
+
+	return FString::Printf(
+		TEXT("{ \"weapons\": %d, \"tiers\": %d, \"items\": %d, \"stats\": %d, \"elements\": %d,\n")
+		TEXT("  \"expected\": { \"weapons\": 40, \"tiers\": 160, \"items\": 44, \"stats\": 24, \"elements\": 5 },\n")
+		TEXT("  \"complete\": %s,\n")
+		TEXT("  \"offerable\": { \"weapons\": %d, \"tiers\": %d, \"items\": %d, \"stats\": %d, \"elements\": %d },\n")
+		TEXT("  \"offerableMethod\": \"BuildShopOffers seed sweep (wave 1-32, level 0-48, reroll 0-12)\",\n")
+		TEXT("  \"fullPoolOfferable\": %s,\n")
+		TEXT("  \"offeredInRun\": { \"weapons\": %d, \"tiers\": %d, \"items\": %d, \"stats\": %d, \"elements\": %d } }"),
+		PoolWeapons, PoolTiers, PoolItems, PoolStats, PoolElements,
+		bComplete ? TEXT("true") : TEXT("false"),
+		ReachWeapons.Num(), ReachTiers.Num(), ReachItems.Num(), ReachStats.Num(), ReachElements.Num(),
+		bOfferable ? TEXT("true") : TEXT("false"),
+		OfferedWeaponIds.Num(), OfferedTiers.Num(), OfferedItemIds.Num(), OfferedStatIds.Num(), OfferedElements.Num());
+}
+
 void AWS2GameMode::WriteArenaResult()
 {
 	WS2::FDatabase& Db = WS2::FDatabase::Get();
@@ -1151,8 +1922,10 @@ void AWS2GameMode::WriteArenaResult()
 	float P99Fps = 0.f, WorstWindowFps = 0.f, StartupMaxMs = 0.f, SustainedMaxMs = 0.f;
 	bool bFrameBudgetPass = false;
 	const FString FrameStats = BuildFrameStatsJson(P99Fps, WorstWindowFps, StartupMaxMs, SustainedMaxMs, bFrameBudgetPass);
+	const FString LevelUpsJson = BuildLevelUpsJson();
+	const FString ShopPoolJson = BuildShopPoolProofJson();
 	const FString Json = FString::Printf(
-		TEXT("{\n  \"arena\": \"%s\",\n  \"arenaName\": \"%s\",\n  \"kit\": \"%s\",\n  \"mods\": \"%s\",\n  \"complete\": %s,\n  \"waves\": %d,\n  \"maxWaves\": %d,\n  \"kills\": %d,\n  \"killsTotal\": %d,\n  \"spawnsTotal\": %d,\n  \"spawnTypes\": %d,\n  \"killTypes\": %d,\n  \"enemySpawns\": [\n%s  ],\n  \"enemyKills\": {\n%s  },\n  \"bosses\": [\n%s  ],\n  \"bossCount\": %d,\n  \"bossPhaseEntries\": %d,\n  \"weaponTiersFired\": %d,\n  \"itemsApplied\": %d,\n  \"rerolls\": %d,\n  \"shopPicks\": \"%s\",\n  \"overlapPairs\": %d,\n  \"worstOverlap\": %.2f,\n  		\"peakEnemies\": %d,\n  \"avgFps\": %.2f,\n  \"minFps\": %.2f,\n  \"p99Fps\": %.2f,\n  \"worstWindowFps\": %.2f,\n  \"startupMaxFrameMs\": %.2f,\n  \"sustainedMaxFrameMs\": %.2f,\n  \"frameBudgetPass\": %s,\n  \"frameStats\": %s,\n  \"shopPool\": { \"weapons\": %d, \"tiers\": %d, \"items\": %d, \"stats\": %d, \"elements\": %d },\n  \"screenshot\": \"%s\",\n  \"cpu\": \"%s\",\n  \"gpu\": \"%s\"\n}\n"),
+		TEXT("{\n  \"arena\": \"%s\",\n  \"arenaName\": \"%s\",\n  \"kit\": \"%s\",\n  \"mods\": \"%s\",\n  \"complete\": %s,\n  \"waves\": %d,\n  \"maxWaves\": %d,\n  \"kills\": %d,\n  \"killsTotal\": %d,\n  \"spawnsTotal\": %d,\n  \"spawnTypes\": %d,\n  \"killTypes\": %d,\n  \"enemySpawns\": [\n%s  ],\n  \"enemyKills\": {\n%s  },\n  \"bosses\": [\n%s  ],\n  \"bossCount\": %d,\n  \"bossPhaseEntries\": %d,\n  \"weaponTiersFired\": %d,\n  \"itemsApplied\": %d,\n  \"rerolls\": %d,\n  \"shopPicks\": \"%s\",\n  \"overlapPairs\": %d,\n  \"worstOverlap\": %.2f,\n  		\"peakEnemies\": %d,\n  \"avgFps\": %.2f,\n  \"minFps\": %.2f,\n  \"p99Fps\": %.2f,\n  \"worstWindowFps\": %.2f,\n  \"startupMaxFrameMs\": %.2f,\n  \"sustainedMaxFrameMs\": %.2f,\n  \"frameBudgetPass\": %s,\n  \"frameStats\": %s,\n  \"levelUps\": %s,\n  \"shopPool\": %s,\n  \"screenshot\": \"%s\",\n  \"cpu\": \"%s\",\n  \"gpu\": \"%s\"\n}\n"),
 		*EscapeJson(ArenaId), *EscapeJson(State.ArenaName), Arena ? *EscapeJson(Arena->GetKitName()) : TEXT("-"),
 		*EscapeJson(ArenaMods), bSliceDone ? TEXT("true") : TEXT("false"), State.Wave,
 		Director ? Director->GetMaxWave() : 0, State.Kills, KillTotal, SpawnTotal, SpawnTypes, KillTypes,
@@ -1160,13 +1933,16 @@ void AWS2GameMode::WriteArenaResult()
 		RerollCount, *EscapeJson(ShopPicks), Crowd ? Crowd->GetOverlapPairs() : 0,
 		Crowd ? Crowd->GetWorstOverlap() : 0.f, State.PeakEnemies, State.AvgFps, State.MinFps,
 		P99Fps, WorstWindowFps, StartupMaxMs, SustainedMaxMs, bFrameBudgetPass ? TEXT("true") : TEXT("false"),
-		*FrameStats, ShopPoolWeapons, ShopPoolTiers, ShopPoolItems, ShopPoolStats, Db.Elements.Num(),
+		*FrameStats, *LevelUpsJson, *ShopPoolJson,
 		*EscapeJson(ScreenshotName), *FPlatformMisc::GetCPUBrand(), *FPlatformMisc::GetPrimaryGPUBrand());
 
 	const FString Path = FPaths::Combine(Dir, FString::Printf(TEXT("arena_%s.json"), *ArenaId));
 	FFileHelper::SaveStringToFile(Json, *Path);
 	UE_LOG(LogWS2, Display, TEXT("ARENA RESULT written: %s (spawns=%d kills=%d bosses=%d phases=%d tiers=%d items=%d)"),
 		*Path, SpawnTotal, KillTotal, BossCount, PhasesReached, WeaponTiersFired, ItemsApplied);
+	UE_LOG(LogWS2, Display, TEXT("LEVEL-UP PROOF: levelUps=%d finalLevel=%d levelUpShops=%d pool(weapons=%d tiers=%d items=%d stats=%d elements=%d)"),
+		LevelUpCount, State.Level, LevelUpShops, ShopPoolWeapons, ShopPoolTiers, ShopPoolItems, ShopPoolStats,
+		WS2::FDatabase::Get().Elements.Num());
 }
 
 void AWS2GameMode::RequestShake(const FVector2D& At, float Amount, float Duration)

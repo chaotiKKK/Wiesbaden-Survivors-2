@@ -4,6 +4,7 @@
 #include "Engine/StaticMesh.h"
 #include "Materials/MaterialInstanceDynamic.h"
 #include "Materials/MaterialInterface.h"
+#include "Net/UnrealNetwork.h"
 #include "WS2Data.h"
 #include "WS2Math.h"
 
@@ -95,6 +96,9 @@ namespace
 AWS2Arena::AWS2Arena()
 {
 	PrimaryActorTick.bCanEverTick = true;
+	bReplicates = true;
+	bAlwaysRelevant = true;
+	SetNetUpdateFrequency(2.f);
 
 	Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 	SetRootComponent(Root);
@@ -105,11 +109,40 @@ void AWS2Arena::Configure(const WS2::FArenaDef& InDef)
 	Def = InDef;
 	KitName = KitNameFor(Def.Id);
 	bConfigured = true;
+	NetArenaId = Def.Id;
+}
+
+void AWS2Arena::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(AWS2Arena, NetArenaId);
+}
+
+void AWS2Arena::OnRep_NetArenaId()
+{
+	if (NetArenaId.IsEmpty())
+	{
+		return;
+	}
+	if (const WS2::FArenaDef* DefRow = WS2::FDatabase::Get().FindArena(NetArenaId))
+	{
+		Configure(*DefRow);
+		Build();
+	}
 }
 
 void AWS2Arena::BeginPlay()
 {
 	Super::BeginPlay();
+
+	if (!HasAuthority())
+	{
+		if (!NetArenaId.IsEmpty())
+		{
+			OnRep_NetArenaId();
+		}
+		return;
+	}
 
 	if (!bConfigured)
 	{
